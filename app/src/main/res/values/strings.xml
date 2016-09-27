@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Ticketing</string>
+    <string name="title_activity_field_agent_main">FieldAgentMainActivity</string>
+    <string-array name="factory_list">
+        <item>Factory 1</item>
+        <item>Factory 2</item>
+        <item>Factory 3</item>
+        <item>Factory 4</item>
+        <item>Factory 5</item>
+    </string-array>
+</resources>
