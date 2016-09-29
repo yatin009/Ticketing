@@ -2,17 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.webguru.ticketing">
 
-    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar" >
         <activity
             android:name=".Welcome.WelcomeSplash"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             android:theme="@style/LoginTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,12 +25,17 @@
         <activity android:name=".MainActivity" />
         <activity
             android:name=".FieldAgent.FieldAgentMainActivity"
-            android:label="@string/title_activity_field_agent_main"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Manager.ManagerMainActivity" />
+            android:label="@string/title_activity_field_agent_main" />
+
+        <activity android:name=".Manager.ManagerMainActivity"
+            android:theme="@style/MyMaterialTheme"
+            android:label="@string/title_activity_manager_main_activity"/>
         <activity android:name=".Contractor.ContractorMainActivity" />
         <activity android:name=".Approver.ApproverMainActivity" />
-        <activity android:name=".FieldAgent.AddTicketRequest"/>
+
+        <activity android:name=".FieldAgent.AddTicketRequest"
+            android:label="@string/title_activity_add_field_ticket"/>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="io.webguru.ticketing.fileprovider"
@@ -36,8 +43,11 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
+
+        <activity android:name=".FieldAgent.ViewEditFieldTicket"
+            android:label="@string/title_activity_view_edit_field_ticket"/>
     </application>
 
 </manifest>

@@ -1,21 +1,18 @@
 package io.webguru.ticketing.FieldAgent;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,12 +20,10 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -43,7 +38,6 @@ import io.webguru.ticketing.POJO.FieldAgentData;
 import io.webguru.ticketing.POJO.UserInfo;
 import io.webguru.ticketing.R;
 
-import static android.graphics.BitmapFactory.decodeFile;
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
 public class AddTicketRequest extends AppCompatActivity {
@@ -62,6 +56,8 @@ public class AddTicketRequest extends AppCompatActivity {
     ImageView imageViewPhoto;
     @Bind(R.id.buttonRequestTicket)
     Button buttonRequestTicket;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
     static final int REQUEST_TAKE_PHOTO = 1991;
     static final int MY_PERMISSIONS_REQUEST_CAMERA = 1992;
@@ -75,6 +71,11 @@ public class AddTicketRequest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_ticket_request);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar()!=null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        //TODO Handle null case
         Bundle bundle = getIntent().getExtras();
         //Receving UserInfo Object from Intent
         userInfo = (UserInfo) bundle.get("UserInfo");
@@ -97,12 +98,15 @@ public class AddTicketRequest extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int value, boolean b) {
                 if(value>=0 && value<30){
                     textViewPriorityValue.setText("LOW");
+                    textViewPriorityValue.setTextColor(Color.BLACK);
                 }
                 if(value>=30 && value<70){
                     textViewPriorityValue.setText("MEDIUM");
+                    textViewPriorityValue.setTextColor(Color.rgb(255,165,0)); // Orange
                 }
                 if(value>=70 && value<=100){
                     textViewPriorityValue.setText("HIGH");
+                    textViewPriorityValue.setTextColor(Color.RED);
                 }
             }
 
@@ -205,9 +209,9 @@ public class AddTicketRequest extends AppCompatActivity {
     private void submitTicket(){
         fieldAgentData.setProblem(editTextProblem.getText().toString());
         fieldAgentData.setPriority(textViewPriorityValue.getText().toString());
-        fieldAgentData.setDate(GlobalFunctions.getDate());
-        fieldAgentData.setTime(GlobalFunctions.getTime());
+        fieldAgentData.setDateTime(GlobalFunctions.getCurrentDateTime());
         fieldAgentData.setLocation(spinnerFactory.getSelectedItem().toString());
+        fieldAgentData.setApproved("pending");
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         String key = mDatabase.child("field_agent_data").child(userInfo.getUserid()).push().getKey();
@@ -218,5 +222,21 @@ public class AddTicketRequest extends AppCompatActivity {
         Intent intent = new Intent(this, FieldAgentMainActivity.class);
         intent.putExtra("UserInfo",userInfo);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        switch (id){
+            case android.R.id.home:
+                Intent intent = new Intent(AddTicketRequest.this, FieldAgentMainActivity.class);
+                intent.putExtra("UserInfo", userInfo);
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

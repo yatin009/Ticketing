@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ScrollingView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 
 import butterknife.Bind;
@@ -37,12 +39,15 @@ public class WelcomeSplash extends AppCompatActivity {
     LinearLayout signLayout;
     @Bind(R.id.ken_burns_images)
     KenBurnsView mKenBurns;
+    @Bind(R.id.scrollBackgroundImage)
+    ScrollView scrollBackgroundImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_splash);
         ButterKnife.bind(this);
+        scrollBackgroundImage.setEnabled(false);
         mKenBurns.setImageResource(R.drawable.factory_inspector);
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -138,14 +143,4 @@ public class WelcomeSplash extends AppCompatActivity {
         animatorSet.start();
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//
-//        if (requestCode == LoginFragmetSlide.RC_SIGN_IN) {
-//            LoginFragmetSlide fragment = new LoginFragmetSlide();
-//            fragment.onActivityResult(requestCode, resultCode, data);
-//        } else {
-//            super.onActivityResult(requestCode, resultCode, data);
-//        }
-//    }
 }

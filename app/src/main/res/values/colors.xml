@@ -9,6 +9,9 @@
     <color name="colorPrimaryDark">#9d0a10</color>303F9F
     <color name="colorAccent">#c1181f</color>FF4081
 
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#000000</color>
+
     <color name="black_overlay">#66000000</color>
 
     <color name="primary">#c1181f</color>

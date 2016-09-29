@@ -24,24 +24,22 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    //Android Support Lib's
+
+
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:design:24.2.1'
     compile 'com.android.support:cardview-v7:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
-
-    //Testing Lib
-    testCompile 'junit:junit:4.12'
-
-    //ButterKnife Lib
     compile 'com.jakewharton:butterknife:7.0.1'
-
-    //Firebase Lib's
-    compile 'com.google.firebase:firebase-database:9.6.0'
-    // FirebaseUI Database only
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.google.firebase:firebase-database:9.6.1'
     compile 'com.firebaseui:firebase-ui-database:0.6.0'
-
+    testCompile 'junit:junit:4.12'
 }
+
+
+
+
 
 apply plugin: 'com.google.gms.google-services'

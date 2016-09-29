@@ -3,6 +3,13 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="tab_max_width">264dp</dimen>
+    <dimen name="tab_padding_bottom">16dp</dimen>
+    <dimen name="tab_label">14sp</dimen>
+    <dimen name="custom_tab_layout_height">72dp</dimen>
+
+
     <dimen name="button_layout_bottom_margin">14dp</dimen>
     <dimen name="button_layout_padding">14dp</dimen>
 
@@ -15,4 +22,5 @@
     <dimen name="ken_burns_header">250dp</dimen>
     <dimen name="cpb_stroke_width">4dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>
