@@ -188,7 +188,7 @@ public class ApprovedTicket extends Fragment {
 
     private void updateContractorInfo(int position, final String contractorName){
         ManagerData managerData = managerApprovedDatas.get(position);
-        managerData.setContractor(contractorName);
+        managerData.setVendor(contractorName);
 
         //Updating ticket value
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();

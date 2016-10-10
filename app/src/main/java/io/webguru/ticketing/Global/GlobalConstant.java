@@ -9,5 +9,5 @@ public interface GlobalConstant {
     String DATABASE_NAME="TICKETINGDB";
     int DATABASE_VERSION=1;
 
-    String TABLE_ADD_SHOP_LIST = "USER_INFO";
+    String TABLE_USER_INFO = "USER_INFO";
 }

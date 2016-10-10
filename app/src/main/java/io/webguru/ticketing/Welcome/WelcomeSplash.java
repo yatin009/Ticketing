@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,7 +13,9 @@ import android.support.v4.view.ScrollingView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.util.Log;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,7 +25,14 @@ import android.widget.ScrollView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.webguru.ticketing.Approver.ApproverMainActivity;
+import io.webguru.ticketing.Contractor.ContractorMainActivity;
+import io.webguru.ticketing.DB.UserInfoDB;
+import io.webguru.ticketing.FieldAgent.FieldAgentMainActivity;
+import io.webguru.ticketing.Global.GlobalFunctions;
 import io.webguru.ticketing.KenBurnsEffect.KenBurnsView;
+import io.webguru.ticketing.Manager.ManagerMainActivity;
+import io.webguru.ticketing.POJO.UserInfo;
 import io.webguru.ticketing.R;
 
 
@@ -42,6 +52,9 @@ public class WelcomeSplash extends AppCompatActivity {
     @Bind(R.id.scrollBackgroundImage)
     ScrollView scrollBackgroundImage;
 
+    private String TAG = "WelcomeSplash";
+    private boolean disableSwipe = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +69,6 @@ public class WelcomeSplash extends AppCompatActivity {
         mPager = (ViewPager)findViewById(R.id.welcome_screens);
         myPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(myPagerAdapter);
-        setButton();
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -79,6 +91,15 @@ public class WelcomeSplash extends AppCompatActivity {
                 mPager.setCurrentItem(1, true);
             }
         });
+        mPager.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                return disableSwipe;
+            }
+        });
+        new CheckUserInDB().execute();
     }
 
     @Override
@@ -90,6 +111,45 @@ public class WelcomeSplash extends AppCompatActivity {
         } else {
             // Otherwise, select the previous step.
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+        }
+    }
+
+    private class CheckUserInDB extends AsyncTask<Void, Void ,Boolean>{
+
+        UserInfo userInfo;
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            boolean dbExist = GlobalFunctions.checkDataBase(WelcomeSplash.this);
+            Log.d(TAG, "dbExist >>> "+dbExist);
+            if(!dbExist)
+                return false;
+            userInfo = new UserInfoDB(WelcomeSplash.this).getUserInfo();
+            return (userInfo!=null && userInfo.isLoggedin());
+        }
+
+        protected void onPostExecute(Boolean result){
+            if(!result){
+                disableSwipe = false;
+                setButton();
+            }else {
+                disableSwipe = true;
+                if ("manager".equals(userInfo.getRole())) {
+                    Intent intent = new Intent(WelcomeSplash.this, ManagerMainActivity.class);
+                    intent.putExtra("UserInfo", userInfo);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                } else if ("fieldagent".equals(userInfo.getRole())) {
+                    Intent intent = new Intent(WelcomeSplash.this, FieldAgentMainActivity.class);
+                    intent.putExtra("UserInfo", userInfo);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                } else if ("contractor".equals(userInfo.getRole())) {
+                    startActivity(new Intent(WelcomeSplash.this, ContractorMainActivity.class));
+                } else if ("approver".equals(userInfo.getRole())) {
+                    startActivity(new Intent(WelcomeSplash.this, ApproverMainActivity.class));
+                }
+                (WelcomeSplash.this).finish();
+            }
         }
     }
 

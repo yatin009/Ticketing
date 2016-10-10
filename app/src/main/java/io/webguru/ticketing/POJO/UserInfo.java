@@ -13,6 +13,11 @@ public class UserInfo implements Serializable{
     private String role;
     private String username;
     private String userid;
+    private boolean isLoggedin;
+
+    private String email;
+    private String number;
+    private String photoUrl;
 
     public UserInfo(){
 
@@ -64,5 +69,45 @@ public class UserInfo implements Serializable{
 
     public void setUserid(String userid) {
         this.userid = userid;
+    }
+
+    public boolean isLoggedin() {
+        return isLoggedin;
+    }
+
+    public boolean isIsLoggedin() {
+        return isLoggedin;
+    }
+
+    public void setIsLoggedin(boolean value){
+        isLoggedin = value;
+    }
+
+    public void setLoggedin(boolean loggedin) {
+        isLoggedin = loggedin;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }

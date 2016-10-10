@@ -11,35 +11,58 @@ import java.util.Map;
  */
 
 public class FieldAgentData implements Serializable {
-    private String approved;
+    private String status;
     private String dateTime;
-    private String problem;
-    private String priority;
-    private String photoUrl;
-    private String photoPath;
-    private String location;
     private String ticketNumber;
+
+    private String description;
+    private String priority;
+    private String location;
+    private String shop;
+    private String site;
+    private String scope;
+    private String ssrType;
 
     public FieldAgentData() {
     }
 
-    public FieldAgentData(String approved, String dateTime, String priority, String photoUrl, String problem, String photoPath, String location, String ticketNumber) {
-        this.approved = approved;
+    public FieldAgentData(String status, String dateTime, String ticketNumber, String description, String priority, String location, String shop, String site, String scope, String ssrType) {
+        this.status = status;
         this.dateTime = dateTime;
-        this.priority = priority;
-        this.problem = problem;
-        this.photoUrl = photoUrl;
-        this.photoPath = photoPath;
-        this.location = location;
         this.ticketNumber = ticketNumber;
+
+        this.description = description;
+        this.priority = priority;
+        this.location = location;
+        this.shop = shop;
+        this.site = site;
+        this.scope = scope;
+        this.ssrType = ssrType;
     }
 
-    public String getApproved() {
-        return approved;
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("status", status);
+        result.put("dateTime", dateTime);
+        result.put("ticketNumber", ticketNumber);
+
+        result.put("description", description);
+        result.put("priority", priority);
+        result.put("location", location);
+        result.put("shop", shop);
+        result.put("site", site);
+        result.put("ssrType", ssrType);
+
+        return result;
     }
 
-    public void setApproved(String approved) {
-        this.approved = approved;
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getDateTime() {
@@ -50,12 +73,20 @@ public class FieldAgentData implements Serializable {
         this.dateTime = dateTime;
     }
 
-    public String getProblem() {
-        return problem;
+    public String getTicketNumber() {
+        return ticketNumber;
     }
 
-    public void setProblem(String problem) {
-        this.problem = problem;
+    public void setTicketNumber(String ticketNumber) {
+        this.ticketNumber = ticketNumber;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getPriority() {
@@ -66,22 +97,6 @@ public class FieldAgentData implements Serializable {
         this.priority = priority;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
-
-    public String getPhotoPath() {
-        return photoPath;
-    }
-
-    public void setPhotoPath(String photoPath) {
-        this.photoPath = photoPath;
-    }
-
     public String getLocation() {
         return location;
     }
@@ -90,27 +105,38 @@ public class FieldAgentData implements Serializable {
         this.location = location;
     }
 
-    public String getTicketNumber() {
-        return ticketNumber;
+    public String getShop() {
+        return shop;
     }
 
-    public void setTicketNumber(String ticketNumber) {
-        this.ticketNumber = ticketNumber;
+    public void setShop(String shop) {
+        this.shop = shop;
     }
 
-    @Exclude
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("approved", "false");
-        result.put("dateTime", dateTime);
-        result.put("problem", problem);
-        result.put("priority", priority);
-        result.put("photoUrl", photoUrl);
-        result.put("photoPath", photoPath);
-        result.put("location", location);
-        result.put("ticketNumber", ticketNumber);
-
-        return result;
+    public String getSite() {
+        return site;
     }
+
+    public void setSite(String site) {
+        this.site = site;
+    }
+
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
+
+    public String getSsrType() {
+        return ssrType;
+    }
+
+    public void setSsrType(String ssrType) {
+        this.ssrType = ssrType;
+    }
+
+
 }
 

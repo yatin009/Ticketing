@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--<color name="colorPrimary">#3F51B5</color>-->
-    <!--<color name="colorPrimaryDark">#303F9F</color>-->
-    <!--<color name="colorAccent">#FF4081</color>-->
+    <color name="colorPrimary">#607D8B</color>
+    <color name="colorPrimaryLight">#90A4AE</color>
+    <color name="colorPrimaryDark">#455A64</color>
+    <color name="colorPrimaryDarker">#263238</color>
+    <color name="colorAccent">#00B0FF</color>
 
-
-    <color name="colorPrimary">#c1181f</color>3F51B5
-    <color name="colorPrimaryDark">#9d0a10</color>303F9F
-    <color name="colorAccent">#c1181f</color>FF4081
-
-    <color name="windowBackground">#FFFFFF</color>
-    <color name="navigationBarColor">#000000</color>
-
-    <color name="black_overlay">#66000000</color>
-
-    <color name="primary">#c1181f</color>
-    <color name="primary_dark">#9d0a10</color>
-
-    <color name="primary_darker">#7d080c</color>
-    <color name="accent">#FFFFFF</color>
+    <color name="attentionColor">#FFC400</color>
 
     <color name="black">#000000</color>
     <color name="jet">#222222</color>
@@ -28,8 +16,36 @@
     <color name="aluminum">#999999</color>
     <color name="base">#AAAAAA</color>
     <color name="iron">#CCCCCC</color>
-    <color name="iron2">#ddddd9</color>
     <color name="white">#FFFFFF</color>
+
+    <color name="darkBlueGrey">#263238</color>
+    <color name="darkBlue">#0D47A1</color>
+    <color name="darkDeepPurple">#311B92</color>
+
+    <color name="bgBackSideColor">#f4f0ff</color>
+    <color name="titleLeft">#594691</color>
+    <color name="bgTitleRight">#ffffff</color>
+    <color name="bgContentTop">#594691</color>
+    <color name="bgContent">#ffffff</color>
+    <color name="contentDividerLine">#e0e0e0</color>
+    <color name="contentBadgeTitle">#a9a9a9</color>
+    <color name="titleBadgeTitle">#adafb1</color>
+    <color name="titleBadgeText">#adafb1</color>
+    <color name="mainTextColor">#343d43</color>
+    <color name="btnRequest">#ffbf12</color>
+
+
+    <!--<color name="colorPrimary">#c1181f</color>3F51B5-->
+    <!--<color name="colorPrimaryDark">#9d0a10</color>303F9F-->
+    <!--<color name="colorAccent">#c1181f</color>FF4081-->
+
+
+
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#000000</color>
+
+    <color name="black_overlay">#66000000</color>
+
     <color name="yellow_notepad">#f9e680</color>
 
     <color name="goole_plus_button">#dd4c39</color>

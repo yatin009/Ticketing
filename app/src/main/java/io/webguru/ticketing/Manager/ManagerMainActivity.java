@@ -1,7 +1,9 @@
 package io.webguru.ticketing.Manager;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -31,6 +33,8 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.webguru.ticketing.Global.SignOut;
+import io.webguru.ticketing.Global.UserProfile;
 import io.webguru.ticketing.POJO.ManagerData;
 import io.webguru.ticketing.POJO.UserInfo;
 import io.webguru.ticketing.R;
@@ -125,6 +129,23 @@ public class ManagerMainActivity extends AppCompatActivity {
         childUpdatesNew.put("/manager_data/" + userInfo.getUserid() + "/" + newstatus + "/" + newStatusKey, managerData.toMap());
         mDatabase.updateChildren(childUpdatesNew);
 
+        //Updating field agent DB
+        DatabaseReference mDatabase1 = FirebaseDatabase.getInstance().getReference();
+        mDatabase1.child("field_agent_data").child("2").child(managerData.getFieldRequestKey()).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getValue()==null)
+                            return;
+                        dataSnapshot.getRef().child("approved").setValue(newstatus);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("TodoApp", "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+
         //Remove in existing status
         mDatabase.child("manager_data").child(userInfo.getUserid()).child(currentStatus).orderByChild("fieldRequestKey").equalTo(managerData.getFieldRequestKey()).addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -176,7 +197,16 @@ public class ManagerMainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
+        if (id == R.id.action_profile) {
+            Intent intent = new Intent(ManagerMainActivity.this, UserProfile.class);
+            intent.putExtra("UserInfo", userInfo);
+            startActivity(intent);
+            return true;
+        }
         if (id == R.id.action_signout) {
+            Intent intent = new Intent(ManagerMainActivity.this, SignOut.class);
+            intent.putExtra("UserInfo", userInfo);
+            startActivity(intent);
             return true;
         }
 

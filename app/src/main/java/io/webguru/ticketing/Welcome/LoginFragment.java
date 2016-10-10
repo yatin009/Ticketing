@@ -1,18 +1,20 @@
 package io.webguru.ticketing.Welcome;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Rect;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -24,7 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,7 +35,6 @@ import io.webguru.ticketing.DB.UserInfoDB;
 import io.webguru.ticketing.FieldAgent.FieldAgentMainActivity;
 import io.webguru.ticketing.Global.GlobalConstant;
 import io.webguru.ticketing.Global.GlobalFunctions;
-import io.webguru.ticketing.Global.SignOut;
 import io.webguru.ticketing.Manager.ManagerMainActivity;
 import io.webguru.ticketing.POJO.UserAuth;
 import io.webguru.ticketing.POJO.UserInfo;
@@ -42,74 +42,44 @@ import io.webguru.ticketing.R;
 
 import static android.content.Context.MODE_PRIVATE;
 
+public class LoginFragment extends Fragment {
 
-public class LoginFragmetSlide extends Fragment {
-
-    public static final int RC_SIGN_IN = 0;
     @Bind(R.id.sign_in_button)
     AppCompatButton signin;
     @Bind(R.id.editTextemail)
-    TextInputEditText emailId;
+    EditText emailId;
     @Bind(R.id.editTextpassword)
-    TextInputEditText password;
-    @Bind(R.id.signin_layout)
-    LinearLayout signin_layout;
-    @Bind(R.id.parent_layout)
-    RelativeLayout parent_layout;
-    boolean keyBoardvisible = false;
-    boolean ismoved = false;
+    EditText password;
     private String TAG = "LOGINFRAGMENT";
     private DatabaseReference mDatabase, userInfoDatabaseRef;
     private ArrayList<UserAuth> userAuths = new ArrayList<>();
 
-    public LoginFragmetSlide() {
+    public LoginFragment() {
         // Required empty public constructor
-    }
-
-    public static LoginFragmetSlide newInstance(String param1, String param2) {
-        LoginFragmetSlide fragment = new LoginFragmetSlide();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
-
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_login_fragmet_slide, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, rootView);
         return rootView;
     }
 
-    public void onStart() {
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+    }
+
+    public void onStart(){
         super.onStart();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        emailId.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!keyBoardvisible) {
-                    Rect r = new Rect();
-                    parent_layout.getWindowVisibleDisplayFrame(r);
-
-                    int screenHeight = parent_layout.getRootView().getHeight();
-                    int heightDifference = screenHeight - (r.bottom - r.top);
-                    Log.d(TAG, "Keyboard Size: " + heightDifference);
-
-                    keyBoardvisible = heightDifference > screenHeight / 3;
-//                    if (keyBoardvisible) {
-//                        moveLayoutUp(heightDifference + 500);
-//                    }
-                }
-            }
-        });
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -229,10 +199,6 @@ public class LoginFragmetSlide extends Fragment {
             }
             GlobalFunctions.showToast(getActivity(), msg, Toast.LENGTH_LONG);
         }
-    }
-
-    public void onStop() {
-        super.onStop();
     }
 
     @Override

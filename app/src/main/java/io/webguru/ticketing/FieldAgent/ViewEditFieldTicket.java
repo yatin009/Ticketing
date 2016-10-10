@@ -1,6 +1,7 @@
 package io.webguru.ticketing.FieldAgent;
 
 import android.content.Intent;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -19,35 +20,44 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import io.webguru.ticketing.Global.Chat;
 import io.webguru.ticketing.POJO.FieldAgentData;
 import io.webguru.ticketing.POJO.UserInfo;
 import io.webguru.ticketing.R;
 
 public class ViewEditFieldTicket extends AppCompatActivity {
 
-    @Bind(R.id.valueFactory)
-    TextView valueFactory;
-    @Bind(R.id.valuePhoto)
-    ImageView valuePhoto;
-    @Bind(R.id.valuePriorityValue)
-    TextView valuePriorityValue;
-    @Bind(R.id.valueProblem)
-    TextView valueProblem;
+    @Bind(R.id.valuePriority)
+    TextView valuePriority;
+    @Bind(R.id.valueDescription)
+    TextView valueDescription;
+    @Bind(R.id.valueStatus)
+    TextView valueStatus;
+    @Bind(R.id.valueLocation)
+    TextView valueLocation;
+    @Bind(R.id.valueShop)
+    TextView valueShop;
+    @Bind(R.id.valueScope)
+    TextView valueScope;
+    @Bind(R.id.valuessrType)
+    TextView valuessrType;
 
-    @Bind(R.id.editTextProblem)
-    EditText editTextProblem;
-    @Bind(R.id.seekBarPriority)
-    SeekBar seekBarPriority;
-    @Bind(R.id.textViewPriorityValue)
-    TextView textViewPriorityValue;
-    @Bind(R.id.spinnerFactory)
-    Spinner spinnerFactory;
-    @Bind(R.id.buttonPhoto)
-    Button buttonTakePhoto;
-    @Bind(R.id.imageViewPhoto)
-    ImageView imageViewPhoto;
-    @Bind(R.id.buttonRequestTicket)
-    Button buttonRequestTicket;
+    @Bind(R.id.text_site)
+    TextInputEditText text_site;
+    @Bind(R.id.text_shop)
+    TextInputEditText text_shop;
+    @Bind(R.id.text_priority)
+    TextInputEditText text_priority;
+    @Bind(R.id.text_location)
+    TextInputEditText text_location;
+    @Bind(R.id.text_description)
+    TextInputEditText text_description;
+    @Bind(R.id.text_scope)
+    TextInputEditText text_scope;
+    @Bind(R.id.text_ssrtype)
+    TextInputEditText text_ssrtype;
+
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.viewFlipper)
@@ -77,22 +87,25 @@ public class ViewEditFieldTicket extends AppCompatActivity {
     }
 
     private void setViewData(){
-        valueFactory.setText(fieldAgentData.getLocation());
-        valueProblem.setText(fieldAgentData.getProblem());
-        valuePriorityValue.setText(fieldAgentData.getPriority());
+        valueLocation.setText(fieldAgentData.getLocation());
+        valueDescription.setText(fieldAgentData.getDescription());
+        valuePriority.setText(fieldAgentData.getPriority());
+
+        valueStatus.setText(fieldAgentData.getStatus());
+        valueShop.setText(fieldAgentData.getShop());
+        valueScope.setText(fieldAgentData.getScope());
+        valuessrType.setText(fieldAgentData.getSsrType());
     }
 
     private void setEditValue(){
-        editTextProblem.setText(fieldAgentData.getProblem());
-        String[] locationValue =  getResources().getStringArray(R.array.factory_list);
-        int count=0;
-        for(String s : locationValue){
-            if(s.equals(fieldAgentData.getLocation()))
-                break;
-            else
-                count++;
-        }
-        spinnerFactory.setSelection(count);
+    }
+
+    @OnClick(R.id.button_chat)
+    public void initiateChat(){
+        Intent intent = new Intent(this, Chat.class);
+        intent.putExtra("UserInfo", userInfo);
+        intent.putExtra("FieldAgentData", fieldAgentData);
+        startActivity(intent);
     }
 
     @Override
@@ -101,7 +114,6 @@ public class ViewEditFieldTicket extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_view_edit_field_ticket, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -123,9 +135,11 @@ public class ViewEditFieldTicket extends AppCompatActivity {
                 break;
 
             case android.R.id.home:
-                Intent intent = new Intent(ViewEditFieldTicket.this, FieldAgentMainActivity.class);
-                intent.putExtra("UserInfo", userInfo);
-                startActivity(intent);
+                onBackPressed();
+//                Intent intent = new Intent(ViewEditFieldTicket.this, FieldAgentMainActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                intent.putExtra("UserInfo", userInfo);
+//                startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);

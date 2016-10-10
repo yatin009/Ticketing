@@ -24,14 +24,14 @@ public class ManagerTicketHolder extends RecyclerView.ViewHolder {
     }
 
     public void setViewElements(ManagerData managerData) {
-        setPriority(managerData.getPriority());
-        setTicketStatus(managerData.getStatus(), managerData.getContractor());
+        setPriority(managerData.getFieldAgentData().getPriority());
+        setTicketStatus(managerData.getStatus(), managerData.getVendor());
         setTicketNumber(managerData.getTicketNumber());
-        setProblem(managerData.getProblem());
-        setLocation(managerData.getLocation());
-        setDateTime(managerData.getRequestDateTime());
-        setContractorName(managerData.getContractor());
-        setAgentName(managerData.getAgentName());
+        setProblem(managerData.getDescription());
+        setLocation(managerData.getFieldAgentData().getLocation());
+        setDateTime(managerData.getFieldAgentData().getDateTime());
+        setContractorName(managerData.getVendor());
+        setAgentName(managerData.getRequesterName());
     }
 
     private void setPriority(String priority) {
