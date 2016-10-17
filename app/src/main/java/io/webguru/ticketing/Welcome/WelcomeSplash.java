@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ScrollingView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
@@ -17,8 +16,6 @@ import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -28,10 +25,10 @@ import butterknife.ButterKnife;
 import io.webguru.ticketing.Approver.ApproverMainActivity;
 import io.webguru.ticketing.Contractor.ContractorMainActivity;
 import io.webguru.ticketing.DB.UserInfoDB;
-import io.webguru.ticketing.FieldAgent.FieldAgentMainActivity;
+import io.webguru.ticketing.Requester.RequesterMainActivity;
 import io.webguru.ticketing.Global.GlobalFunctions;
 import io.webguru.ticketing.KenBurnsEffect.KenBurnsView;
-import io.webguru.ticketing.Manager.ManagerMainActivity;
+import io.webguru.ticketing.Agent.AgentMainActivity;
 import io.webguru.ticketing.POJO.UserInfo;
 import io.webguru.ticketing.R;
 
@@ -134,12 +131,12 @@ public class WelcomeSplash extends AppCompatActivity {
             }else {
                 disableSwipe = true;
                 if ("manager".equals(userInfo.getRole())) {
-                    Intent intent = new Intent(WelcomeSplash.this, ManagerMainActivity.class);
+                    Intent intent = new Intent(WelcomeSplash.this, AgentMainActivity.class);
                     intent.putExtra("UserInfo", userInfo);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else if ("fieldagent".equals(userInfo.getRole())) {
-                    Intent intent = new Intent(WelcomeSplash.this, FieldAgentMainActivity.class);
+                    Intent intent = new Intent(WelcomeSplash.this, RequesterMainActivity.class);
                     intent.putExtra("UserInfo", userInfo);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);

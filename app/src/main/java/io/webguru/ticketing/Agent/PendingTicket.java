@@ -1,6 +1,7 @@
-package io.webguru.ticketing.Manager;
+package io.webguru.ticketing.Agent;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -17,6 +18,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.ChildEventListener;
@@ -31,17 +34,18 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.webguru.ticketing.Global.GlobalFunctions;
 import io.webguru.ticketing.Global.RecyclerItemClickListener;
-import io.webguru.ticketing.POJO.FieldAgentData;
 import io.webguru.ticketing.POJO.ManagerData;
-import io.webguru.ticketing.POJO.UserInfo;
+import io.webguru.ticketing.POJO.Ticket;
 import io.webguru.ticketing.R;
 
-import static io.webguru.ticketing.Manager.ManagerMainActivity.userInfo;
+import static io.webguru.ticketing.Agent.AgentMainActivity.userInfo;
 
 public class PendingTicket extends Fragment {
 
     @Bind(R.id.manager_pending_list)
     RecyclerView mRecyclerView;
+    @Bind(R.id.progressBar)
+    ProgressBar mProgressBar;
 
     //Firebase Database refernce
     private DatabaseReference mDatabase;
@@ -49,6 +53,8 @@ public class PendingTicket extends Fragment {
     //RecyclerView objects
     private LinearLayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
+    private Ticket[] ticketsArray = new Ticket[100];
+    private String TAG = "PENDINGTICKET";
 
     public PendingTicket() {
         // Required empty public constructor
@@ -78,7 +84,7 @@ public class PendingTicket extends Fragment {
         mLayoutManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
         managerPendingDatas = new ArrayList<>();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("manager_data").child(userInfo.getUserid()).child("pending");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("ticketing");
         mDatabase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -112,12 +118,20 @@ public class PendingTicket extends Fragment {
 
             }
         });
-        mAdapter = new FirebaseRecyclerAdapter<ManagerData, ManagerTicketHolder>(ManagerData.class, R.layout.manager_cardview, ManagerTicketHolder.class, mDatabase) {
+        mAdapter = new FirebaseRecyclerAdapter<Ticket, AgentTicketHolder>(Ticket.class, R.layout.agent_ticket_cardview, AgentTicketHolder.class, mDatabase) {
             @Override
-            protected void populateViewHolder(ManagerTicketHolder viewHolder, ManagerData managerData, int position) {
-                managerPendingDatas.add(0, managerData); // reversing the order, for storing latest at the top
-                Log.d("PENDINTICKEFRAGMENT","ADDING managerPendingDatas.size() >>> "+managerPendingDatas.size());
-                viewHolder.setViewElements(managerData);
+            protected void populateViewHolder(AgentTicketHolder viewHolder, Ticket ticket, int position) {
+                mProgressBar.setVisibility(View.GONE);
+                Log.d(TAG,"ticket.getRequesterId() >>> "+ticket.getRequesterId());
+//                if (userID == ticket.getRequesterId()) {
+                    ticketsArray[position] = ticket;
+                    viewHolder.setViewElements(ticket, position, true);
+//                } else {
+//                    viewHolder.setViewElements(null, false);
+//                }
+//                managerPendingDatas.add(0, managerData); // reversing the order, for storing latest at the top
+//                Log.d("PENDINTICKEFRAGMENT","ADDING managerPendingDatas.size() >>> "+managerPendingDatas.size());
+//                viewHolder.setViewElements(managerData);
             }
         };
         mRecyclerView.setAdapter(mAdapter);
@@ -125,10 +139,20 @@ public class PendingTicket extends Fragment {
 //
             @Override
             public void onItemClick(View view, int position) {
-//                Intent intent = new Intent(ManagerMainActivity.this, ViewEditFieldTicket.class);
-//                intent.putExtra("UserInfo", userInfo);
-//                intent.putExtra("FieldAgentData", fieldAgentDatas.get(position));
-//                startActivity(intent);
+//                Ticket ticket = ticketsArray[position];
+//                if(ticket.isDetailsShown()){
+//                    LinearLayout detailsLayout = (LinearLayout) view.findViewById(R.id.detial_layout);
+//                    detailsLayout.setVisibility(View.GONE);
+//                    ticket.setDetailsShown(false);
+//                }else {
+//                    LinearLayout detailsLayout = (LinearLayout) view.findViewById(R.id.detial_layout);
+//                    detailsLayout.setVisibility(View.VISIBLE);
+//                    ticket.setDetailsShown(true);
+//                }
+                Intent intent = new Intent(getActivity(), AgentTicketView.class);
+                intent.putExtra("UserInfo", userInfo);
+                intent.putExtra("Ticket", ticketsArray[position]);
+                startActivity(intent);
             }
 
             @Override
@@ -169,14 +193,14 @@ public class PendingTicket extends Fragment {
                     Log.d("MANAGERMAINACTIVITY", " Card swipe START>> ");
                     managerData.setStatus("cancel");
                     managerData.setTicketNumber(GlobalFunctions.getCurrentDateInMilliseconds("-"+userInfo.getUserid()));
-                    ((ManagerMainActivity)getActivity()).updateStatus("cancel","pending", true, managerData);
+                    ((AgentMainActivity)getActivity()).updateStatus("cancel","pending", true, managerData);
                 }
                 else if (direction == ItemTouchHelper.END)
                 { // Swiped to right
                     Log.d("MANAGERMAINACTIVITY", " Card swipe END>> ");
                     managerData.setStatus("approved");
                     managerData.setTicketNumber(GlobalFunctions.getCurrentDateInMilliseconds("-"+userInfo.getUserid()));
-                    ((ManagerMainActivity)getActivity()).updateStatus("approved","pending", true, managerData);
+                    ((AgentMainActivity)getActivity()).updateStatus("approved","pending", true, managerData);
 
                 }
             }

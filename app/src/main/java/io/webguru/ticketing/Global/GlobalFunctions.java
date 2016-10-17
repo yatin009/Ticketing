@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import io.webguru.ticketing.DB.UserInfoDB;
+import io.webguru.ticketing.POJO.UserInfo;
 
 /**
  * Created by yatin on 25/09/16.
@@ -59,5 +60,8 @@ public class GlobalFunctions {
         db.close();
     }
 
+    public static UserInfo getUserInfo(Context context){
+        return new UserInfoDB(context).getUserInfo();
+    }
 
 }

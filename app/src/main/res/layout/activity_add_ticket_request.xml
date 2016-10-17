@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="io.webguru.ticketing.FieldAgent.AddTicketRequest">
+    tools:context="io.webguru.ticketing.Requester.AddTicketRequest">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/toolbar_layout"
@@ -189,127 +189,6 @@
                             android:textStyle="bold" />
 
                         <android.support.v7.widget.AppCompatButton
-                            android:id="@+id/description_next"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:background="@drawable/rounded_button"
-                            android:text="Next"
-                            android:textColor="@color/attentionColor"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/scope_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/FormTitle"
-                        android:text="Define the Scope" />
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="15dp">
-
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/text_scope"
-                            style="@style/InputStyle"
-                            android:hint="Scope" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="15dp">
-
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/text_ssrtype"
-                            style="@style/InputStyle"
-                            android:hint="SSR Type" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp">
-
-                        <android.support.v7.widget.AppCompatButton
-                            android:id="@+id/scope_previous"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_button"
-                            android:text="previous"
-                            android:textColor="@color/attentionColor"
-                            android:textStyle="bold" />
-
-                        <android.support.v7.widget.AppCompatButton
-                            android:id="@+id/scope_next"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_button"
-                            android:text="Next"
-                            android:layout_marginStart="5dp"
-                            android:textColor="@color/attentionColor"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/sign_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/FormTitle"
-                        android:text="Sign and we are done" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3dp"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginRight="3dp"
-                        android:layout_marginTop="10dp"
-                        android:orientation="vertical">
-
-                        <com.github.gcacace.signaturepad.views.SignaturePad
-                            android:id="@+id/signature_pad"
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp"
-                            android:layout_margin="15dp"
-                            android:background="@drawable/rounded_boundary"
-                            app:penColor="@android:color/black" />
-
-                            <android.support.v7.widget.AppCompatButton
-                                android:id="@+id/clear_signature"
-                                style="@style/ButtonStyle"
-                                android:layout_marginLeft="15dp"
-                                android:background="@drawable/rounded_button"
-                                android:text="Clear" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp">
-
-                        <android.support.v7.widget.AppCompatButton
-                            android:id="@+id/sign_previous"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_button"
-                            android:text="previous"
-                            android:textColor="@color/attentionColor"
-                            android:textStyle="bold" />
-
-                        <android.support.v7.widget.AppCompatButton
                             android:id="@+id/request_ticket"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -321,9 +200,132 @@
                             android:textColor="@color/attentionColor"
                             android:textStyle="bold" />
                     </LinearLayout>
-
-
                 </LinearLayout>
+
+                <!--<LinearLayout-->
+                    <!--android:id="@+id/scope_layout"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:gravity="center"-->
+                    <!--android:orientation="vertical">-->
+
+                    <!--<TextView-->
+                        <!--style="@style/FormTitle"-->
+                        <!--android:text="Define the Scope" />-->
+
+                    <!--<android.support.design.widget.TextInputLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_margin="15dp">-->
+
+                        <!--<android.support.design.widget.TextInputEditText-->
+                            <!--android:id="@+id/text_scope"-->
+                            <!--style="@style/InputStyle"-->
+                            <!--android:hint="Scope" />-->
+                    <!--</android.support.design.widget.TextInputLayout>-->
+
+                    <!--<android.support.design.widget.TextInputLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_margin="15dp">-->
+
+                        <!--<android.support.design.widget.TextInputEditText-->
+                            <!--android:id="@+id/text_ssrtype"-->
+                            <!--style="@style/InputStyle"-->
+                            <!--android:hint="SSR Type" />-->
+                    <!--</android.support.design.widget.TextInputLayout>-->
+
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp">-->
+
+                        <!--<android.support.v7.widget.AppCompatButton-->
+                            <!--android:id="@+id/scope_previous"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:background="@drawable/rounded_button"-->
+                            <!--android:text="previous"-->
+                            <!--android:textColor="@color/attentionColor"-->
+                            <!--android:textStyle="bold" />-->
+
+                        <!--<android.support.v7.widget.AppCompatButton-->
+                            <!--android:id="@+id/scope_next"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:background="@drawable/rounded_button"-->
+                            <!--android:text="Next"-->
+                            <!--android:layout_marginStart="5dp"-->
+                            <!--android:textColor="@color/attentionColor"-->
+                            <!--android:textStyle="bold" />-->
+                    <!--</LinearLayout>-->
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout-->
+                    <!--android:id="@+id/sign_layout"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:gravity="center"-->
+                    <!--android:orientation="vertical">-->
+
+                    <!--<TextView-->
+                        <!--style="@style/FormTitle"-->
+                        <!--android:text="Sign and we are done" />-->
+
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="3dp"-->
+                        <!--android:layout_marginLeft="3dp"-->
+                        <!--android:layout_marginRight="3dp"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:orientation="vertical">-->
+
+                        <!--<com.github.gcacace.signaturepad.views.SignaturePad-->
+                            <!--android:id="@+id/signature_pad"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="200dp"-->
+                            <!--android:layout_margin="15dp"-->
+                            <!--android:background="@drawable/rounded_boundary"-->
+                            <!--app:penColor="@android:color/black" />-->
+
+                            <!--<android.support.v7.widget.AppCompatButton-->
+                                <!--android:id="@+id/clear_signature"-->
+                                <!--style="@style/ButtonStyle"-->
+                                <!--android:layout_marginLeft="15dp"-->
+                                <!--android:background="@drawable/rounded_button"-->
+                                <!--android:text="Clear" />-->
+                    <!--</LinearLayout>-->
+
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp">-->
+
+                        <!--<android.support.v7.widget.AppCompatButton-->
+                            <!--android:id="@+id/sign_previous"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:background="@drawable/rounded_button"-->
+                            <!--android:text="previous"-->
+                            <!--android:textColor="@color/attentionColor"-->
+                            <!--android:textStyle="bold" />-->
+
+                        <!--<android.support.v7.widget.AppCompatButton-->
+                            <!--android:id="@+id/request_ticket"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:background="@drawable/rounded_button"-->
+                            <!--android:text="Request Ticket"-->
+                            <!--android:layout_marginStart="5dp"-->
+                            <!--android:paddingEnd="10dp"-->
+                            <!--android:paddingStart="10dp"-->
+                            <!--android:textColor="@color/attentionColor"-->
+                            <!--android:textStyle="bold" />-->
+                    <!--</LinearLayout>-->
+
+
+                <!--</LinearLayout>-->
 
             </ViewFlipper>
         </LinearLayout>

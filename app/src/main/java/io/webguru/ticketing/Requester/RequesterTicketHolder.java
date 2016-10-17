@@ -1,57 +1,64 @@
-package io.webguru.ticketing.FieldAgent;
+package io.webguru.ticketing.Requester;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 import io.webguru.ticketing.Global.GlobalFunctions;
 import io.webguru.ticketing.POJO.FieldAgentData;
-import io.webguru.ticketing.POJO.UserInfo;
+import io.webguru.ticketing.POJO.Ticket;
 import io.webguru.ticketing.R;
 
 /**
  * Created by yatin on 25/09/16.
  */
 
-public class TicketHolder extends RecyclerView.ViewHolder {
+public class RequesterTicketHolder extends RecyclerView.ViewHolder {
     private View mView;
 
-    public TicketHolder(View itemView) {
+    public RequesterTicketHolder(View itemView) {
         super(itemView);
         mView = itemView;
 
     }
 
-    public void setViewElements(FieldAgentData fieldAgentData){
-        setPriority(fieldAgentData.getPriority());
-        setTicketStatus(fieldAgentData.getStatus());
-        setTicketNumber(fieldAgentData.getTicketNumber());
-        setProblem(fieldAgentData.getDescription());
-        setLocation(fieldAgentData.getLocation());
-        setDateTime(fieldAgentData.getDateTime());
+    public void setViewElements(Ticket ticket, boolean toShow){
+        if(!toShow){
+            mView.setVisibility(View.GONE);
+            return;
+        }
+        setPriority(ticket.getPriority());
+        setTicketStatus(ticket.getStatus());
+        setTicketNumber(ticket.getTicketNumber());
+        setProblem(ticket.getRequester().getIssue());
+        setLocation(ticket.getRequester().getLocation());
+        setDateTime(ticket.getDateTime());
 
-        setSite(fieldAgentData.getSite());
-        setShop(fieldAgentData.getShop());
-        setScope(fieldAgentData.getScope());
+        setSite(ticket.getRequester().getSite());
+        setShop(ticket.getRequester().getShop());
+
+        setDetailsView(ticket.getRequester().getShop(), ticket.getRequester().getIssue());
     }
 
     private void setPriority(String priority) {
         TextView txtPriority = (TextView) mView.findViewById(R.id.ticket_priority);
+        ImageView priorityIndicator = (ImageView) mView.findViewById(R.id.title_from_to_dots);
         if( "HIGH".equals(priority)){
             txtPriority.setTextColor(Color.RED);
+            priorityIndicator.setImageResource(R.color.cpb_red);
         }else if ("MEDIUM".equals(priority)){
             txtPriority.setTextColor(Color.rgb(255,165,0));//Orange
+            priorityIndicator.setImageResource(R.color.orange);
         }else if("LOW".equals(priority)){
             txtPriority.setTextColor(Color.BLACK);
+            priorityIndicator.setImageResource(R.color.cpb_grey);
         }
         txtPriority.setText(priority);
     }
@@ -135,6 +142,13 @@ public class TicketHolder extends RecyclerView.ViewHolder {
     private void setScope(String scope){
 //        TextView txtScope = (TextView) mView.findViewById(R.id.ticket_scope);
 //        txtScope.setText(scope);
+    }
+
+    private void setDetailsView(String shopText, String issueText){
+        TextView shop = (TextView) mView.findViewById(R.id.shop_value);
+        TextView issue = (TextView) mView.findViewById(R.id.issue_value);
+        shop.setText(shopText);
+        issue.setText(issueText);
     }
 
 }

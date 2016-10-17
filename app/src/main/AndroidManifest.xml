@@ -25,7 +25,7 @@
         <activity
             android:name=".Welcome.IntroScreens"
             android:label="@string/title_activity_manager_main_activity"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"></activity>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
             android:name=".Welcome.WelcomeSplash"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
@@ -38,15 +38,15 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".FieldAgent.FieldAgentMainActivity"
+            android:name=".Requester.RequesterMainActivity"
             android:label="@string/title_activity_field_agent_main" />
         <activity
-            android:name=".Manager.ManagerMainActivity"
+            android:name=".Agent.AgentMainActivity"
             android:label="@string/title_activity_manager_main_activity" />
         <activity android:name=".Contractor.ContractorMainActivity" />
         <activity android:name=".Approver.ApproverMainActivity" />
         <activity
-            android:name=".FieldAgent.AddTicketRequest"
+            android:name=".Requester.AddTicketRequest"
             android:label="@string/title_activity_add_field_ticket" />
 
         <provider
@@ -60,11 +60,13 @@
         </provider>
 
         <activity
-            android:name=".FieldAgent.ViewEditFieldTicket"
+            android:name=".Requester.ViewEditFieldTicket"
             android:label="@string/title_activity_view_edit_field_ticket" />
         <activity android:name=".Global.UserProfile" />
         <activity android:name=".Global.SignOut" />
-        <activity android:name=".Global.Chat"></activity>
+        <activity android:name=".Global.Chat" />
+        <activity android:name=".Agent.AgentTicketView"
+            android:windowSoftInputMode="stateHidden"></activity>
     </application>
 
 </manifest>

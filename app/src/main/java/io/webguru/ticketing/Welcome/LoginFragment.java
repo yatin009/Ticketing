@@ -3,20 +3,15 @@ package io.webguru.ticketing.Welcome;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
-import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -32,10 +27,10 @@ import butterknife.ButterKnife;
 import io.webguru.ticketing.Approver.ApproverMainActivity;
 import io.webguru.ticketing.Contractor.ContractorMainActivity;
 import io.webguru.ticketing.DB.UserInfoDB;
-import io.webguru.ticketing.FieldAgent.FieldAgentMainActivity;
+import io.webguru.ticketing.Requester.RequesterMainActivity;
 import io.webguru.ticketing.Global.GlobalConstant;
 import io.webguru.ticketing.Global.GlobalFunctions;
-import io.webguru.ticketing.Manager.ManagerMainActivity;
+import io.webguru.ticketing.Agent.AgentMainActivity;
 import io.webguru.ticketing.POJO.UserAuth;
 import io.webguru.ticketing.POJO.UserInfo;
 import io.webguru.ticketing.R;
@@ -179,17 +174,20 @@ public class LoginFragment extends Fragment {
             String msg = "User - "+userInfo.getFirstname() +" "+ userInfo.getLastname() + " Login successful.";
             if(result){
                 if ("manager".equals(userInfo.getRole())) {
-                    Intent intent = new Intent(getActivity(), ManagerMainActivity.class);
+                    Intent intent = new Intent(getActivity(), AgentMainActivity.class);
                     intent.putExtra("UserInfo", userInfo);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else if ("fieldagent".equals(userInfo.getRole())) {
-                    Intent intent = new Intent(getActivity(), FieldAgentMainActivity.class);
+                    Intent intent = new Intent(getActivity(), RequesterMainActivity.class);
                     intent.putExtra("UserInfo", userInfo);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else if ("contractor".equals(userInfo.getRole())) {
-                    startActivity(new Intent(getActivity(), ContractorMainActivity.class));
+                    Intent intent = new Intent(getActivity(), ContractorMainActivity.class);
+                    intent.putExtra("UserInfo", userInfo);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 } else if ("approver".equals(userInfo.getRole())) {
                     startActivity(new Intent(getActivity(), ApproverMainActivity.class));
                 }

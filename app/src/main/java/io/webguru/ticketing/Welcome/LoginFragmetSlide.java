@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -24,18 +23,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.webguru.ticketing.Agent.AgentMainActivity;
 import io.webguru.ticketing.Approver.ApproverMainActivity;
 import io.webguru.ticketing.Contractor.ContractorMainActivity;
 import io.webguru.ticketing.DB.UserInfoDB;
-import io.webguru.ticketing.FieldAgent.FieldAgentMainActivity;
+import io.webguru.ticketing.Requester.RequesterMainActivity;
 import io.webguru.ticketing.Global.GlobalConstant;
 import io.webguru.ticketing.Global.GlobalFunctions;
-import io.webguru.ticketing.Global.SignOut;
-import io.webguru.ticketing.Manager.ManagerMainActivity;
 import io.webguru.ticketing.POJO.UserAuth;
 import io.webguru.ticketing.POJO.UserInfo;
 import io.webguru.ticketing.R;
@@ -209,12 +206,12 @@ public class LoginFragmetSlide extends Fragment {
             String msg = "User - "+userInfo.getFirstname() +" "+ userInfo.getLastname() + " Login successful.";
             if(result){
                 if ("manager".equals(userInfo.getRole())) {
-                    Intent intent = new Intent(getActivity(), ManagerMainActivity.class);
+                    Intent intent = new Intent(getActivity(), AgentMainActivity.class);
                     intent.putExtra("UserInfo", userInfo);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else if ("fieldagent".equals(userInfo.getRole())) {
-                    Intent intent = new Intent(getActivity(), FieldAgentMainActivity.class);
+                    Intent intent = new Intent(getActivity(), RequesterMainActivity.class);
                     intent.putExtra("UserInfo", userInfo);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);

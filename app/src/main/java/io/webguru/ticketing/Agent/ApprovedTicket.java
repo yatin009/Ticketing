@@ -1,4 +1,4 @@
-package io.webguru.ticketing.Manager;
+package io.webguru.ticketing.Agent;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,7 +29,7 @@ import io.webguru.ticketing.Global.RecyclerItemClickListener;
 import io.webguru.ticketing.POJO.ManagerData;
 import io.webguru.ticketing.R;
 
-import static io.webguru.ticketing.Manager.ManagerMainActivity.userInfo;
+import static io.webguru.ticketing.Agent.AgentMainActivity.userInfo;
 
 public class ApprovedTicket extends Fragment {
 
@@ -107,12 +107,12 @@ public class ApprovedTicket extends Fragment {
 
             }
         });
-        mAdapter = new FirebaseRecyclerAdapter<ManagerData, ManagerTicketHolder>(ManagerData.class, R.layout.manager_cardview, ManagerTicketHolder.class, mDatabase) {
+        mAdapter = new FirebaseRecyclerAdapter<ManagerData, AgentTicketHolder>(ManagerData.class, R.layout.agent_ticket_cardview, AgentTicketHolder.class, mDatabase) {
             @Override
-            protected void populateViewHolder(ManagerTicketHolder viewHolder, ManagerData managerData, int position) {
+            protected void populateViewHolder(AgentTicketHolder viewHolder, ManagerData managerData, int position) {
                 managerApprovedDatas.add(0, managerData); // reversing the order, for storing latest at the top
                 Log.d("PENDINTICKEFRAGMENT","ADDING managerPendingDatas.size() >>> "+managerApprovedDatas.size());
-                viewHolder.setViewElements(managerData);
+//                viewHolder.setViewElements(managerData);
             }
         };
         mRecyclerView.setAdapter(mAdapter);
@@ -120,7 +120,7 @@ public class ApprovedTicket extends Fragment {
             //
             @Override
             public void onItemClick(View view, int position) {
-//                Intent intent = new Intent(ManagerMainActivity.this, ViewEditFieldTicket.class);
+//                Intent intent = new Intent(AgentMainActivity.this, ViewEditFieldTicket.class);
 //                intent.putExtra("UserInfo", userInfo);
 //                intent.putExtra("FieldAgentData", fieldAgentDatas.get(position));
 //                startActivity(intent);

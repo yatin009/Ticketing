@@ -1,9 +1,8 @@
-package io.webguru.ticketing.FieldAgent;
+package io.webguru.ticketing.Requester;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -15,14 +14,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.SeekBar;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.github.gcacace.signaturepad.views.SignaturePad;
@@ -42,6 +34,8 @@ import butterknife.OnClick;
 import io.webguru.ticketing.Global.GlobalFunctions;
 import io.webguru.ticketing.POJO.FieldAgentData;
 import io.webguru.ticketing.POJO.ManagerData;
+import io.webguru.ticketing.POJO.RequesterData;
+import io.webguru.ticketing.POJO.Ticket;
 import io.webguru.ticketing.POJO.UserInfo;
 import io.webguru.ticketing.R;
 
@@ -59,14 +53,14 @@ public class AddTicketRequest extends AppCompatActivity {
     TextInputEditText editLocation;
     @Bind(R.id.text_priority)
     TextInputEditText editPriority;
-    @Bind(R.id.text_scope)
-    TextInputEditText editScope;
+//    @Bind(R.id.text_scope)
+//    TextInputEditText editScope;
     @Bind(R.id.text_shop)
     TextInputEditText editShop;
-    @Bind(R.id.text_ssrtype)
-    TextInputEditText editSSRType;
-    @Bind(R.id.signature_pad)
-    SignaturePad signaturePad;
+//    @Bind(R.id.text_ssrtype)
+//    TextInputEditText editSSRType;
+//    @Bind(R.id.signature_pad)
+//    SignaturePad signaturePad;
     @Bind(R.id.viewFlipper)
     ViewFlipper viewFlipper;
     @Bind(R.id.progressBar)
@@ -79,6 +73,8 @@ public class AddTicketRequest extends AppCompatActivity {
     private boolean isSignatureTaken = false;
 
     private FieldAgentData fieldAgentData;
+    private RequesterData requesterData;
+    private Ticket ticket;
     private UserInfo userInfo;
 
     @Override
@@ -136,30 +132,30 @@ public class AddTicketRequest extends AppCompatActivity {
 //
 //            }
 //        });
-        signaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
-            @Override
-            public void onStartSigning() {
-                Log.d(TAG, "STARTED SIGNATURE");
-            }
-
-            @Override
-            public void onSigned() {
-                Log.d(TAG, "DONE WITH SIGNATURE");
-                isSignatureTaken = true;
-            }
-
-            @Override
-            public void onClear() {
-                Log.d(TAG, "CLEAR SIGNATURE");
-                isSignatureTaken = false;
-            }
-        });
+//        signaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
+//            @Override
+//            public void onStartSigning() {
+//                Log.d(TAG, "STARTED SIGNATURE");
+//            }
+//
+//            @Override
+//            public void onSigned() {
+//                Log.d(TAG, "DONE WITH SIGNATURE");
+//                isSignatureTaken = true;
+//            }
+//
+//            @Override
+//            public void onClear() {
+//                Log.d(TAG, "CLEAR SIGNATURE");
+//                isSignatureTaken = false;
+//            }
+//        });
     }
 
-    @OnClick(R.id.clear_signature)
-    public void clearSignature(){
-        signaturePad.clear();
-    }
+//    @OnClick(R.id.clear_signature)
+//    public void clearSignature(){
+//        signaturePad.clear();
+//    }
 
     @OnClick(R.id.prioriy_next)
     public void priorityNext(){
@@ -193,37 +189,37 @@ public class AddTicketRequest extends AppCompatActivity {
         viewFlipper.showPrevious();
     }
 
-    @OnClick(R.id.description_next)
-    public void descriptionNext(){
-        progressBar.setProgress(80);
-        viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
-        viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
-        viewFlipper.showNext();
-    }
-
-    @OnClick(R.id.scope_previous)
-    public void scopePrevious(){
-        progressBar.setProgress(60);
-        viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
-        viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
-        viewFlipper.showPrevious();
-    }
-
-    @OnClick(R.id.scope_next)
-    public void scopeNext(){
-        progressBar.setProgress(100);
-        viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
-        viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
-        viewFlipper.showNext();
-    }
-
-    @OnClick(R.id.sign_previous)
-    public void signPrevious(){
-        progressBar.setProgress(80);
-        viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
-        viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
-        viewFlipper.showPrevious();
-    }
+//    @OnClick(R.id.description_next)
+//    public void descriptionNext(){
+//        progressBar.setProgress(80);
+//        viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
+//        viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
+//        viewFlipper.showNext();
+//    }
+//
+//    @OnClick(R.id.scope_previous)
+//    public void scopePrevious(){
+//        progressBar.setProgress(60);
+//        viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
+//        viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
+//        viewFlipper.showPrevious();
+//    }
+//
+//    @OnClick(R.id.scope_next)
+//    public void scopeNext(){
+//        progressBar.setProgress(100);
+//        viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
+//        viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
+//        viewFlipper.showNext();
+//    }
+//
+//    @OnClick(R.id.sign_previous)
+//    public void signPrevious(){
+//        progressBar.setProgress(80);
+//        viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
+//        viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
+//        viewFlipper.showPrevious();
+//    }
 
     @OnClick(R.id.request_ticket)
     public void requestTicket(){
@@ -252,33 +248,43 @@ public class AddTicketRequest extends AppCompatActivity {
             editDescription.setError("Invalid Description");
             return;
         }
-        String scope = editScope.getText().toString();
-        if("".equals(scope)){
-            editScope.setError("Invalid Scope");
-            return;
-        }
-        String ssrType = editSSRType.getText().toString();
-        if("".equals(ssrType)){
-            editSSRType.setError("Invalid SSR Type");
-            return;
-        }
-        fieldAgentData = new FieldAgentData("Pending", GlobalFunctions.getCurrentDateTime(), "", description, priority, location, shop, site, scope, ssrType);
+//        String scope = editScope.getText().toString();
+//        if("".equals(scope)){
+//            editScope.setError("Invalid Scope");
+//            return;
+//        }
+//        String ssrType = editSSRType.getText().toString();
+//        if("".equals(ssrType)){
+//            editSSRType.setError("Invalid SSR Type");
+//            return;
+//        }
+//        fieldAgentData = new FieldAgentData("Pending", GlobalFunctions.getCurrentDateTime(), "", description, priority, location, shop, site, scope, ssrType);
+//        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+//        String key = mDatabase.child("field_agent_data").child(userInfo.getUserid()).push().getKey();
+//        Map<String, Object> childUpdates = new HashMap<>();
+//        childUpdates.put("/field_agent_data/" + userInfo.getUserid() + "/"+key, fieldAgentData.toMap());
+//        mDatabase.updateChildren(childUpdates);
+//
+//        DatabaseReference mDatabaseManager = FirebaseDatabase.getInstance().getReference();
+//        //TODO replace 1 with call center agent ID.
+//        String managerKey = mDatabaseManager.child("manager_data").child("1").child("pending").push().getKey();
+//        ManagerData managerData = new ManagerData(fieldAgentData, userInfo, key);
+//        Map<String, Object> managerChildUpdates = new HashMap<>();
+//        //TODO replace 1 with call center agent ID.
+//        managerChildUpdates.put("/manager_data/" + "1" + "/pending" + "/"+managerKey,managerData.toMap());
+//        mDatabaseManager.updateChildren(managerChildUpdates);
+
+        requesterData = new RequesterData(description, priority, location, shop, site, userInfo);
+        //TODO HARDCODED AGENT ASSIGNED
+        ticket = new Ticket(GlobalFunctions.getCurrentDateInMilliseconds("-"+userInfo.getFirstname()), "Pending", Integer.parseInt(userInfo.getUserid()),
+                0, 0, 0, GlobalFunctions.getCurrentDateTime(), requesterData);
+
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        String key = mDatabase.child("field_agent_data").child(userInfo.getUserid()).push().getKey();
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/field_agent_data/" + userInfo.getUserid() + "/"+key, fieldAgentData.toMap());
+        childUpdates.put("/ticketing/" + ticket.getTicketNumber(), ticket.toMap());
         mDatabase.updateChildren(childUpdates);
 
-        DatabaseReference mDatabaseManager = FirebaseDatabase.getInstance().getReference();
-        //TODO replace 1 with call center agent ID.
-        String managerKey = mDatabaseManager.child("manager_data").child("1").child("pending").push().getKey();
-        ManagerData managerData = new ManagerData(fieldAgentData, userInfo, key);
-        Map<String, Object> managerChildUpdates = new HashMap<>();
-        //TODO replace 1 with call center agent ID.
-        managerChildUpdates.put("/manager_data/" + "1" + "/pending" + "/"+managerKey,managerData.toMap());
-        mDatabaseManager.updateChildren(managerChildUpdates);
-
-        Intent intent = new Intent(this, FieldAgentMainActivity.class);
+        Intent intent = new Intent(this, RequesterMainActivity.class);
         intent.putExtra("UserInfo",userInfo);
         startActivity(intent);
     }

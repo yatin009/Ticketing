@@ -4,9 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,12 +14,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
+import io.webguru.ticketing.Agent.AgentMainActivity;
 import io.webguru.ticketing.Approver.ApproverMainActivity;
 import io.webguru.ticketing.Contractor.ContractorMainActivity;
 import io.webguru.ticketing.DB.UserInfoDB;
-import io.webguru.ticketing.FieldAgent.FieldAgentMainActivity;
+import io.webguru.ticketing.Requester.RequesterMainActivity;
 import io.webguru.ticketing.Global.GlobalFunctions;
-import io.webguru.ticketing.Manager.ManagerMainActivity;
 import io.webguru.ticketing.POJO.UserInfo;
 import io.webguru.ticketing.R;
 
@@ -221,12 +219,12 @@ public class SplashScreen extends AppCompatActivity {
                 startActivity(i);
             }else {
                 if ("manager".equals(userInfo.getRole())) {
-                    Intent intent = new Intent(SplashScreen.this, ManagerMainActivity.class);
+                    Intent intent = new Intent(SplashScreen.this, AgentMainActivity.class);
                     intent.putExtra("UserInfo", userInfo);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else if ("fieldagent".equals(userInfo.getRole())) {
-                    Intent intent = new Intent(SplashScreen.this, FieldAgentMainActivity.class);
+                    Intent intent = new Intent(SplashScreen.this, RequesterMainActivity.class);
                     intent.putExtra("UserInfo", userInfo);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);

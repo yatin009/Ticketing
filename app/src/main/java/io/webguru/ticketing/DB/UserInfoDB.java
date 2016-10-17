@@ -80,7 +80,7 @@ public class UserInfoDB extends SQLiteOpenHelper implements GlobalConstant {
 
     public UserInfo getUserInfo() {
         UserInfo userInfo = null;
-        String selectQuery = "SELECT  * FROM " + TABLE_USER_INFO + " LIMIT 1 ";
+        String selectQuery = "SELECT  * FROM " + TABLE_USER_INFO + " ORDER BY "+primaryKey+" DESC LIMIT 1 ";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         try {

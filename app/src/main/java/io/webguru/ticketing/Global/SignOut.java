@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -13,15 +12,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import io.webguru.ticketing.Agent.AgentMainActivity;
 import io.webguru.ticketing.Approver.ApproverMainActivity;
 import io.webguru.ticketing.Contractor.ContractorMainActivity;
 import io.webguru.ticketing.DB.UserInfoDB;
-import io.webguru.ticketing.FieldAgent.FieldAgentMainActivity;
-import io.webguru.ticketing.Manager.ManagerMainActivity;
+import io.webguru.ticketing.Requester.RequesterMainActivity;
 import io.webguru.ticketing.POJO.UserInfo;
 import io.webguru.ticketing.R;
 import io.webguru.ticketing.Welcome.SplashScreen;
-import io.webguru.ticketing.Welcome.WelcomeSplash;
 
 public class SignOut extends AppCompatActivity {
 
@@ -30,8 +28,7 @@ public class SignOut extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_out);
-        Bundle bundle = getIntent().getExtras();
-        userInfo = (UserInfo) bundle.get("UserInfo");
+        userInfo = GlobalFunctions.getUserInfo(this);
         userInfo.setLoggedin(false);
         signOutUserFormServer();
     }
@@ -74,12 +71,12 @@ public class SignOut extends AppCompatActivity {
                 userInfo.setLoggedin(true);
                 //TODO update server also with unsuccessfull logout i.e reverse signOutUserFormServer() function
                 if ("manager".equals(userInfo.getRole())) {
-                    Intent intent = new Intent(SignOut.this, ManagerMainActivity.class);
+                    Intent intent = new Intent(SignOut.this, AgentMainActivity.class);
                     intent.putExtra("UserInfo", userInfo);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else if ("fieldagent".equals(userInfo.getRole())) {
-                    Intent intent = new Intent(SignOut.this, FieldAgentMainActivity.class);
+                    Intent intent = new Intent(SignOut.this, RequesterMainActivity.class);
                     intent.putExtra("UserInfo", userInfo);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);

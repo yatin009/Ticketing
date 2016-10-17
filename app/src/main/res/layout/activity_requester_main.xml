@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="io.webguru.ticketing.FieldAgent.FieldAgentMainActivity">
+    tools:context="io.webguru.ticketing.Requester.RequesterMainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_field_agent_main" />
+    <include layout="@layout/content_requestor_main" />
 
     <ProgressBar
         android:id="@+id/progressBar"

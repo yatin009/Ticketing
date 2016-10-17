@@ -1,9 +1,8 @@
-package io.webguru.ticketing.Manager;
+package io.webguru.ticketing.Agent;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -33,13 +32,14 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.webguru.ticketing.Global.GlobalFunctions;
 import io.webguru.ticketing.Global.SignOut;
 import io.webguru.ticketing.Global.UserProfile;
 import io.webguru.ticketing.POJO.ManagerData;
 import io.webguru.ticketing.POJO.UserInfo;
 import io.webguru.ticketing.R;
 
-public class ManagerMainActivity extends AppCompatActivity {
+public class AgentMainActivity extends AppCompatActivity {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -60,7 +60,7 @@ public class ManagerMainActivity extends AppCompatActivity {
     public static UserInfo userInfo;
     private ArrayList<ManagerData> managerDatas;
 
-    private String TAG = "ManagerMainActivity";
+    private String TAG = "AgentMainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +69,7 @@ public class ManagerMainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        Bundle bundle = getIntent().getExtras();
-        userInfo = (UserInfo) bundle.get("UserInfo");
+        userInfo = GlobalFunctions.getUserInfo(this);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -82,8 +81,8 @@ public class ManagerMainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new CanceledTicket(), "Canceled");
-        adapter.addFragment(new PendingTicket(), "Pending");
-        adapter.addFragment(new ApprovedTicket(), "Approved");
+        adapter.addFragment(new PendingTicket(), "Dispathced");
+        adapter.addFragment(new ApprovedTicket(), "Approval");
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(1, true);
     }
@@ -198,13 +197,13 @@ public class ManagerMainActivity extends AppCompatActivity {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_profile) {
-            Intent intent = new Intent(ManagerMainActivity.this, UserProfile.class);
+            Intent intent = new Intent(AgentMainActivity.this, UserProfile.class);
             intent.putExtra("UserInfo", userInfo);
             startActivity(intent);
             return true;
         }
         if (id == R.id.action_signout) {
-            Intent intent = new Intent(ManagerMainActivity.this, SignOut.class);
+            Intent intent = new Intent(AgentMainActivity.this, SignOut.class);
             intent.putExtra("UserInfo", userInfo);
             startActivity(intent);
             return true;
