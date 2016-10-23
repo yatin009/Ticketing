@@ -23,6 +23,20 @@ public class UserInfo implements Serializable{
 
     }
 
+    public UserInfo(boolean defaultUser){
+        this.firstname = "Generic";
+        this.lastname = "Generic User";
+        this.password = "Generic User";
+        this.role = "Generic User";
+        this.username = "Generic User";
+        this.userid = "2";
+        this.username = "Generic User";
+        this.isLoggedin = false;
+        this.email = "Generic User";
+        this.number = "Generic User";
+        this.photoUrl = "Generic User";
+    }
+
     public String getFirstname() {
         return firstname;
     }

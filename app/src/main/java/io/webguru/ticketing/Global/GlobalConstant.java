@@ -10,4 +10,6 @@ public interface GlobalConstant {
     int DATABASE_VERSION=1;
 
     String TABLE_USER_INFO = "USER_INFO";
+
+    String FILE_STORAGE_PATH = "gs://ticketing-c6398.appspot.com";
 }

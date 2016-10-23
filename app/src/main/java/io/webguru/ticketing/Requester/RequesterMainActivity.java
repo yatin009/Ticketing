@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -75,8 +76,8 @@ public class RequesterMainActivity extends AppCompatActivity {
         mLayoutManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mDatabase = FirebaseDatabase.getInstance().getReference().child("ticketing");
-        mDatabase.orderByChild("requesterId").equalTo(Integer.parseInt(userInfo.getUserid()));
-        mAdapter = new FirebaseRecyclerAdapter<Ticket, RequesterTicketHolder>(Ticket.class, R.layout.requester_ticket_cardview, RequesterTicketHolder.class, mDatabase) {
+        Query query = mDatabase.orderByChild("requesterId").equalTo(Integer.parseInt(userInfo.getUserid()));
+        mAdapter = new FirebaseRecyclerAdapter<Ticket, RequesterTicketHolder>(Ticket.class, R.layout.requester_ticket_cardview, RequesterTicketHolder.class, query) {
             @Override
             protected void populateViewHolder(RequesterTicketHolder viewHolder, Ticket ticket, int position) {
                 mProgressBar.setVisibility(View.GONE);
@@ -96,17 +97,17 @@ public class RequesterMainActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(View view, int position) {
-                Ticket ticket = ticketsArray[position];
-                if(ticket.isDetailsShown()){
-                    LinearLayout detailsLayout = (LinearLayout) view.findViewById(R.id.detial_layout);
-                    detailsLayout.setVisibility(View.GONE);
-                    ticket.setDetailsShown(false);
-                }else {
-                    LinearLayout detailsLayout = (LinearLayout) view.findViewById(R.id.detial_layout);
-                    detailsLayout.setVisibility(View.VISIBLE);
-
-                    ticket.setDetailsShown(true);
-                }
+//                Ticket ticket = ticketsArray[position];
+//                if(ticket.isDetailsShown()){
+//                    LinearLayout detailsLayout = (LinearLayout) view.findViewById(R.id.detial_layout);
+//                    detailsLayout.setVisibility(View.GONE);
+//                    ticket.setDetailsShown(false);
+//                }else {
+//                    LinearLayout detailsLayout = (LinearLayout) view.findViewById(R.id.detial_layout);
+//                    detailsLayout.setVisibility(View.VISIBLE);
+//
+//                    ticket.setDetailsShown(true);
+//                }
 //                Intent intent = new Intent(RequesterMainActivity.this, ViewEditFieldTicket.class);
 //                intent.putExtra("UserInfo", userInfo);
 //                intent.putExtra("FieldAgentData", fieldAgentDatas1[position]);

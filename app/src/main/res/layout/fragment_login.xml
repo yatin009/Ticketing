@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/colorPrimary">
+    android:background="@color/white">
 
     <LinearLayout
         android:orientation="vertical"
@@ -11,15 +11,14 @@
         android:layout_height="wrap_content"
         android:paddingTop="56dp"
         android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:layout_gravity="center">
+        android:paddingRight="24dp">
 
-        <ImageView android:src="@drawable/logo"
+        <ImageView android:src="@drawable/rdc_logo"
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:layout_marginBottom="24dp"
             android:layout_gravity="center_horizontal"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
         <!--  Email Label -->
         <android.support.design.widget.TextInputLayout
@@ -49,8 +48,8 @@
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/sign_in_button"
+            style="@style/ButtonStyle"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"

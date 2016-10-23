@@ -1,6 +1,7 @@
 package io.webguru.ticketing.Agent;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.ChildEventListener;
@@ -17,6 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 
@@ -24,6 +27,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.webguru.ticketing.Global.RecyclerItemClickListener;
 import io.webguru.ticketing.POJO.ManagerData;
+import io.webguru.ticketing.POJO.Ticket;
 import io.webguru.ticketing.R;
 
 import static io.webguru.ticketing.Agent.AgentMainActivity.userInfo;
@@ -32,13 +36,15 @@ public class CanceledTicket extends Fragment {
 
     @Bind(R.id.manager_canceled_list)
     RecyclerView mRecyclerView;
+    @Bind(R.id.progressBar)
+    ProgressBar mProgressBar;
 
     //Firebase Database refernce
     private DatabaseReference mDatabase;
-    private ArrayList<ManagerData> managerCanceledDatas;
     //RecyclerView objects
     private LinearLayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
+    private Ticket[] ticketsArray = new Ticket[100];
 
     public CanceledTicket() {
         // Required empty public constructor
@@ -74,47 +80,47 @@ public class CanceledTicket extends Fragment {
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        managerCanceledDatas = new ArrayList<>();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("manager_data").child(userInfo.getUserid()).child("cancel");
-        mDatabase.addChildEventListener(new ChildEventListener() {
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("ticketing");
+        Query query = mDatabase.orderByChild("agent_status").equalTo("1_InternalQuote");
+//        mDatabase.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//                ManagerData managerData = dataSnapshot.getValue(ManagerData.class);
+//                for(ManagerData managerData1 : managerCanceledDatas){
+//                    if(managerData.getFieldRequestKey().equals(managerData1.getFieldRequestKey())) {
+//                        managerCanceledDatas.remove(managerData1);
+//                        break;
+//                    }
+//                }
+//                Log.d("PENDINTICKEFRAGMENT","REMOVING managerPendingDatas.size() >>> "+managerCanceledDatas.size());
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+        mAdapter = new FirebaseRecyclerAdapter<Ticket, AgentTicketHolder>(Ticket.class, R.layout.agent_ticket_cardview, AgentTicketHolder.class, query) {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                ManagerData managerData = dataSnapshot.getValue(ManagerData.class);
-                for(ManagerData managerData1 : managerCanceledDatas){
-                    if(managerData.getFieldRequestKey().equals(managerData1.getFieldRequestKey())) {
-                        managerCanceledDatas.remove(managerData1);
-                        break;
-                    }
-                }
-                Log.d("PENDINTICKEFRAGMENT","REMOVING managerPendingDatas.size() >>> "+managerCanceledDatas.size());
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        mAdapter = new FirebaseRecyclerAdapter<ManagerData, AgentTicketHolder>(ManagerData.class, R.layout.agent_ticket_cardview, AgentTicketHolder.class, mDatabase) {
-            @Override
-            protected void populateViewHolder(AgentTicketHolder viewHolder, ManagerData managerData, int position) {
-                managerCanceledDatas.add(0, managerData); // reversing the order, for storing latest at the top
-                Log.d("PENDINTICKEFRAGMENT","ADDING managerPendingDatas.size() >>> "+managerCanceledDatas.size());
-//                viewHolder.setViewElements(managerData);
+            protected void populateViewHolder(AgentTicketHolder viewHolder, Ticket ticket, int position) {
+                mProgressBar.setVisibility(View.GONE);
+                ticketsArray[position] = ticket;
+                viewHolder.setViewElements(ticket, position, true);
             }
         };
         mRecyclerView.setAdapter(mAdapter);
@@ -122,10 +128,10 @@ public class CanceledTicket extends Fragment {
             //
             @Override
             public void onItemClick(View view, int position) {
-//                Intent intent = new Intent(AgentMainActivity.this, ViewEditFieldTicket.class);
-//                intent.putExtra("UserInfo", userInfo);
-//                intent.putExtra("FieldAgentData", fieldAgentDatas.get(position));
-//                startActivity(intent);
+                Intent intent = new Intent(getActivity(), AgentTicketView.class);
+                intent.putExtra("UserInfo", userInfo);
+                intent.putExtra("Ticket", ticketsArray[position]);
+                startActivity(intent);
             }
 
             @Override

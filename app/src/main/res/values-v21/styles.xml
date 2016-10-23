@@ -45,7 +45,9 @@
     <style name="ButtonStyle" parent="Base.Widget.AppCompat.Button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/attentionColor</item>
+        <item name="android:padding">20dp</item>
+        <item name="android:background">@drawable/rounded_button</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
     </style>
     
@@ -60,6 +62,8 @@
     <style name="TitleBadgeText" parent="AppTheme">
         <item name="android:textColor">@color/titleBadgeText</item>
         <item name="android:textSize">20dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="TitleBadgeTitle" parent="AppTheme">

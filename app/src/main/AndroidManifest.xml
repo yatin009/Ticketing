@@ -25,7 +25,7 @@
         <activity
             android:name=".Welcome.IntroScreens"
             android:label="@string/title_activity_manager_main_activity"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
         <activity
             android:name=".Welcome.WelcomeSplash"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
@@ -47,7 +47,8 @@
         <activity android:name=".Approver.ApproverMainActivity" />
         <activity
             android:name=".Requester.AddTicketRequest"
-            android:label="@string/title_activity_add_field_ticket" />
+            android:label="@string/title_activity_add_field_ticket"
+            android:windowSoftInputMode="stateHidden"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

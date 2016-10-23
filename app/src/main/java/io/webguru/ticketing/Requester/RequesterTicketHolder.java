@@ -130,8 +130,8 @@ public class RequesterTicketHolder extends RecyclerView.ViewHolder {
     }
 
     private void setSite(String site){
-        TextView txtSite = (TextView) mView.findViewById(R.id.ticket_site);
-        txtSite.setText(site);
+//        TextView txtSite = (TextView) mView.findViewById(R.id.ticket_site);
+//        txtSite.setText(site);
     }
 
     private void setShop(String shop){

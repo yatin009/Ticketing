@@ -16,7 +16,7 @@ import io.webguru.ticketing.R;
  * Created by yatin on 30/09/16.
  */
 
-public class IntroScreens extends AppIntro {
+public class IntroScreens extends AppIntro2 {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,8 +28,8 @@ public class IntroScreens extends AppIntro {
         decorView.setSystemUiVisibility(uiOptions);
 
         // Just set a title, description, background and image. AppIntro will do the rest.
-        addSlide(AppIntroFragment.newInstance("Report", "Report a issue", R.drawable.ic_report, getResources().getColor(R.color.darkBlueGrey)));
-        addSlide(AppIntroFragment.newInstance("Generate & Fix", "Generate a ticket to fix the issue", R.drawable.ic_fixing, getResources().getColor(R.color.darkBlue)));
+//        addSlide(AppIntroFragment.newInstance("Report", "Report a issue", R.drawable.ic_report, getResources().getColor(R.color.darkBlueGrey)));
+//        addSlide(AppIntroFragment.newInstance("Generate & Fix", "Generate a ticket to fix the issue", R.drawable.ic_fixing, getResources().getColor(R.color.darkBlueGrey)));
         addSlide(new FixedFragment());
         addSlide(new LoginFragment());
 

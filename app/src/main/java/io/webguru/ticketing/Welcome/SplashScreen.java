@@ -4,6 +4,8 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,11 +15,17 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.webguru.ticketing.Agent.AgentMainActivity;
 import io.webguru.ticketing.Approver.ApproverMainActivity;
 import io.webguru.ticketing.Contractor.ContractorMainActivity;
 import io.webguru.ticketing.DB.UserInfoDB;
+import io.webguru.ticketing.Requester.AddTicketRequest;
 import io.webguru.ticketing.Requester.RequesterMainActivity;
 import io.webguru.ticketing.Global.GlobalFunctions;
 import io.webguru.ticketing.POJO.UserInfo;
@@ -98,21 +106,30 @@ public class SplashScreen extends AppCompatActivity {
 
     private String TAG = "SPLASHSCREEN";
 
+    @Bind(R.id.title_text)
+    TextView titleText;
+    @Bind(R.id.parent_layout)
+    RelativeLayout parentLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_splash_screen);
+        ButterKnife.bind(this);
 
         mVisible = true;
         mContentView = findViewById(R.id.fullscreen_content);
         // Set up the user interaction to manually show or hide the system UI.
-        mContentView.setOnClickListener(new View.OnClickListener() {
+        parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 toggle();
             }
         });
+        Typeface tf = Typeface.createFromAsset(getAssets(), "Roboto-Italic.ttf");
+        titleText.setTypeface(tf);
+        new CheckUserInDB().execute();
     }
 
     @Override
@@ -172,7 +189,7 @@ public class SplashScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                animation1();
+//                animation1();
             }
         }, 1000);
 
@@ -215,8 +232,8 @@ public class SplashScreen extends AppCompatActivity {
 
         protected void onPostExecute(Boolean result){
             if(!result){
-                Intent i = new Intent(SplashScreen.this, IntroScreens.class);
-                startActivity(i);
+//                Intent i = new Intent(SplashScreen.this, IntroScreens.class);
+//                startActivity(i);
             }else {
                 if ("manager".equals(userInfo.getRole())) {
                     Intent intent = new Intent(SplashScreen.this, AgentMainActivity.class);
@@ -236,6 +253,25 @@ public class SplashScreen extends AppCompatActivity {
                 (SplashScreen.this).finish();
             }
         }
+    }
+
+    @OnClick(R.id.generate_ticket)
+    public void addTicket(){
+        startActivity(new Intent(SplashScreen.this, AddTicketRequest.class));
+    }
+
+    @OnClick(R.id.login_button)
+    public void login(){
+        Intent intent = new Intent(SplashScreen.this, IntroScreens.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.call_ticket)
+    public void callCenterTicket(){
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:4164797440"));
+        startActivity(intent);
     }
 
 }

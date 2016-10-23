@@ -18,21 +18,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.webguru.ticketing.Global.GlobalFunctions;
 import io.webguru.ticketing.Global.RecyclerItemClickListener;
 import io.webguru.ticketing.POJO.ManagerData;
 import io.webguru.ticketing.POJO.Ticket;
@@ -74,7 +70,7 @@ public class PendingTicket extends Fragment {
         return rootView;
     }
 
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         mRecyclerView.setHasFixedSize(false);
 //        // use a linear layout manager
@@ -85,58 +81,51 @@ public class PendingTicket extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         managerPendingDatas = new ArrayList<>();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("ticketing");
-        mDatabase.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                ManagerData managerData = dataSnapshot.getValue(ManagerData.class);
-                for(ManagerData managerData1 : managerPendingDatas){
-                    if(managerData.getFieldRequestKey().equals(managerData1.getFieldRequestKey())) {
-                        managerPendingDatas.remove(managerData1);
-                        break;
-                    }
-                }
-                Log.d("PENDINTICKEFRAGMENT","REMOVING managerPendingDatas.size() >>> "+managerPendingDatas.size());
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        mAdapter = new FirebaseRecyclerAdapter<Ticket, AgentTicketHolder>(Ticket.class, R.layout.agent_ticket_cardview, AgentTicketHolder.class, mDatabase) {
+        Query query = mDatabase.orderByChild("agent_status").equalTo("1_Incoming");
+//        mDatabase.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//                ManagerData managerData = dataSnapshot.getValue(ManagerData.class);
+//                for(ManagerData managerData1 : managerPendingDatas){
+//                    if(managerData.getFieldRequestKey().equals(managerData1.getFieldRequestKey())) {
+//                        managerPendingDatas.remove(managerData1);
+//                        break;
+//                    }
+//                }
+//                Log.d("PENDINTICKEFRAGMENT","REMOVING managerPendingDatas.size() >>> "+managerPendingDatas.size());
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+        mAdapter = new FirebaseRecyclerAdapter<Ticket, AgentTicketHolder>(Ticket.class, R.layout.agent_ticket_cardview, AgentTicketHolder.class, query) {
             @Override
             protected void populateViewHolder(AgentTicketHolder viewHolder, Ticket ticket, int position) {
                 mProgressBar.setVisibility(View.GONE);
-                Log.d(TAG,"ticket.getRequesterId() >>> "+ticket.getRequesterId());
-//                if (userID == ticket.getRequesterId()) {
-                    ticketsArray[position] = ticket;
-                    viewHolder.setViewElements(ticket, position, true);
-//                } else {
-//                    viewHolder.setViewElements(null, false);
-//                }
-//                managerPendingDatas.add(0, managerData); // reversing the order, for storing latest at the top
-//                Log.d("PENDINTICKEFRAGMENT","ADDING managerPendingDatas.size() >>> "+managerPendingDatas.size());
-//                viewHolder.setViewElements(managerData);
+                ticketsArray[position] = ticket;
+                viewHolder.setViewElements(ticket, position, true);
             }
         };
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-//
+            //
             @Override
             public void onItemClick(View view, int position) {
 //                Ticket ticket = ticketsArray[position];
@@ -187,21 +176,10 @@ public class PendingTicket extends Fragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                ManagerData managerData = managerPendingDatas.get(viewHolder.getAdapterPosition());
-                if (direction == ItemTouchHelper.START)
-                { // Swiped to left
-                    Log.d("MANAGERMAINACTIVITY", " Card swipe START>> ");
-                    managerData.setStatus("cancel");
-                    managerData.setTicketNumber(GlobalFunctions.getCurrentDateInMilliseconds("-"+userInfo.getUserid()));
-                    ((AgentMainActivity)getActivity()).updateStatus("cancel","pending", true, managerData);
-                }
-                else if (direction == ItemTouchHelper.END)
-                { // Swiped to right
-                    Log.d("MANAGERMAINACTIVITY", " Card swipe END>> ");
-                    managerData.setStatus("approved");
-                    managerData.setTicketNumber(GlobalFunctions.getCurrentDateInMilliseconds("-"+userInfo.getUserid()));
-                    ((AgentMainActivity)getActivity()).updateStatus("approved","pending", true, managerData);
-
+                if (direction == ItemTouchHelper.START) { // Swiped to left
+                    ((AgentMainActivity) getActivity()).deleteTicket(ticketsArray[viewHolder.getAdapterPosition()]);
+                } else if (direction == ItemTouchHelper.END) { // Swiped to right
+                    ((AgentMainActivity) getActivity()).deleteTicket(ticketsArray[viewHolder.getAdapterPosition()]);
                 }
             }
 
@@ -219,16 +197,16 @@ public class PendingTicket extends Fragment {
                         p.setColor(Color.WHITE);
                         RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom());
                         c.drawRect(background, p);
-                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.approve_ticket);
+                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.cancel_ticket);
                         RectF icon_dest = new RectF((float) itemView.getLeft(), (float) itemView.getTop() + newWidth, (float) itemView.getLeft() + newWidth, (float) itemView.getBottom() - newWidth);
                         c.drawBitmap(icon, null, icon_dest, p);
-                    } else if ( dX < 0) {
+                    } else if (dX < 0) {
                         p.setColor(Color.WHITE);
                         RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
                         c.drawRect(background, p);
                         icon = BitmapFactory.decodeResource(getResources(), R.drawable.cancel_ticket);
 //                        RectF icon_dest = new RectF((float) itemView.getRight() - 2 * width, (float) itemView.getTop() + width, (float) itemView.getRight() - width, (float) itemView.getBottom() - width);
-                        RectF icon_dest = new RectF((float) itemView.getRight() - newWidth, (float) itemView.getTop() + newWidth+10, (float) itemView.getRight(), (float) itemView.getBottom() - newWidth+10);
+                        RectF icon_dest = new RectF((float) itemView.getRight() - newWidth, (float) itemView.getTop() + newWidth + 10, (float) itemView.getRight(), (float) itemView.getBottom() - newWidth + 10);
                         c.drawBitmap(icon, null, icon_dest, p);
                     }
                 }

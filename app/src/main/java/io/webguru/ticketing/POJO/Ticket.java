@@ -23,6 +23,7 @@ public class Ticket implements Serializable{
     private RequesterData requester;
     private AgentData agentData;
     private ContractorData contractorData;
+    private String agent_status;
 
     private boolean isDetailsShown;
 
@@ -30,7 +31,7 @@ public class Ticket implements Serializable{
 
     }
 
-    public Ticket(String ticketNumber, String status, int requesterId, int agentId, int approverId, int contractorId, String dateTime, RequesterData requesterData){
+    public Ticket(String ticketNumber, String status, int requesterId, int agentId, int approverId, int contractorId, String dateTime, RequesterData requesterData, String agent_status){
         this.ticketNumber = ticketNumber;
         this.status = status;
         this.priority = requesterData.getPriority();
@@ -40,6 +41,7 @@ public class Ticket implements Serializable{
         this.contractorId = contractorId;
         this.dateTime = dateTime;
         this.requester = requesterData;
+        this.agent_status = agent_status;
     }
 
     @Exclude
@@ -56,6 +58,7 @@ public class Ticket implements Serializable{
         result.put("requester", requester);
         result.put("agentData", agentData);
         result.put("contractorData", contractorData);
+        result.put("agent_status", agent_status);
 
         return result;
     }
@@ -148,6 +151,14 @@ public class Ticket implements Serializable{
         this.contractorData = contractorData;
     }
 
+    public String getAgent_status() {
+        return agent_status;
+    }
+
+    public void setAgent_status(String agent_status) {
+        this.agent_status = agent_status;
+    }
+
     public boolean isDetailsShown() {
         return isDetailsShown;
     }
@@ -155,4 +166,5 @@ public class Ticket implements Serializable{
     public void setDetailsShown(boolean detailsShown) {
         isDetailsShown = detailsShown;
     }
+
 }

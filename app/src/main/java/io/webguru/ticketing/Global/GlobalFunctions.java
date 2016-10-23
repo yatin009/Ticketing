@@ -38,8 +38,8 @@ public class GlobalFunctions {
         return "Time Exception";//DateFormat.getTimeInstance(DateFormat.SHORT).format(new Date());
     }
 
-    public static String getCurrentDateInMilliseconds(String append){
-        return new Date().getTime()+append;
+    public static String getCurrentDateInMilliseconds(){
+        return new Date().getTime()+"";
     }
 
     public static boolean checkDataBase(Context context) {

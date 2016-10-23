@@ -17,5 +17,8 @@ public class UserProfile extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         userInfo = (UserInfo) bundle.get("UserInfo");
         GlobalFunctions.showToast(this, "User - "+userInfo.getFirstname() +" "+ userInfo.getLastname(), Toast.LENGTH_LONG);
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().add(R.id.container, new Analytics()).commit();
+        }
     }
 }

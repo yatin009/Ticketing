@@ -36,8 +36,10 @@ import io.webguru.ticketing.Global.GlobalFunctions;
 import io.webguru.ticketing.Global.SignOut;
 import io.webguru.ticketing.Global.UserProfile;
 import io.webguru.ticketing.POJO.ManagerData;
+import io.webguru.ticketing.POJO.Ticket;
 import io.webguru.ticketing.POJO.UserInfo;
 import io.webguru.ticketing.R;
+import io.webguru.ticketing.Requester.AddTicketRequest;
 
 public class AgentMainActivity extends AppCompatActivity {
 
@@ -80,11 +82,11 @@ public class AgentMainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new CanceledTicket(), "Canceled");
-        adapter.addFragment(new PendingTicket(), "Dispathced");
-        adapter.addFragment(new ApprovedTicket(), "Approval");
+        adapter.addFragment(new PendingTicket(), "Incoming");
+        adapter.addFragment(new ApprovedTicket(), "Dispathched");
+        adapter.addFragment(new CanceledTicket(), "Pending Approval");
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(1, true);
+//        viewPager.setCurrentItem(1, true);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -182,6 +184,11 @@ public class AgentMainActivity extends AppCompatActivity {
         }
     }
 
+    public void deleteTicket(Ticket ticket){
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("ticketing").child(ticket.getTicketNumber()).removeValue();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -205,6 +212,11 @@ public class AgentMainActivity extends AppCompatActivity {
         if (id == R.id.action_signout) {
             Intent intent = new Intent(AgentMainActivity.this, SignOut.class);
             intent.putExtra("UserInfo", userInfo);
+            startActivity(intent);
+            return true;
+        }if (id == R.id.action_ticket) {
+            Intent intent = new Intent(AgentMainActivity.this, AddTicketRequest.class);
+            intent.putExtra("IsAgent", true);
             startActivity(intent);
             return true;
         }

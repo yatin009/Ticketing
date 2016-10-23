@@ -33,149 +33,323 @@
         //Header - Priority and Date of creation
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
 
             <TextView
-                android:id="@+id/priority_value"
-                style="@style/TitleBadgeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Priority" />
+                android:id="@+id/requester_name"
+                style="@style/FormTitle"
+                android:text="Name" />
 
             <TextView
                 android:id="@+id/date_value"
-                style="@style/TitleBadgeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/FormTitle"
                 android:layout_alignParentRight="true"
                 android:text="Date" />
         </RelativeLayout>
 
         // Requester Data
         <android.support.v7.widget.CardView
-            android:id="@+id/requester_card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:clickable="true"
             android:elevation="2dp"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:cardCornerRadius="4dp"
+            card_view:cardCornerRadius="4dp"
             android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
+                    <!-- LEFT TITLE PART -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/aluminum"
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Requester Name"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        <ProgressBar
+                            android:id="@+id/progress_dialog"
+                            style="?android:attr/progressBarStyleLarge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"/>
 
-                    <TextView
-                        android:id="@+id/agent_name_value"
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:id="@+id/ticket_proof_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+                    <!-- RIGHT TITLE PART -->
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text=" "
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        android:layout_weight="3"
+                        android:background="@color/bgTitleRight"
+                        android:orientation="vertical"
+                        android:paddingBottom="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="15dp"
+                        android:paddingTop="20dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/title_from_to_dots"
+                                android:layout_width="5dp"
+                                android:layout_height="50dp"
+                                android:layout_marginEnd="10dp"
+                                android:src="@color/contentDividerLine" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/ticket_priority"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="-5dp"
+                                    android:ellipsize="marquee"
+                                    android:fadingEdge="horizontal"
+                                    android:singleLine="true"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="16sp" />
+
+                                <ImageView
+                                    android:id="@+id/title_from_to_dots_divider"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_marginTop="5dp"
+                                    android:src="@color/contentDividerLine" />
+
+                                <TextView
+                                    android:id="@+id/ticket_number"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="marquee"
+                                    android:fadingEdge="horizontal"
+                                    android:singleLine="true"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="16sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/title_location"
+                                    style="@style/TitleBadgeTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Location" />
+
+                                <TextView
+                                    android:id="@+id/ticket_location"
+                                    style="@style/TitleBadgeText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="test" />
+                            </LinearLayout>
+
+
+                            <ImageView
+                                android:id="@+id/text_divider"
+                                android:layout_width="2dp"
+                                android:layout_height="25dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginStart="10dp"
+                                android:src="@color/contentDividerLine" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    style="@style/TitleBadgeTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Site" />
+
+                                <TextView
+                                    android:id="@+id/ticket_site"
+                                    style="@style/TitleBadgeText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="marquee"
+                                    android:text="test" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
                 </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="@color/cpb_grey" />
 
                 <LinearLayout
+                    android:id="@+id/detial_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_margin="5dp"
+                    android:visibility="gone">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Issue"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/issue_value"
-                        android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/TitleBadgeTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Location" />
+
+                            <TextView
+                                style="@style/TitleBadgeText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="test" />
+                        </LinearLayout>
+
+
+                        <ImageView
+                            android:layout_width="2dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="10dp"
+                            android:src="@color/contentDividerLine" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/TitleBadgeTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Site" />
+
+                            <TextView
+                                style="@style/TitleBadgeText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="marquee"
+                                android:text="test" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:maxLines="3"
-                        android:text=" "
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/TitleBadgeTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Location" />
+
+                            <TextView
+                                style="@style/TitleBadgeText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="test" />
+                        </LinearLayout>
+
+
+                        <ImageView
+                            android:layout_width="2dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="10dp"
+                            android:src="@color/contentDividerLine" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/TitleBadgeTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Site" />
+
+                            <TextView
+                                style="@style/TitleBadgeText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="marquee"
+                                android:text="test" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
+                        android:padding="5dp"
+                        android:gravity="center"
+                        android:clickable="false">
+
+                        <TextView
+                            android:id="@+id/assign_contractor"
+                            android:clickable="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:padding="15dp"
+                            android:textSize="20sp"
+                            android:textAlignment="center"
+                            android:background="@color/attentionColor"
+                            android:textStyle="bold"
+                            android:text="Assign Contractor"/>
+
+                    </FrameLayout>
+
                 </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="@color/cpb_grey" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Location"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                    <TextView
-                        android:id="@+id/location_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text=" "
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="@color/cpb_grey" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Shop"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                    <TextView
-                        android:id="@+id/shop_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text=" "
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
-                </LinearLayout>
-
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/call_requester_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Call Requester" />
             </LinearLayout>
-
         </android.support.v7.widget.CardView>
 
         //Assign Contractor
@@ -185,43 +359,77 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:background="@drawable/cardview_border">
 
             <TextView
-                style="@style/TitleBadgeText"
+                style="@style/FormTitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:text="Assign Contractor"
                 android:textAlignment="center" />
 
-            <android.support.design.widget.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Scope"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/scope_edit"
-                    style="@style/InputStyle"
-                    android:hint="Scope"
-                    android:inputType="numberDecimal" />
-            </android.support.design.widget.TextInputLayout>
+                <Switch
+                    android:id="@+id/scope_switch"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/scope_edit_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="Out"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/cpb_grey" />
 
-            <android.support.design.widget.TextInputLayout
+            <TextView
+                android:id="@+id/contractot_employee_list_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="Select a Contractor"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/contractor_edit"
-                    style="@style/InputStyle"
-                    android:hint="Contractor Name"
-                    android:inputType="numberDecimal" />
-            </android.support.design.widget.TextInputLayout>
+                android:orientation="horizontal"
+                android:layout_weight="3">
+                <Spinner
+                    android:id="@+id/contractor_employee_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.5"
+                    android:layout_margin="15dp"
+                    android:entries="@array/contractor_list"/>
+                <ImageButton
+                    android:id="@+id/call_contractor"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_call_black_24dp"
+                    android:padding="5dp"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/rounded_button"/>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -237,14 +445,15 @@
                     android:id="@+id/contractor_note_edit"
                     style="@style/InputStyle"
                     android:hint="Note"
-                    android:inputType="numberDecimal" />
+                    android:inputType="text" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/assign_contractor_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Assign Contractor" />
+                style="@style/ButtonStyle"
+                android:text="Assign Contractor"
+                android:layout_margin="5dp"
+                android:layout_gravity="center"/>
         </LinearLayout>
 
         //Assigned Contractor
@@ -253,23 +462,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:padding="7dp"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:background="@drawable/cardview_border">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Assigned Date" />
+                    style="@style/FormTitle"
+                    android:text="Date" />
 
                 <TextView
                     android:id="@+id/assigned_date"
-                    style="@style/TitleBadgeText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/FormTitle"
                     android:layout_alignParentRight="true"
                     android:text="Date" />
             </RelativeLayout>
@@ -290,9 +498,9 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/TitleBadgeText"
+                        style="@style/FormTitle"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:text="Assigned Contractor"
                         android:textAlignment="center" />
 
@@ -381,7 +589,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:padding="7dp"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:background="@drawable/cardview_border">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -389,43 +600,9 @@
                 android:layout_margin="15dp">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/text_quote_total"
+                    android:id="@+id/text_quote_labour"
                     style="@style/InputStyle"
-                    android:hint="Quote Price Total"
-                    android:inputType="numberDecimal" />
-            </android.support.design.widget.TextInputLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/cpb_grey" />
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/text_final_price"
-                    style="@style/InputStyle"
-                    android:hint="Final Price"
-                    android:inputType="numberDecimal" />
-            </android.support.design.widget.TextInputLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/cpb_grey" />
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/text_variance_quote"
-                    style="@style/InputStyle"
-                    android:hint="Varaince to Quote"
+                    android:hint="Labour"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -442,7 +619,7 @@
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/text_quote_parts"
                     style="@style/InputStyle"
-                    android:hint="Quote Parts"
+                    android:hint="Parts"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -457,9 +634,11 @@
                 android:layout_margin="15dp">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/text_quote_service"
+                    android:id="@+id/text_qoute_tax"
                     style="@style/InputStyle"
-                    android:hint="Quote Service"
+                    android:hint="HST%"
+                    android:text="13"
+                    android:enabled="false"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -468,27 +647,30 @@
                 android:layout_height="2dp"
                 android:background="@color/cpb_grey" />
 
-            <android.support.design.widget.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/text_quote_others"
-                    style="@style/InputStyle"
-                    android:hint="Quote Others"
-                    android:inputType="numberDecimal" />
-            </android.support.design.widget.TextInputLayout>
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                    android:id="@+id/total_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="$ 0.0"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            </LinearLayout>
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/quote_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/ButtonStyle"
                 android:layout_marginTop="30dp"
                 android:text="Quote"
-                android:textColor="@color/attentionColor"
-                android:textStyle="bold" />
+                android:layout_gravity="center"/>
         </LinearLayout>
 
         //Contractor Quote View
@@ -497,23 +679,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:padding="7dp"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:background="@drawable/cardview_border">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Assigned Date" />
-
-                <TextView
-                    android:id="@+id/quoted_date"
-                    style="@style/TitleBadgeText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/contractor_quote_date"
+                    style="@style/FormTitle"
                     android:layout_alignParentRight="true"
                     android:text="Date" />
             </RelativeLayout>
@@ -537,7 +714,7 @@
                         style="@style/TitleBadgeText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Quote By Contractor"
+                        android:text="Contractor Quote"
                         android:textAlignment="center" />
 
                     <LinearLayout
@@ -691,11 +868,15 @@
                             android:textAppearance="?android:attr/textAppearanceSmall" />
                     </LinearLayout>
 
-                    <android.support.v7.widget.AppCompatButton
+                    <ImageButton
                         android:id="@+id/call_contractor_button"
-                        android:layout_width="match_parent"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="Call Contractor" />
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_call_black_24dp"
+                        android:padding="5dp"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/rounded_button"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -708,12 +889,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:gravity="center"
+            android:visibility="gone"
+            android:background="@drawable/cardview_border">
 
             <TextView
-                style="@style/TitleBadgeText"
+                style="@style/FormTitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:text="Internal Quote"
                 android:textAlignment="center" />
 
@@ -765,8 +947,7 @@
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/request_approval"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/ButtonStyle"
                 android:text="Request Approval" />
         </LinearLayout>
     </LinearLayout>
