@@ -402,7 +402,7 @@ public class AgentTicketView extends AppCompatActivity {
     public void quoteByContractorAction(){
 
         ContractorData contractorData = new ContractorData(GlobalFunctions.getCurrentDateTime(), Double.parseDouble(totalTextValue.getText().toString().split(" ")[1]),Double.parseDouble("0"),
-                Double.parseDouble("0"), Double.parseDouble(quotePartsEdit.getText().toString()), Double.parseDouble(quoteLabourEdit.getText().toString()), Double.parseDouble("0"), userInfo);
+                Double.parseDouble("0"), Double.parseDouble(quotePartsEdit.getText().toString()), Double.parseDouble("0"), Double.parseDouble(quoteLabourEdit.getText().toString()), userInfo);
 
         ticket.setContractorData(contractorData);
         ticket.setStatus("Contractor Quoted");
