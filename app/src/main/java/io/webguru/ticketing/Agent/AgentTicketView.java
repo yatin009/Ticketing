@@ -235,7 +235,7 @@ public class AgentTicketView extends AppCompatActivity {
                     quotePartsEdit.setError("Please enter a value");
                     return;
                 }
-                String taxValue = editable.toString();
+                String taxValue = quoteTaxEdit.getText().toString();
                 if("".equals(taxValue)){
                     quoteTaxEdit.setError("Please enter a value");
                     return;
