@@ -47,12 +47,16 @@ public class AgentTicketHolder extends RecyclerView.ViewHolder {
 
     private void setPriority(String priority) {
         TextView txtPriority = (TextView) mView.findViewById(R.id.ticket_priority);
+        ImageView priorityIndicator = (ImageView) mView.findViewById(R.id.title_from_to_dots);
         if ("HIGH".equals(priority)) {
             txtPriority.setTextColor(Color.RED);
+            priorityIndicator.setImageResource(R.color.cpb_red);
         } else if ("MEDIUM".equals(priority)) {
             txtPriority.setTextColor(Color.rgb(255, 165, 0));//Orange
+            priorityIndicator.setImageResource(R.color.orange);
         } else if ("LOW".equals(priority)) {
             txtPriority.setTextColor(Color.BLACK);
+            priorityIndicator.setImageResource(R.color.cpb_grey);
         }
         txtPriority.setText(priority);
     }

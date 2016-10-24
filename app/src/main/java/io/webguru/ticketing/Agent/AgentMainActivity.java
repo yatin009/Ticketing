@@ -216,7 +216,7 @@ public class AgentMainActivity extends AppCompatActivity {
             return true;
         }if (id == R.id.action_ticket) {
             Intent intent = new Intent(AgentMainActivity.this, AddTicketRequest.class);
-            intent.putExtra("IsAgent", true);
+            intent.putExtra("isAgent", true);
             startActivity(intent);
             return true;
         }

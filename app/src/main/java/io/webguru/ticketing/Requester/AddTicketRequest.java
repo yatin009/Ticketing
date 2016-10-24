@@ -108,13 +108,13 @@ public class AddTicketRequest extends AppCompatActivity {
         setContentView(R.layout.activity_add_ticket_request);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        if(getSupportActionBar()!=null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
         //TODO Handle null case
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null){
             isAgent = bundle.getBoolean("isAgent");
+        }
+        if(isAgent && getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         //Receving UserInfo Object from Intent
         userInfo = new UserInfo(true);//(UserInfo) bundle.get("UserInfo");
@@ -310,7 +310,6 @@ public class AddTicketRequest extends AppCompatActivity {
                         Intent intent;
                         if(isAgent){
                             intent = new Intent(AddTicketRequest.this, AgentMainActivity.class);
-
                         }else{
                             intent = new Intent(AddTicketRequest.this, SplashScreen.class);
                         }

@@ -14,7 +14,7 @@ public class ContractorData implements Serializable{
     private double varianceToQuote;
     private double quotedParts;
     private double quotedServices;
-    private double quotedOthers;
+    private double quotedLabour;
     private UserInfo userInfo;
 
     public ContractorData(){
@@ -22,14 +22,14 @@ public class ContractorData implements Serializable{
     }
 
     public ContractorData(String quotedDateTime, Double quotePriceTotal, Double finalPrice, Double varianceToQuote,
-                   Double quotedParts, Double quotedServices, Double quotedOthers, UserInfo userInfo){
+                   Double quotedParts, Double quotedServices, Double quotedLabour, UserInfo userInfo){
         this.quotedDateTime = quotedDateTime;
         this.quotePriceTotal = quotePriceTotal;
         this.finalPrice = finalPrice;
         this.varianceToQuote = varianceToQuote;
         this.quotedParts = quotedParts;
         this.quotedServices = quotedServices;
-        this.quotedOthers = quotedOthers;
+        this.quotedLabour = quotedLabour;
         this.userInfo = userInfo;
     }
 
@@ -81,12 +81,12 @@ public class ContractorData implements Serializable{
         this.quotedServices = quotedServices;
     }
 
-    public double getQuotedOthers() {
-        return quotedOthers;
+    public double getQuotedLabour() {
+        return quotedLabour;
     }
 
-    public void setQuotedOthers(double quotedOthers) {
-        this.quotedOthers = quotedOthers;
+    public void setQuotedLabour(double quotedLabour) {
+        this.quotedLabour = quotedLabour;
     }
 
     public UserInfo getUserInfo() {

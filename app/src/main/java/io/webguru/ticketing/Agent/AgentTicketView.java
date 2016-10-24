@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -41,6 +42,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -127,14 +130,8 @@ public class AgentTicketView extends AppCompatActivity {
 //    TextView quotedDateView;
     @Bind(R.id.quote_price_value)
     TextView quotePriceView;
-    @Bind(R.id.final_price_value)
-    TextView finalPriceView;
-    @Bind(R.id.variance_quote_value)
-    TextView varianceQuoteView;
     @Bind(R.id.quote_parts_value)
     TextView quotePartsView;
-    @Bind(R.id.quote_service_value)
-    TextView quoteServiceView;
     @Bind(R.id.quote_others_value)
     TextView qupteOthersView;
     @Bind(R.id.call_contractor_button)
@@ -173,7 +170,7 @@ public class AgentTicketView extends AppCompatActivity {
         }
         if(getSupportActionBar()!=null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Ticket # "+ticket.getTicketNumber());
+            getSupportActionBar().setTitle("Ticket# "+ticket.getTicketNumber());
         }
         userInfo = GlobalFunctions.getUserInfo(this);
         userRole = userInfo.getRole();
@@ -228,11 +225,6 @@ public class AgentTicketView extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String taxValue = editable.toString();
-                if("".equals(taxValue)){
-                    quoteTaxEdit.setError("Please enter Tax value");
-                    return;
-                }
                 String labourValue = quoteLabourEdit.getText().toString();
                 if("".equals(labourValue)){
                     quoteLabourEdit.setError("Please enter a value");
@@ -240,11 +232,16 @@ public class AgentTicketView extends AppCompatActivity {
                 }
                 String partsValue = quotePartsEdit.getText().toString();
                 if("".equals(partsValue)){
-                    quotePartsEdit.setError("Please enter Tax value");
+                    quotePartsEdit.setError("Please enter a value");
+                    return;
+                }
+                String taxValue = editable.toString();
+                if("".equals(taxValue)){
+                    quoteTaxEdit.setError("Please enter a value");
                     return;
                 }
                 double sum = Double.parseDouble(labourValue) + Double.parseDouble(partsValue);
-                sum = sum + getTaxAmount(sum, Double.parseDouble(taxValue));
+                sum = round(sum + getTaxAmount(sum, Double.parseDouble(taxValue)));
                 totalTextValue.setText("$ "+sum);
             }
         };
@@ -254,7 +251,13 @@ public class AgentTicketView extends AppCompatActivity {
     }
 
     public double getTaxAmount(double total, double tax){
-        return tax/100 * total;
+        return (total/100) * tax;
+    }
+
+    public double round(double value) {
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
     private void setViews(){
@@ -399,7 +402,7 @@ public class AgentTicketView extends AppCompatActivity {
     public void quoteByContractorAction(){
 
         ContractorData contractorData = new ContractorData(GlobalFunctions.getCurrentDateTime(), Double.parseDouble(totalTextValue.getText().toString().split(" ")[1]),Double.parseDouble("0"),
-                Double.parseDouble("0"), Double.parseDouble(quotePartsEdit.getText().toString()), Double.parseDouble("0"), Double.parseDouble("0"), userInfo);
+                Double.parseDouble("0"), Double.parseDouble(quotePartsEdit.getText().toString()), Double.parseDouble(quoteLabourEdit.getText().toString()), Double.parseDouble("0"), userInfo);
 
         ticket.setContractorData(contractorData);
         ticket.setStatus("Contractor Quoted");
@@ -418,16 +421,27 @@ public class AgentTicketView extends AppCompatActivity {
     private void setContractorQuoteInfo(){
         contractorQuoteDate.setText(contractorData.getQuotedDateTime());
         quotePriceView.setText("$ "+contractorData.getQuotePriceTotal());
-        finalPriceView.setText("$ "+contractorData.getFinalPrice());
-        varianceQuoteView.setText("$ "+contractorData.getVarianceToQuote());
         quotePartsView.setText("$ "+contractorData.getQuotedParts());
-        quoteServiceView.setText("$ "+contractorData.getQuotedServices());
-        qupteOthersView.setText("$ "+contractorData.getQuotedOthers());
+        qupteOthersView.setText("$ "+contractorData.getQuotedLabour());
     }
 
     @OnClick(R.id.request_approval)
     public void requestApproval(){
         GlobalFunctions.showToast(this, "Request for Approval is send.", Toast.LENGTH_LONG);
         startActivity(new Intent(this, AgentMainActivity.class));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        switch (id){
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
