@@ -83,7 +83,7 @@ public class AgentMainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new PendingTicket(), "Incoming");
-        adapter.addFragment(new ApprovedTicket(), "Dispathched");
+        adapter.addFragment(new ApprovedTicket(), "Dispatched");
         adapter.addFragment(new CanceledTicket(), "Pending Approval");
         viewPager.setAdapter(adapter);
 //        viewPager.setCurrentItem(1, true);

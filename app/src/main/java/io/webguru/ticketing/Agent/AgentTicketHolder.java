@@ -38,7 +38,7 @@ public class AgentTicketHolder extends RecyclerView.ViewHolder {
         setTicketStatus(ticket.getStatus(), contName);
 //        setContractorName(contName);
         setTicketNumber(ticket.getTicketNumber());
-//        setProblem(ticket.getRequester().getIssue());
+        setProblem(ticket.getRequester().getIssue());
         setLocation(ticket.getRequester().getLocation());
         setDateTime(ticket.getDateTime());
         setAssignContractorListner(ticket, position);
@@ -82,8 +82,8 @@ public class AgentTicketHolder extends RecyclerView.ViewHolder {
     }
 
     private void setProblem(String problem) {
-//        TextView txtProblem = (TextView) mView.findViewById(R.id.txtProblem);
-//        txtProblem.setText(problem);
+        TextView txtProblem = (TextView) mView.findViewById(R.id.ticket_site);
+        txtProblem.setText(problem);
     }
 
     private void setLocation(String problem) {

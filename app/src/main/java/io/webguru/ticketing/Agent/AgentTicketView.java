@@ -94,6 +94,8 @@ public class AgentTicketView extends AppCompatActivity {
     Spinner contractorNameEditView;
     @Bind(R.id.contractor_note_edit)
     TextInputEditText contractorNoteEditView;
+    @Bind(R.id.assign_contractor_button)
+    AppCompatButton contractorButton;
 
     @Bind(R.id.assigned_contractor_layout)
     LinearLayout assignedContractorLayout;
@@ -204,10 +206,12 @@ public class AgentTicketView extends AppCompatActivity {
                     scopeEditValue.setText("In");
                     contractorEmployeeListLabel.setText("Select a Employee");
                     contractorNameEditView.setAdapter(employeeAdapter);
+                    contractorButton.setText("Assign Employee");
                 }else{
                     scopeEditValue.setText("Out");
                     contractorEmployeeListLabel.setText("Select a Contractor");
                     contractorNameEditView.setAdapter(contractorAdapter);
+                    contractorButton.setText("Assign Contractor");
                 }
             }
         });

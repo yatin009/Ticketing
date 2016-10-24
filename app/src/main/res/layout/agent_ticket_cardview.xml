@@ -158,7 +158,7 @@
                             style="@style/TitleBadgeTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Site" />
+                            android:text="Description" />
 
                         <TextView
                             android:id="@+id/ticket_site"
