@@ -220,6 +220,11 @@ public class AgentMainActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
+        if (id == R.id.action_contractor_list) {
+            Intent intent = new Intent(AgentMainActivity.this, Contractor.class);
+            startActivity(intent);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

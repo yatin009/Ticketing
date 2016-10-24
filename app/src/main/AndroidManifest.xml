@@ -25,7 +25,7 @@
         <activity
             android:name=".Welcome.IntroScreens"
             android:label="@string/title_activity_manager_main_activity"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
             android:name=".Welcome.WelcomeSplash"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
@@ -48,7 +48,7 @@
         <activity
             android:name=".Requester.AddTicketRequest"
             android:label="@string/title_activity_add_field_ticket"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -66,8 +66,10 @@
         <activity android:name=".Global.UserProfile" />
         <activity android:name=".Global.SignOut" />
         <activity android:name=".Global.Chat" />
-        <activity android:name=".Agent.AgentTicketView"
-            android:windowSoftInputMode="stateHidden"></activity>
+        <activity
+            android:name=".Agent.AgentTicketView"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".Agent.Contractor"></activity>
     </application>
 
 </manifest>
