@@ -1,6 +1,6 @@
-package io.webguru.ticketing.Agent;
+package io.webguru.ticketing.Approver;
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,13 +8,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +27,9 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.webguru.ticketing.Agent.AgentMainActivity;
+import io.webguru.ticketing.Agent.AgentTicketHolder;
+import io.webguru.ticketing.Agent.AgentTicketView;
 import io.webguru.ticketing.Global.RecyclerItemClickListener;
 import io.webguru.ticketing.POJO.ManagerData;
 import io.webguru.ticketing.POJO.Ticket;
@@ -36,36 +37,36 @@ import io.webguru.ticketing.R;
 
 import static io.webguru.ticketing.Agent.AgentMainActivity.userInfo;
 
-public class PendingTicket extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class PendingApprovalFragment extends Fragment {
 
-    @Bind(R.id.manager_pending_list)
+    @Bind(R.id.approver_pending_list)
     RecyclerView mRecyclerView;
     @Bind(R.id.progressBar)
     ProgressBar mProgressBar;
 
     //Firebase Database refernce
     private DatabaseReference mDatabase;
-    private ArrayList<ManagerData> managerPendingDatas;
     //RecyclerView objects
     private LinearLayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
-    private Ticket[] ticketsArray = new Ticket[100];
-    private String TAG = "PENDINGTICKET";
 
-    public PendingTicket() {
+    private Ticket[] ticketsArray = new Ticket[100];
+    private String TAG = "PendingApprovalFragment";
+
+
+    public PendingApprovalFragment() {
         // Required empty public constructor
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_pending_ticket, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_pending_approval, container, false);
         ButterKnife.bind(this, rootView);
         return rootView;
     }
@@ -79,9 +80,8 @@ public class PendingTicket extends Fragment {
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        managerPendingDatas = new ArrayList<>();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("ticketing");
-        Query query = mDatabase.orderByChild("agent_status").equalTo("1_Incoming");
+        Query query = mDatabase.orderByChild("status").equalTo("Approver Assigned");
 //        mDatabase.addChildEventListener(new ChildEventListener() {
 //            @Override
 //            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -213,22 +213,8 @@ public class PendingTicket extends Fragment {
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         };
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-//        itemTouchHelper.attachToRecyclerView(mRecyclerView);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
 
 }

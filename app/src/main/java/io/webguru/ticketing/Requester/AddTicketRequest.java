@@ -80,10 +80,6 @@ public class AddTicketRequest extends AppCompatActivity {
     TextView textViewPriorityValue;
     @Bind(R.id.text_shop)
     TextInputEditText editShop;
-//    @Bind(R.id.text_ssrtype)
-//    TextInputEditText editSSRType;
-//    @Bind(R.id.signature_pad)
-//    SignaturePad signaturePad;
     @Bind(R.id.viewFlipper)
     ViewFlipper viewFlipper;
     @Bind(R.id.progressBar)
@@ -288,11 +284,12 @@ public class AddTicketRequest extends AppCompatActivity {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        photoRef = storageRef.child(ticketNumber+".jpg");
+        photoRef = storageRef.child("issue_image/"+ticketNumber+".jpg");
         UploadTask uploadTask = photoRef.putStream(stream);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
+                progressDialog.dismiss();
                 Log.d(TAG,"FAIL TO UPLOAD IMAGE");
                 // Handle unsuccessful uploads
             }

@@ -94,15 +94,6 @@ public class RequesterTicketHolder extends RecyclerView.ViewHolder {
     }
 
     private void setDateTime(String dateTime) {
-//        Log.d("TICKETHOLDER","dateTime >>> "+dateTime);
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy HH:mm aaa", Locale.US);
-//        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
-//        String newDateTime = null;
-//        try {
-//            newDateTime = sdf1.format(sdf.parse(dateTime));
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
         Log.d("TICKETHOLDER","dateTime >>> "+dateTime);
         String[] dateTimeArray = dateTime.split(" ");
         TextView txtDate = (TextView) mView.findViewById(R.id.ticket_date);

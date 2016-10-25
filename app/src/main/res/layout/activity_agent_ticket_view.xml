@@ -15,6 +15,7 @@
         android:orientation="vertical">
 
         //ToolBar
+
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,6 +32,7 @@
         </android.support.design.widget.AppBarLayout>
 
         //Header - Priority and Date of creation
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,13 +51,14 @@
         </RelativeLayout>
 
         // Requester Data
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:elevation="2dp"
-            card_view:cardCornerRadius="4dp"
-            android:visibility="visible">
+            android:visibility="visible"
+            card_view:cardCornerRadius="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -70,9 +73,9 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_gravity="center"
                         android:layout_weight="1"
                         android:background="@color/aluminum"
-                        android:layout_gravity="center"
                         android:orientation="vertical">
 
                         <ProgressBar
@@ -80,7 +83,7 @@
                             style="?android:attr/progressBarStyleLarge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"/>
+                            android:layout_gravity="center" />
 
                         <ImageView
                             android:id="@+id/ticket_proof_image"
@@ -136,7 +139,7 @@
                                     android:src="@color/contentDividerLine" />
 
                                 <TextView
-                                    android:id="@+id/ticket_number"
+                                    android:id="@+id/ticket_issue"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:ellipsize="marquee"
@@ -173,195 +176,24 @@
                                     android:text="test" />
                             </LinearLayout>
 
-
-                            <ImageView
-                                android:id="@+id/text_divider"
-                                android:layout_width="2dp"
-                                android:layout_height="25dp"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginEnd="10dp"
-                                android:layout_marginStart="10dp"
-                                android:src="@color/contentDividerLine" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    style="@style/TitleBadgeTitle"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Site" />
-
-                                <TextView
-                                    android:id="@+id/ticket_site"
-                                    style="@style/TitleBadgeText"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:ellipsize="marquee"
-                                    android:text="test" />
-
-                            </LinearLayout>
                         </LinearLayout>
 
                     </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/detial_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_margin="5dp"
-                    android:visibility="gone">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TextView
-                                style="@style/TitleBadgeTitle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Location" />
-
-                            <TextView
-                                style="@style/TitleBadgeText"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="test" />
-                        </LinearLayout>
-
-
-                        <ImageView
-                            android:layout_width="2dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginStart="10dp"
-                            android:src="@color/contentDividerLine" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TextView
-                                style="@style/TitleBadgeTitle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Site" />
-
-                            <TextView
-                                style="@style/TitleBadgeText"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:ellipsize="marquee"
-                                android:text="test" />
-
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TextView
-                                style="@style/TitleBadgeTitle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Location" />
-
-                            <TextView
-                                style="@style/TitleBadgeText"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="test" />
-                        </LinearLayout>
-
-
-                        <ImageView
-                            android:layout_width="2dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginStart="10dp"
-                            android:src="@color/contentDividerLine" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TextView
-                                style="@style/TitleBadgeTitle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Site" />
-
-                            <TextView
-                                style="@style/TitleBadgeText"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:ellipsize="marquee"
-                                android:text="test" />
-
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="10dp"
-                        android:padding="5dp"
-                        android:gravity="center"
-                        android:clickable="false">
-
-                        <TextView
-                            android:id="@+id/assign_contractor"
-                            android:clickable="true"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:padding="15dp"
-                            android:textSize="20sp"
-                            android:textAlignment="center"
-                            android:background="@color/attentionColor"
-                            android:textStyle="bold"
-                            android:text="Assign Contractor"/>
-
-                    </FrameLayout>
-
                 </LinearLayout>
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
         //Assign Contractor
+
         <LinearLayout
             android:id="@+id/assign_contractor_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:orientation="vertical"
-            android:visibility="gone"
             android:layout_gravity="center"
-            android:background="@drawable/cardview_border">
+            android:layout_margin="5dp"
+            android:background="@drawable/cardview_border"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 style="@style/FormTitle"
@@ -373,6 +205,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -381,9 +214,9 @@
 
                 <Switch
                     android:id="@+id/scope_switch"
-                    android:layout_marginLeft="20dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp" />
 
                 <TextView
                     android:id="@+id/scope_edit_value"
@@ -410,25 +243,27 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="3">
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
                 <Spinner
                     android:id="@+id/contractor_employee_spinner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2.5"
                     android:layout_margin="15dp"
-                    android:entries="@array/contractor_list"/>
+                    android:layout_weight="2.5"
+                    android:entries="@array/contractor_list" />
+
                 <ImageButton
                     android:id="@+id/call_contractor"
                     android:layout_width="0dp"
-                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_call_black_24dp"
-                    android:padding="5dp"
                     android:layout_margin="4dp"
-                    android:background="@drawable/rounded_button"/>
+                    android:layout_weight="0.5"
+                    android:background="@drawable/rounded_button"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_call_black_24dp" />
             </LinearLayout>
 
             <View
@@ -451,21 +286,22 @@
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/assign_contractor_button"
                 style="@style/ButtonStyle"
-                android:text="Assign Contractor"
+                android:layout_gravity="center"
                 android:layout_margin="5dp"
-                android:layout_gravity="center"/>
+                android:text="Assign Contractor" />
         </LinearLayout>
 
         //Assigned Contractor
+
         <LinearLayout
             android:id="@+id/assigned_contractor_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:padding="7dp"
+            android:background="@drawable/cardview_border"
             android:orientation="vertical"
-            android:visibility="gone"
-            android:background="@drawable/cardview_border">
+            android:padding="7dp"
+            android:visibility="gone">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -539,7 +375,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Contractor"
+                            android:text="Contractor/Employee"
                             android:textAppearance="?android:attr/textAppearanceMedium" />
 
                         <TextView
@@ -565,7 +401,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Contractor Note"
+                            android:text="Note"
                             android:textAppearance="?android:attr/textAppearanceMedium" />
 
                         <TextView
@@ -583,16 +419,17 @@
         </LinearLayout>
 
         //Contractor Quote Layout
+
         <LinearLayout
             android:id="@+id/contractor_qoute_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_margin="5dp"
+            android:background="@drawable/cardview_border"
             android:orientation="vertical"
             android:padding="7dp"
-            android:visibility="gone"
-            android:layout_gravity="center"
-            android:background="@drawable/cardview_border">
+            android:visibility="gone">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -636,9 +473,8 @@
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/text_qoute_tax"
                     style="@style/InputStyle"
-                    android:hint="HST%"
-                    android:text="13"
                     android:enabled="false"
+                    android:hint="HST 13%"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -651,11 +487,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Total"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
+
                 <TextView
                     android:id="@+id/total_value"
                     android:layout_width="wrap_content"
@@ -668,21 +506,22 @@
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/quote_button"
                 style="@style/ButtonStyle"
+                android:layout_gravity="center"
                 android:layout_marginTop="30dp"
-                android:text="Quote"
-                android:layout_gravity="center"/>
+                android:text="Quote" />
         </LinearLayout>
 
         //Contractor Quote View
+
         <LinearLayout
             android:id="@+id/contractor_quote_view_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:padding="7dp"
+            android:background="@drawable/cardview_border"
             android:orientation="vertical"
-            android:visibility="visible"
-            android:background="@drawable/cardview_border">
+            android:padding="7dp"
+            android:visibility="gone">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -795,83 +634,328 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_call_black_24dp"
-                        android:padding="5dp"
                         android:layout_margin="4dp"
-                        android:background="@drawable/rounded_button"/>
+                        android:background="@drawable/rounded_button"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_call_black_24dp" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
         </LinearLayout>
 
-        //Internal Quote
+        //Request Approval
+
         <LinearLayout
             android:id="@+id/internal_quote_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:orientation="vertical"
+            android:background="@drawable/cardview_border"
             android:gravity="center"
-            android:visibility="gone"
-            android:background="@drawable/cardview_border">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 style="@style/FormTitle"
                 android:layout_width="match_parent"
-                android:text="Internal Quote"
+                android:text="Select a Approver"
                 android:textAlignment="center" />
 
-            <android.support.design.widget.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp">
+                android:layout_weight="3"
+                android:orientation="horizontal">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/final_price"
-                    style="@style/InputStyle"
-                    android:hint="Final Price"
-                    android:inputType="numberDecimal" />
-            </android.support.design.widget.TextInputLayout>
+                <Spinner
+                    android:id="@+id/approver_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:layout_weight="2.5"
+                    android:entries="@array/approver_list" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/cpb_grey" />
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/variance_price"
-                    style="@style/InputStyle"
-                    android:hint="Variance Price"
-                    android:inputType="numberDecimal" />
-            </android.support.design.widget.TextInputLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/cpb_grey" />
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/approver_name"
-                    style="@style/InputStyle"
-                    android:hint="Approver Name"
-                    android:inputType="numberDecimal" />
-            </android.support.design.widget.TextInputLayout>
+                <ImageButton
+                    android:id="@+id/call_approver"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="4dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/rounded_button"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_call_black_24dp" />
+            </LinearLayout>
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/request_approval"
                 style="@style/ButtonStyle"
-                android:text="Request Approval" />
+                android:layout_marginBottom="10dp"
+                android:text="Request for Approval" />
         </LinearLayout>
+
+        //Request Approval View
+
+        <LinearLayout
+            android:id="@+id/request_approval_view_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/cardview_border"
+            android:orientation="vertical"
+            android:padding="7dp"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/request_approval_date"
+                    style="@style/FormTitle"
+                    android:layout_alignParentRight="true"
+                    android:text="Date" />
+            </RelativeLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="3dp"
+                android:elevation="2dp"
+                card_view:cardCornerRadius="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TitleBadgeText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Approver"
+                        android:textAlignment="center" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Approver Name"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <TextView
+                            android:id="@+id/approver_name_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/call_approver_button"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/rounded_button"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_call_black_24dp" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+        //Approvar
+
+        <LinearLayout
+            android:id="@+id/approvar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/cardview_border"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/FormTitle"
+                android:layout_width="match_parent"
+                android:text="Update Ticket"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="Signature"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <com.github.gcacace.signaturepad.views.SignaturePad
+                android:id="@+id/approver_signature"
+                android:layout_width="wrap_content"
+                android:layout_height="300dp"
+                android:background="@drawable/rounded_boundary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp">
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/clear_signature"
+                    style="@style/ButtonStyle"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="2dp"
+                    android:text="Clear" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/freeze_sign"
+                    style="@style/ButtonStyle"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:text="Freeze" />
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/cpb_grey" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/approvar_note_edit"
+                    style="@style/InputStyle"
+                    android:hint="Note"
+                    android:inputType="text" />
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/deny_ticket"
+                    style="@style/ButtonStyle"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:width="0dp"
+                    android:text="Reject" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/accept_ticket"
+                    style="@style/ButtonStyle"
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="1"
+                    android:width="0dp"
+                    android:text="Accept" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        //Approval View
+
+        <LinearLayout
+            android:id="@+id/approval_view_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:background="@drawable/cardview_border"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_margin="15dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/approval_date"
+                    style="@style/FormTitle"
+                    android:layout_alignParentRight="true"
+                    android:text="Date" />
+            </RelativeLayout>
+
+            <TextView
+                style="@style/FormTitle"
+                android:layout_width="match_parent"
+                android:text="Ticket Status"
+                android:textAlignment="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Approver Signature"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <ImageView
+                    android:id="@+id/approver_signature_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginStart="5dp"
+                    android:padding="5dp"
+                    android:background="@drawable/rounded_boundary"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/cpb_grey" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Note"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/approver_note_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text=" "
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/call_agent_button"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="4dp"
+                android:background="@drawable/rounded_button"
+                android:padding="5dp"
+                android:src="@drawable/ic_call_black_24dp" />
+        </LinearLayout>
+
     </LinearLayout>
 
 

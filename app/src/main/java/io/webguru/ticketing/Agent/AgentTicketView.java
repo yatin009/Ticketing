@@ -1,11 +1,14 @@
 package io.webguru.ticketing.Agent;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,12 +39,16 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.github.gcacace.signaturepad.views.SignaturePad;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
@@ -50,15 +57,18 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.webguru.ticketing.Approver.ApproverMainActivity;
 import io.webguru.ticketing.Contractor.ContractorMainActivity;
 import io.webguru.ticketing.Global.GlobalFunctions;
 import io.webguru.ticketing.POJO.AgentData;
+import io.webguru.ticketing.POJO.ApprovarData;
 import io.webguru.ticketing.POJO.ContractorData;
 import io.webguru.ticketing.POJO.RequesterData;
 import io.webguru.ticketing.POJO.Ticket;
 import io.webguru.ticketing.POJO.UserInfo;
 import io.webguru.ticketing.R;
 import io.webguru.ticketing.Requester.RequesterMainActivity;
+import io.webguru.ticketing.Welcome.SplashScreen;
 
 import static io.webguru.ticketing.Global.GlobalConstant.FILE_STORAGE_PATH;
 
@@ -67,8 +77,6 @@ public class AgentTicketView extends AppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
-//    @Bind(R.id.ticket_proof_image)
-//    ImageView ticketImageProof;
     @Bind(R.id.progress_dialog)
     ProgressBar progressBar;
     @Bind(R.id.ticket_priority)
@@ -77,13 +85,11 @@ public class AgentTicketView extends AppCompatActivity {
     TextView dateView;
 
     @Bind(R.id.requester_name)
-    TextView agentNameView;
-    @Bind(R.id.ticket_number)
+    TextView requesterNameView;
+    @Bind(R.id.ticket_issue)
     TextView issueValue;
     @Bind(R.id.ticket_location)
     TextView locationView;
-    @Bind(R.id.ticket_site)
-    TextView shopView;
     @Bind(R.id.ticket_proof_image)
     ImageView issueImage;
 
@@ -141,19 +147,38 @@ public class AgentTicketView extends AppCompatActivity {
 
     @Bind(R.id.internal_quote_layout)
     LinearLayout internalQuoteLayout;
-    @Bind(R.id.final_price)
-    TextInputEditText internalFinalPriceEdit;
-    @Bind(R.id.variance_price)
-    TextInputEditText internalVarinaceEdit;
-    @Bind(R.id.approver_name)
-    TextInputEditText approverNameEdit;
+    @Bind(R.id.approver_spinner)
+    Spinner approverSpinner;
 
+    @Bind(R.id.request_approval_view_layout)
+    LinearLayout requestApprovalViewLayout;
+    @Bind(R.id.request_approval_date)
+    TextView requestApprovalDate;
+    @Bind(R.id.approver_name_value)
+    TextView approverNameValue;
+
+    @Bind(R.id.approvar_layout)
+    LinearLayout approvarLayout;
+    @Bind(R.id.approver_signature)
+    SignaturePad approverSignature;
+    @Bind(R.id.approvar_note_edit)
+    TextInputEditText approvarNoteEdit;
+
+    @Bind(R.id.approval_view_layout)
+    LinearLayout approvalViewLayout;
+    @Bind(R.id.approver_signature_image)
+    ImageView approverSignatureImage;
+    @Bind(R.id.approver_note_value)
+    TextView approverNoteValue;
+    @Bind(R.id.approval_date)
+    TextView approvalDate;
 
     private Ticket ticket;
     private RequesterData requesterData;
     private UserInfo userInfo;
     private AgentData agentData;
     private ContractorData contractorData;
+    private ApprovarData approvarData;
 
     private String userRole;
 
@@ -177,7 +202,7 @@ public class AgentTicketView extends AppCompatActivity {
         requesterData = ticket.getRequester();
         setViews();
         spinnerValues();
-        StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(FILE_STORAGE_PATH).child(ticket.getTicketNumber()+".jpg");
+        StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(FILE_STORAGE_PATH).child("issue_image/"+ticket.getTicketNumber()+".jpg");
         storageRef.getDownloadUrl().addOnSuccessListener(this, new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -235,17 +260,13 @@ public class AgentTicketView extends AppCompatActivity {
                     quotePartsEdit.setError("Please enter a value");
                     return;
                 }
-                String taxValue = quoteTaxEdit.getText().toString();
-                if("".equals(taxValue)){
-                    quoteTaxEdit.setError("Please enter a value");
-                    return;
-                }
                 double sum = Double.parseDouble(labourValue) + Double.parseDouble(partsValue);
-                sum = round(sum + getTaxAmount(sum, Double.parseDouble(taxValue)));
+                String taxAmount = round(getTaxAmount(sum, Double.parseDouble("13")))+"";
+                quoteTaxEdit.setText(taxAmount);
+                sum = round(sum + Double.parseDouble(taxAmount));
                 totalTextValue.setText("$ "+sum);
             }
         };
-        quoteTaxEdit.addTextChangedListener(textWatcher);
         quoteLabourEdit.addTextChangedListener(textWatcher);
         quotePartsEdit.addTextChangedListener(textWatcher);
     }
@@ -271,10 +292,9 @@ public class AgentTicketView extends AppCompatActivity {
         priorityView.setText(ticket.getPriority());
         dateView.setText(ticket.getDateTime());
 
-        agentNameView.setText(requesterData.getUserInfo().getFirstname());
+        requesterNameView.setText(requesterData.getUserInfo().getFirstname());
         issueValue.setText(requesterData.getIssue());
         locationView.setText(requesterData.getLocation());
-        shopView.setText(requesterData.getShop());
 
         if("manager".equals(userRole)) {
            if (ticket.getAgentData() != null) {
@@ -285,19 +305,49 @@ public class AgentTicketView extends AppCompatActivity {
                assignContractorLayout.setVisibility(View.VISIBLE);
            }
             if(ticket.getContractorData()!=null){
-//                internalQuoteLayout.setVisibility(View.VISIBLE);
                 contractorData = ticket.getContractorData();
                 contractorQuoteViewLayout.setVisibility(View.VISIBLE);
                 setContractorQuoteInfo();
+                if("Pending Approval".equals(ticket.getStatus())){
+                    internalQuoteLayout.setVisibility(View.VISIBLE);
+                }
+                else if("Approver Assigned".equals(ticket.getStatus())) {
+                    requestApprovalViewLayout.setVisibility(View.VISIBLE);
+                    setRequestApproverView();
+                }
+                if("Approved".equals(ticket.getStatus())){
+                    requestApprovalViewLayout.setVisibility(View.VISIBLE);
+                    setRequestApproverView();
+                    approvarData = ticket.getApprovarData();
+                    approvalViewLayout.setVisibility(View.VISIBLE);
+                    setApproverViews();
+                }
             }
-        }else if("contractor".equals(userRole)){
+        } else if("contractor".equals(userRole)){
             if(ticket.getContractorData()==null){
                 contractorQuoteLayout.setVisibility(View.VISIBLE);
             }else if(ticket.getContractorData()!=null){
-                callContractor.setVisibility(View.GONE);
                 contractorData = ticket.getContractorData();
                 contractorQuoteViewLayout.setVisibility(View.VISIBLE);
+                callContractor.setVisibility(View.GONE);
                 setContractorQuoteInfo();
+            }
+        } else if("approver".equals(userRole)){
+            //Agent Created Data
+            assignedContractorLayout.setVisibility(View.VISIBLE);
+            agentData = ticket.getAgentData();
+            setAssignedContractorInfo();
+            //Contractor Created Data
+            contractorData = ticket.getContractorData();
+            contractorQuoteViewLayout.setVisibility(View.VISIBLE);
+            setContractorQuoteInfo();
+
+            if("Approver Assigned".equals(ticket.getStatus())){
+                approvarLayout.setVisibility(View.VISIBLE);
+            }else {
+                approvarData = ticket.getApprovarData();
+                approvalViewLayout.setVisibility(View.VISIBLE);
+                setApproverViews();
             }
         }
     }
@@ -325,7 +375,7 @@ public class AgentTicketView extends AppCompatActivity {
         dialog.setContentView(view);
         final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progress_dialog);
         final ImageView imageView = (ImageView) view.findViewById(R.id.large_image);
-        StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(FILE_STORAGE_PATH).child(ticket.getTicketNumber()+".jpg");
+        StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(FILE_STORAGE_PATH).child("issue_image"+ticket.getTicketNumber()+".jpg");
         storageRef.getDownloadUrl().addOnSuccessListener(this, new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -379,7 +429,8 @@ public class AgentTicketView extends AppCompatActivity {
         ticket.setAgentData(agentData);
         ticket.setContractorId(3);
         ticket.setStatus("Contractor Assigned");
-        ticket.setAgent_status("1_Dispatched");
+        ticket.setAgent_status("1_ContractorAssigned");
+        ticket.setIsVisibleContractor("Yes");
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         Map<String, Object> childUpdates = new HashMap<>();
@@ -388,6 +439,7 @@ public class AgentTicketView extends AppCompatActivity {
 
         Intent intent = new Intent(this, AgentMainActivity.class);
         intent.putExtra("UserInfo",userInfo);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
@@ -405,8 +457,8 @@ public class AgentTicketView extends AppCompatActivity {
                 Double.parseDouble("0"), Double.parseDouble(quotePartsEdit.getText().toString()), Double.parseDouble("0"), Double.parseDouble(quoteLabourEdit.getText().toString()), userInfo);
 
         ticket.setContractorData(contractorData);
-        ticket.setStatus("Contractor Quoted");
-        ticket.setAgent_status("1_InternalQuote");
+        ticket.setStatus("Pending Approval");
+        ticket.setAgent_status("1_PendingApproval");
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         Map<String, Object> childUpdates = new HashMap<>();
@@ -415,6 +467,7 @@ public class AgentTicketView extends AppCompatActivity {
 
         Intent intent = new Intent(this, ContractorMainActivity.class);
         intent.putExtra("UserInfo",userInfo);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
@@ -425,10 +478,129 @@ public class AgentTicketView extends AppCompatActivity {
         qupteOthersView.setText("$ "+contractorData.getQuotedLabour());
     }
 
+    @OnClick(R.id.call_approver)
+    public void callApprover(){
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:4164797440"));
+        startActivity(intent);
+    }
+
     @OnClick(R.id.request_approval)
     public void requestApproval(){
-        GlobalFunctions.showToast(this, "Request for Approval is send.", Toast.LENGTH_LONG);
-        startActivity(new Intent(this, AgentMainActivity.class));
+        agentData.setApproverId(4);
+        agentData.setApproverName(approverSpinner.getSelectedItem().toString());
+        agentData.setRequestApprovalDate(GlobalFunctions.getCurrentDateTime());
+
+        ticket.setAgentData(agentData);
+        ticket.setStatus("Approver Assigned");
+        ticket.setAgent_status("1_PendingApproval");
+
+//        ApprovarData approvarData = new ApprovarData(userInfo, GlobalFunctions.getCurrentDateTime(), null, null);
+//        ticket.setApprovarData(approvarData);
+
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/ticketing/" + ticket.getTicketNumber(), ticket.toMap());
+        mDatabase.updateChildren(childUpdates);
+
+        Intent intent = new Intent(this, AgentMainActivity.class);
+        intent.putExtra("UserInfo",userInfo);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
+    private void setRequestApproverView(){
+        requestApprovalDate.setText(agentData.getRequestApprovalDate());
+        approverNameValue.setText(agentData.getApproverName());
+    }
+
+    @OnClick(R.id.call_approver_button)
+    public void callApproverButton(){
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:4164797440"));
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.clear_signature)
+    public void clearSignature(){
+        approverSignature.clear();
+    }
+
+    @OnClick(R.id.freeze_sign)
+    public void freezeSign(){
+        if(approverSignature.isEnabled()){
+            approverSignature.setEnabled(false);
+        } else {
+            approverSignature.setEnabled(true);
+        }
+    }
+
+    @OnClick(R.id.deny_ticket)
+    public void denyTicket(){
+        GlobalFunctions.showToast(this, "Ticket denied, functionality still to build", Toast.LENGTH_LONG);
+    }
+
+    ProgressDialog progressDialog;
+
+    @OnClick(R.id.accept_ticket)
+    public void acceptTicket(){
+        ApprovarData approvarData = new ApprovarData(userInfo, GlobalFunctions.getCurrentDateTime(), "sign_"+ticket.getTicketNumber()+".jpg", approvarNoteEdit.getText().toString());
+        ticket.setApprovarData(approvarData);
+        ticket.setStatus("Approved");
+        ticket.setAgent_status("1_Approved");
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl(FILE_STORAGE_PATH);
+
+        StorageReference signImageRef = storageRef.child("signatures/sign_"+ticket.getTicketNumber()+".jpg");
+
+        Bitmap bitmap = approverSignature.getSignatureBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.show(this, "Genrating Ticket", "Please wait", false, false);
+        UploadTask uploadTask = signImageRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                progressDialog.dismiss();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                progressDialog.dismiss();
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                Map<String, Object> childUpdates = new HashMap<>();
+                childUpdates.put("/ticketing/" + ticket.getTicketNumber(), ticket.toMap());
+                mDatabase.updateChildren(childUpdates);
+
+                Intent intent = new Intent(AgentTicketView.this, ApproverMainActivity.class);
+                intent.putExtra("UserInfo",userInfo);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setApproverViews(){
+        StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(FILE_STORAGE_PATH).child("signatures/"+approvarData.getSignatureImage());
+        storageRef.getDownloadUrl().addOnSuccessListener(this, new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(AgentTicketView.this).load(uri).into(approverSignatureImage);
+            }
+        });
+        approverNoteValue.setText(approvarData.getNote());
+        approvalDate.setText(approvarData.getApprovedDateTime());
+    }
+
+    @OnClick(R.id.call_agent_button)
+    public void callAgentButton(){
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:4164797440"));
+        startActivity(intent);
     }
 
     @Override

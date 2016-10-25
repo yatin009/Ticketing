@@ -1,22 +1,24 @@
 package io.webguru.ticketing.Agent;
 
-import android.content.Context;
+
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -32,46 +34,40 @@ import io.webguru.ticketing.R;
 
 import static io.webguru.ticketing.Agent.AgentMainActivity.userInfo;
 
-public class CanceledTicket extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class AgentApprovedFragment extends Fragment {
 
-    @Bind(R.id.manager_canceled_list)
+    @Bind(R.id.agent_approved_list)
     RecyclerView mRecyclerView;
     @Bind(R.id.progressBar)
     ProgressBar mProgressBar;
 
     //Firebase Database refernce
     private DatabaseReference mDatabase;
+    private ArrayList<ManagerData> managerPendingDatas;
     //RecyclerView objects
     private LinearLayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
     private Ticket[] ticketsArray = new Ticket[100];
+    private String TAG = "AgentApprovedFragment";
 
-    public CanceledTicket() {
+    public AgentApprovedFragment() {
         // Required empty public constructor
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_canceled_ticket, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_agent_approved, container, false);
         ButterKnife.bind(this, rootView);
         return rootView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-
-    }
-
-    public void onStart(){
-        super.onStart();
+    public void onStart() {
         super.onStart();
         mRecyclerView.setHasFixedSize(false);
 //        // use a linear layout manager
@@ -80,8 +76,9 @@ public class CanceledTicket extends Fragment {
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        managerPendingDatas = new ArrayList<>();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("ticketing");
-        Query query = mDatabase.orderByChild("agent_status").equalTo("1_PendingApproval");
+        Query query = mDatabase.orderByChild("agent_status").equalTo("1_Approved");
 //        mDatabase.addChildEventListener(new ChildEventListener() {
 //            @Override
 //            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -96,13 +93,13 @@ public class CanceledTicket extends Fragment {
 //            @Override
 //            public void onChildRemoved(DataSnapshot dataSnapshot) {
 //                ManagerData managerData = dataSnapshot.getValue(ManagerData.class);
-//                for(ManagerData managerData1 : managerCanceledDatas){
+//                for(ManagerData managerData1 : managerPendingDatas){
 //                    if(managerData.getFieldRequestKey().equals(managerData1.getFieldRequestKey())) {
-//                        managerCanceledDatas.remove(managerData1);
+//                        managerPendingDatas.remove(managerData1);
 //                        break;
 //                    }
 //                }
-//                Log.d("PENDINTICKEFRAGMENT","REMOVING managerPendingDatas.size() >>> "+managerCanceledDatas.size());
+//                Log.d("PENDINTICKEFRAGMENT","REMOVING managerPendingDatas.size() >>> "+managerPendingDatas.size());
 //            }
 //
 //            @Override
@@ -128,6 +125,16 @@ public class CanceledTicket extends Fragment {
             //
             @Override
             public void onItemClick(View view, int position) {
+//                Ticket ticket = ticketsArray[position];
+//                if(ticket.isDetailsShown()){
+//                    LinearLayout detailsLayout = (LinearLayout) view.findViewById(R.id.detial_layout);
+//                    detailsLayout.setVisibility(View.GONE);
+//                    ticket.setDetailsShown(false);
+//                }else {
+//                    LinearLayout detailsLayout = (LinearLayout) view.findViewById(R.id.detial_layout);
+//                    detailsLayout.setVisibility(View.VISIBLE);
+//                    ticket.setDetailsShown(true);
+//                }
                 Intent intent = new Intent(getActivity(), AgentTicketView.class);
                 intent.putExtra("UserInfo", userInfo);
                 intent.putExtra("Ticket", ticketsArray[position]);
@@ -139,19 +146,6 @@ public class CanceledTicket extends Fragment {
 
             }
         }));
-
     }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
 
 }

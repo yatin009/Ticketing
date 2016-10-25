@@ -11,6 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import io.webguru.ticketing.Global.GlobalFunctions;
 import io.webguru.ticketing.POJO.ManagerData;
 import io.webguru.ticketing.POJO.Ticket;
 import io.webguru.ticketing.R;
@@ -36,13 +41,11 @@ public class AgentTicketHolder extends RecyclerView.ViewHolder {
             contName = ticket.getAgentData().getContractor();
         }
         setTicketStatus(ticket.getStatus(), contName);
-//        setContractorName(contName);
         setTicketNumber(ticket.getTicketNumber());
         setProblem(ticket.getRequester().getIssue());
         setLocation(ticket.getRequester().getLocation());
         setDateTime(ticket.getDateTime());
         setAssignContractorListner(ticket, position);
-//        setAgentName(ticket.getRequester().getUserInfo().getFirstname());
     }
 
     private void setPriority(String priority) {
@@ -62,18 +65,18 @@ public class AgentTicketHolder extends RecyclerView.ViewHolder {
     }
 
     private void setTicketStatus(String status, String contractName) {
-        ImageView ticketStatus = (ImageView) mView.findViewById(R.id.ticket_status_image);
-        if ("pending".equals(status)) {
-            ticketStatus.setImageResource(R.drawable.ticket_pending);
-        } else if ("approved".equals(status)) {
-            if(contractName!=null && !"".equals(contractName.trim())) {
-                ticketStatus.setImageResource(R.drawable.ticket_assigned);
-            } else {
-                ticketStatus.setImageResource(R.drawable.ticket_approved);
-            }
-        } else if ("cancel".equals(status)) {
-            ticketStatus.setImageResource(R.drawable.ticket_cancled);
-        }
+//        ImageView ticketStatus = (ImageView) mView.findViewById(R.id.ticket_status_image);
+//        if ("pending".equals(status)) {
+//            ticketStatus.setImageResource(R.drawable.ticket_pending);
+//        } else if ("approved".equals(status)) {
+//            if(contractName!=null && !"".equals(contractName.trim())) {
+//                ticketStatus.setImageResource(R.drawable.ticket_assigned);
+//            } else {
+//                ticketStatus.setImageResource(R.drawable.ticket_approved);
+//            }
+//        } else if ("cancel".equals(status)) {
+//            ticketStatus.setImageResource(R.drawable.ticket_cancled);
+//        }
     }
 
     private void setTicketNumber(String ticketNumber) {
@@ -96,8 +99,30 @@ public class AgentTicketHolder extends RecyclerView.ViewHolder {
     }
 
     private void setDateTime(String dateTime) {
-        TextView txtDateTime = (TextView) mView.findViewById(R.id.ticket_date);
-        txtDateTime.setText(dateTime);
+        Log.d("TICKETHOLDER","dateTime >>> "+dateTime);
+        String[] dateTimeArray = dateTime.split(" ");
+        TextView txtDate = (TextView) mView.findViewById(R.id.ticket_date);
+        txtDate.setText(getDateDiff(dateTimeArray[0]));
+        TextView txtTime = (TextView) mView.findViewById(R.id.ticket_time);
+        txtTime.setText(dateTimeArray[1]+" "+dateTimeArray[2]);
+    }
+
+    public String getDateDiff(String date) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+            Date currDate = sdf.parse(GlobalFunctions.getTodaysDateFormatted());
+            Date fileDate = sdf.parse(date);
+            long diff = currDate.getTime() - fileDate.getTime();
+            long diffDays = diff / (24 * 60 * 60 * 1000);
+            if(diffDays==0) {
+                return "Today";
+            }else{
+                return diffDays + " days ago";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Today";
+        }
     }
 
     private void setContractorName(String contractorName) {

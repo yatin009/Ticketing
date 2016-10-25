@@ -85,6 +85,7 @@ public class AgentMainActivity extends AppCompatActivity {
         adapter.addFragment(new PendingTicket(), "Incoming");
         adapter.addFragment(new ApprovedTicket(), "Dispatched");
         adapter.addFragment(new CanceledTicket(), "Pending Approval");
+        adapter.addFragment(new AgentApprovedFragment(), "Approved");
         viewPager.setAdapter(adapter);
 //        viewPager.setCurrentItem(1, true);
     }

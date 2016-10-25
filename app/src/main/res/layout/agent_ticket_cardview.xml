@@ -32,25 +32,26 @@
                 android:paddingRight="10dp"
                 android:paddingTop="20dp">
 
-                <ImageView
-                    android:id="@+id/ticket_status_image"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ticket_pending" />
-
-                <TextView
-                    android:id="@+id/ticket_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp" />
+                <!--<ImageView-->
+                    <!--android:id="@+id/ticket_status_image"-->
+                    <!--android:layout_width="40dp"-->
+                    <!--android:layout_height="40dp"-->
+                    <!--android:src="@drawable/ticket_pending" />-->
 
                 <TextView
                     android:id="@+id/ticket_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/ticket_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:layout_marginTop="20dp"
+                    android:textSize="14sp" />
 
             </LinearLayout>
             <!-- RIGHT TITLE PART -->

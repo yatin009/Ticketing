@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -69,17 +70,13 @@ public class ContractorMainActivity extends AppCompatActivity {
         mLayoutManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mDatabase = FirebaseDatabase.getInstance().getReference().child("ticketing");
-        mAdapter = new FirebaseRecyclerAdapter<Ticket, RequesterTicketHolder>(Ticket.class, R.layout.requester_ticket_cardview, RequesterTicketHolder.class, mDatabase) {
+        Query query = mDatabase.orderByChild("isVisibleContractor").equalTo("Yes");
+        mAdapter = new FirebaseRecyclerAdapter<Ticket, RequesterTicketHolder>(Ticket.class, R.layout.requester_ticket_cardview, RequesterTicketHolder.class, query) {
             @Override
             protected void populateViewHolder(RequesterTicketHolder viewHolder, Ticket ticket, int position) {
                 mProgressBar.setVisibility(View.GONE);
-                if (2 == ticket.getRequesterId()) {
                     ticketsArray[position] = ticket;
                     viewHolder.setViewElements(ticket, true);
-                } else {
-                    viewHolder.setViewElements(null, false);
-                }
-//
             }
 
         };

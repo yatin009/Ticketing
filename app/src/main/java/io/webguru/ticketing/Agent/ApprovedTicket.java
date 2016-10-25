@@ -79,7 +79,7 @@ public class ApprovedTicket extends Fragment {
         mLayoutManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mDatabase = FirebaseDatabase.getInstance().getReference().child("ticketing");
-        Query query = mDatabase.orderByChild("agent_status").equalTo("1_Dispatched");
+        Query query = mDatabase.orderByChild("agent_status").equalTo("1_ContractorAssigned");
 //        mDatabase.addChildEventListener(new ChildEventListener() {
 //            @Override
 //            public void onChildAdded(DataSnapshot dataSnapshot, String s) {

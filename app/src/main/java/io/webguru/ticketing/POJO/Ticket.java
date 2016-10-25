@@ -23,6 +23,8 @@ public class Ticket implements Serializable{
     private RequesterData requester;
     private AgentData agentData;
     private ContractorData contractorData;
+    private String isVisibleContractor;
+    private ApprovarData approvarData;
     private String agent_status;
 
     private boolean isDetailsShown;
@@ -58,6 +60,8 @@ public class Ticket implements Serializable{
         result.put("requester", requester);
         result.put("agentData", agentData);
         result.put("contractorData", contractorData);
+        result.put("isVisibleContractor", isVisibleContractor);
+        result.put("approvarData", approvarData);
         result.put("agent_status", agent_status);
 
         return result;
@@ -149,6 +153,22 @@ public class Ticket implements Serializable{
 
     public void setContractorData(ContractorData contractorData) {
         this.contractorData = contractorData;
+    }
+
+    public String getIsVisibleContractor() {
+        return isVisibleContractor;
+    }
+
+    public void setIsVisibleContractor(String isVisibleContractor) {
+        this.isVisibleContractor = isVisibleContractor;
+    }
+
+    public ApprovarData getApprovarData() {
+        return approvarData;
+    }
+
+    public void setApprovarData(ApprovarData approvarData) {
+        this.approvarData = approvarData;
     }
 
     public String getAgent_status() {

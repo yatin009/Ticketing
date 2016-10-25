@@ -12,6 +12,9 @@ public class AgentData implements Serializable{
     private int contractorId;
     private String contractorNote;
     private String contractorAssignedDate;
+    private String approverName;
+    private int approverId;
+    private String requestApprovalDate;
     private UserInfo userInfo;
 
     public AgentData(){
@@ -74,5 +77,29 @@ public class AgentData implements Serializable{
 
     public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
+    }
+
+    public String getApproverName() {
+        return approverName;
+    }
+
+    public void setApproverName(String approverName) {
+        this.approverName = approverName;
+    }
+
+    public int getApproverId() {
+        return approverId;
+    }
+
+    public void setApproverId(int approverId) {
+        this.approverId = approverId;
+    }
+
+    public String getRequestApprovalDate() {
+        return requestApprovalDate;
+    }
+
+    public void setRequestApprovalDate(String requestApprovalDate) {
+        this.requestApprovalDate = requestApprovalDate;
     }
 }
