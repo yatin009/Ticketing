@@ -128,16 +128,6 @@ public class PendingApprovalFragment extends Fragment {
             //
             @Override
             public void onItemClick(View view, int position) {
-//                Ticket ticket = ticketsArray[position];
-//                if(ticket.isDetailsShown()){
-//                    LinearLayout detailsLayout = (LinearLayout) view.findViewById(R.id.detial_layout);
-//                    detailsLayout.setVisibility(View.GONE);
-//                    ticket.setDetailsShown(false);
-//                }else {
-//                    LinearLayout detailsLayout = (LinearLayout) view.findViewById(R.id.detial_layout);
-//                    detailsLayout.setVisibility(View.VISIBLE);
-//                    ticket.setDetailsShown(true);
-//                }
                 Intent intent = new Intent(getActivity(), AgentTicketView.class);
                 intent.putExtra("UserInfo", userInfo);
                 intent.putExtra("Ticket", ticketsArray[position]);
@@ -149,72 +139,6 @@ public class PendingApprovalFragment extends Fragment {
 
             }
         }));
-
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-
-            @Override
-            public boolean isLongPressDragEnabled() {
-                return false;
-            }
-
-            @Override
-            public boolean isItemViewSwipeEnabled() {
-                return true;
-            }
-
-            @Override
-            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-                int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
-                return makeMovementFlags(dragFlags, swipeFlags);
-            }
-
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                if (direction == ItemTouchHelper.START) { // Swiped to left
-                    ((AgentMainActivity) getActivity()).deleteTicket(ticketsArray[viewHolder.getAdapterPosition()]);
-                } else if (direction == ItemTouchHelper.END) { // Swiped to right
-                    ((AgentMainActivity) getActivity()).deleteTicket(ticketsArray[viewHolder.getAdapterPosition()]);
-                }
-            }
-
-            @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState,
-                                    boolean isCurrentlyActive) {
-                Bitmap icon;
-                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-
-                    View itemView = viewHolder.itemView;
-                    float newHeight = (float) itemView.getBottom() - (float) itemView.getTop();
-                    float newWidth = newHeight / 3;
-                    Paint p = new Paint();
-                    if (dX > 0) {
-                        p.setColor(Color.WHITE);
-                        RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom());
-                        c.drawRect(background, p);
-                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.cancel_ticket);
-                        RectF icon_dest = new RectF((float) itemView.getLeft(), (float) itemView.getTop() + newWidth, (float) itemView.getLeft() + newWidth, (float) itemView.getBottom() - newWidth);
-                        c.drawBitmap(icon, null, icon_dest, p);
-                    } else if (dX < 0) {
-                        p.setColor(Color.WHITE);
-                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
-                        c.drawRect(background, p);
-                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.cancel_ticket);
-//                        RectF icon_dest = new RectF((float) itemView.getRight() - 2 * width, (float) itemView.getTop() + width, (float) itemView.getRight() - width, (float) itemView.getBottom() - width);
-                        RectF icon_dest = new RectF((float) itemView.getRight() - newWidth, (float) itemView.getTop() + newWidth + 10, (float) itemView.getRight(), (float) itemView.getBottom() - newWidth + 10);
-                        c.drawBitmap(icon, null, icon_dest, p);
-                    }
-                }
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-            }
-        };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
 
 }

@@ -33,15 +33,6 @@
             android:layout_marginTop="10dp"
             android:orientation="vertical">
 
-
-            <android.support.v4.widget.ContentLoadingProgressBar
-                android:id="@+id/progressBar"
-                android:max="100"
-                style="?android:attr/android:progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:elevation="10dp" />
-
             <ViewFlipper
                 android:id="@+id/viewFlipper"
                 android:layout_width="match_parent"
@@ -55,29 +46,32 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <TextView
-                        style="@style/FormTitle"
-                        android:text="Describe Ticket" />
-
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Priority"
-                        android:layout_margin="18dp"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
-                    <SeekBar
-                        android:id="@+id/priority_seekbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="fill_parent"
-                        android:max="100"
-                        android:layout_margin="15dp"/>
+                        android:layout_margin="18dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Priority"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <SeekBar
+                            android:id="@+id/priority_seekbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_marginLeft="15dp"
+                            android:max="100" />
+                    </LinearLayout>
+
                     <TextView
                         android:id="@+id/value_priority"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="LOW"
                         android:layout_marginLeft="15dp"
-                        android:textAppearance="?android:attr/textAppearanceSmall"/>
+                        android:text="LOW"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -102,17 +96,18 @@
                             android:hint="Location/Coloumn" />
                     </android.support.design.widget.TextInputLayout>
 
-                    <android.support.v7.widget.AppCompatButton
+                    <android.support.v7.widget.AppCompatImageButton
                         android:id="@+id/click_photo"
                         style="@style/ButtonStyle"
                         android:layout_marginTop="10dp"
+                        android:src="@drawable/ic_add_a_photo_black_36dp"
                         android:text="Photo" />
 
                     <android.support.v7.widget.AppCompatButton
                         android:id="@+id/request_ticket_1"
                         style="@style/ButtonStyle"
-                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
                         android:text="Request Ticket" />
                 </LinearLayout>
 
@@ -225,11 +220,11 @@
                             android:id="@+id/request_ticket"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_button"
-                            android:text="Request Ticket"
                             android:layout_marginStart="5dp"
+                            android:background="@drawable/rounded_button"
                             android:paddingEnd="10dp"
                             android:paddingStart="10dp"
+                            android:text="Request Ticket"
                             android:textColor="@color/attentionColor"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -286,9 +281,9 @@
                             android:id="@+id/scope_next"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
                             android:background="@drawable/rounded_button"
                             android:text="Next"
-                            android:layout_marginStart="5dp"
                             android:textColor="@color/attentionColor"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -322,12 +317,12 @@
                             android:background="@drawable/rounded_boundary"
                             app:penColor="@android:color/black" />
 
-                            <android.support.v7.widget.AppCompatButton
-                                android:id="@+id/clear_signature"
-                                style="@style/ButtonStyle"
-                                android:layout_marginLeft="15dp"
-                                android:background="@drawable/rounded_button"
-                                android:text="Clear" />
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/clear_signature"
+                            style="@style/ButtonStyle"
+                            android:layout_marginLeft="15dp"
+                            android:background="@drawable/rounded_button"
+                            android:text="Clear" />
                     </LinearLayout>
 
 
