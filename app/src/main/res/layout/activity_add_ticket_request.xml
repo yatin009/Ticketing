@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:orientation="vertical"
-    tools:context="io.webguru.ticketing.Requester.AddTicketRequest">
+    tools:context="io.webguru.ticketing.Requester.AddTicketRequest"
+    android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/toolbar_layout"
@@ -25,91 +25,108 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="fill_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/priority_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="18dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Priority"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <SeekBar
+                        android:id="@+id/priority_seekbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="15dp"
+                        android:max="100" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/value_priority"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="LOW"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/text_description"
+                        style="@style/InputStyle"
+                        android:hint="Description"
+                        android:inputType="text" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/text_location"
+                        style="@style/InputStyle"
+                        android:hint="Location/Coloumn" />
+                </android.support.design.widget.TextInputLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.AppCompatImageButton
+                        android:id="@+id/click_photo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_button"
+                        android:padding="20dp"
+                        android:src="@drawable/ic_add_a_photo_black_36dp" />
+
+                    <ImageView
+                        android:id="@+id/photo_badge"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignRight="@+id/click_photo"
+                        android:layout_alignTop="@+id/click_photo"
+                        android:visibility="gone"
+                        android:src="@drawable/green_tick" />
+                </RelativeLayout>
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/request_ticket_1"
+                    style="@style/ButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Request Ticket"
+                    android:layout_gravity="bottom"/>
+            </LinearLayout>
 
             <ViewFlipper
                 android:id="@+id/viewFlipper"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <LinearLayout
-                    android:id="@+id/priority_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="18dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Priority"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <SeekBar
-                            android:id="@+id/priority_seekbar"
-                            android:layout_width="match_parent"
-                            android:layout_height="fill_parent"
-                            android:layout_marginLeft="15dp"
-                            android:max="100" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/value_priority"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:text="LOW"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="15dp">
-
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/text_description"
-                            style="@style/InputStyle"
-                            android:hint="Description"
-                            android:inputType="text" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="15dp">
-
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/text_location"
-                            style="@style/InputStyle"
-                            android:hint="Location/Coloumn" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.v7.widget.AppCompatImageButton
-                        android:id="@+id/click_photo"
-                        style="@style/ButtonStyle"
-                        android:layout_marginTop="10dp"
-                        android:src="@drawable/ic_add_a_photo_black_36dp"
-                        android:text="Photo" />
-
-                    <android.support.v7.widget.AppCompatButton
-                        android:id="@+id/request_ticket_1"
-                        style="@style/ButtonStyle"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:text="Request Ticket" />
-                </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:id="@+id/location_layout"

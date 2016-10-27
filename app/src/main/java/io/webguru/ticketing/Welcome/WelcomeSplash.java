@@ -2,6 +2,8 @@ package io.webguru.ticketing.Welcome;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -29,56 +31,15 @@ public class WelcomeSplash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_splash);
         ButterKnife.bind(this);
-        Button startAnimation = (Button) findViewById(R.id.button2);
-        final RelativeLayout LoginBox = (RelativeLayout) findViewById(R.id.LoginBox);
-        relativeLayout = (RelativeLayout) findViewById(R.id.ticket_layout);
-        startAnimation.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                LoginBox.setVisibility(View.VISIBLE);
-//                Animation animTranslate = AnimationUtils.loadAnimation(WelcomeSplash.this, R.anim.translate);
-//                animTranslate.setAnimationListener(new AnimationListener() {
-//
-//                    @Override
-//                    public void onAnimationStart(Animation arg0) {
-//                    }
-//
-//                    @Override
-//                    public void onAnimationRepeat(Animation arg0) {
-//                    }
-//
-//                    @Override
-//                    public void onAnimationEnd(Animation arg0) {
-//                        LoginBox.setVisibility(View.VISIBLE);
-//                        Animation animFade = AnimationUtils.loadAnimation(WelcomeSplash.this, R.anim.fade);
-//                        LoginBox.startAnimation(animFade);
-//                    }
-//                });
-//                ImageView imgLogo = (ImageView) findViewById(R.id.imageView1);
-//                imgLogo.startAnimation(animTranslate);
-            }
-        });
-        final View activityRootView = findViewById(R.id.activityRoot);
-        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                int heightDiff = activityRootView.getRootView().getHeight() - activityRootView.getHeight();
-//                if (heightDiff > dpToPx(WelcomeSplash.this, 200)) { // if more than 200 dp, it's probably a keyboard...
-//                    // ... do something here
-//                    relativeLayout.setVisibility(View.GONE);
-//                }else{
-//                    relativeLayout.setVisibility(View.VISIBLE);
-//                }
-            }
-        });
+        ViewCompat.setTransitionName(findViewById(R.id.app_bar_layout), "1");
+        supportPostponeEnterTransition();
+        CollapsingToolbarLayout collapsingToolbar =
+                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setTitle("Title");
+        collapsingToolbar.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
     }
-
-
-
 
     @Override
     public void onBackPressed() {
-
     }
 }

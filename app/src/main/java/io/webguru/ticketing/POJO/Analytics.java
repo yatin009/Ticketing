@@ -15,7 +15,7 @@ public class Analytics {
     private int incoming_count;
     private int dispatched_count;
     private int approval_count;
-    private int ongoing_count;
+    private int approved_count;
     private int high_count;
 
     @Exclude
@@ -26,7 +26,7 @@ public class Analytics {
         result.put("incoming_count", incoming_count);
         result.put("dispatched_count", dispatched_count);
         result.put("approval_count", approval_count);
-        result.put("ongoing_count", ongoing_count);
+        result.put("approved_count", approved_count);
         result.put("high_count", high_count);
 
         return result;
@@ -72,12 +72,12 @@ public class Analytics {
         this.approval_count = approval_count;
     }
 
-    public int getOngoing_count() {
-        return ongoing_count;
+    public int getApproved_count() {
+        return approved_count;
     }
 
-    public void setOngoing_count(int ongoing_count) {
-        this.ongoing_count = ongoing_count;
+    public void setApproved_count(int approved_count) {
+        this.approved_count = approved_count;
     }
 
     public int getHigh_count() {

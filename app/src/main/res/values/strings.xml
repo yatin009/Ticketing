@@ -2,7 +2,7 @@
     <string name="app_name">Ticketing</string>
     <string name="title_activity_field_agent_main">Ticket List</string>
     <string name="title_activity_view_edit_field_ticket">Ticket Info</string>
-    <string name="title_activity_add_field_ticket">Request Ticket</string>
+    <string name="title_activity_add_field_ticket">Create Ticket</string>
 
     <string name="title_activity_manager_main_activity">Ticket Dashboard</string>
 

@@ -21,7 +21,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -80,10 +82,11 @@ public class AddTicketRequest extends AppCompatActivity {
     TextView textViewPriorityValue;
     @Bind(R.id.text_shop)
     TextInputEditText editShop;
+    @Bind(R.id.photo_badge)
+    ImageView photoBadge;
     @Bind(R.id.viewFlipper)
     ViewFlipper viewFlipper;
-    @Bind(R.id.progressBar)
-    ContentLoadingProgressBar progressBar;
+
     boolean isAgent=false;
 
     private String TAG = "ADDTICKETREQUEST";
@@ -116,7 +119,6 @@ public class AddTicketRequest extends AppCompatActivity {
         userInfo = new UserInfo(true);//(UserInfo) bundle.get("UserInfo");
 
         fieldAgentData = new FieldAgentData();
-        progressBar.setProgress(100);
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl(FILE_STORAGE_PATH);
         prioritySeekbar.setProgress(30);
@@ -151,7 +153,6 @@ public class AddTicketRequest extends AppCompatActivity {
 
     @OnClick(R.id.location_previous)
     public void locationPrevious(){
-        progressBar.setProgress(20);
         viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
         viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
         viewFlipper.showPrevious();
@@ -159,7 +160,6 @@ public class AddTicketRequest extends AppCompatActivity {
 
     @OnClick(R.id.location_next)
     public void locationNext(){
-        progressBar.setProgress(60);
         viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
         viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
         viewFlipper.showNext();
@@ -167,7 +167,6 @@ public class AddTicketRequest extends AppCompatActivity {
 
     @OnClick(R.id.description_previous)
     public void descriptionPrevious(){
-        progressBar.setProgress(40);
         viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
         viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
         viewFlipper.showPrevious();
@@ -271,7 +270,7 @@ public class AddTicketRequest extends AppCompatActivity {
         }
         String priority = textViewPriorityValue.getText().toString();
         progressDialog = new ProgressDialog(this);
-        progressDialog.show(this, "Genrating Ticket", "Please wait", false, false);
+        progressDialog.show(this, "Creating Ticket", "Uploading Image...Please wait", false, false);
         String ticketNumber = GlobalFunctions.getCurrentDateInMilliseconds();
         requesterData = new RequesterData(description, priority, location, "", "", userInfo);
         //TODO HARDCODED AGENT ASSIGNED
@@ -297,6 +296,7 @@ public class AddTicketRequest extends AppCompatActivity {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Log.d(TAG,"Success TO UPLOAD IMAGE");
+                progressDialog.setMessage("Updating information of ticket..Please wait");
                 DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
                 Map<String, Object> childUpdates = new HashMap<>();
                 childUpdates.put("/ticketing/" + ticket.getTicketNumber(), ticket.toMap());
@@ -361,12 +361,8 @@ public class AddTicketRequest extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-//            Bundle extras = data.getExtras();
-//            Bitmap imageBitmap = (Bitmap) extras.get("data");
-//            imageViewPhoto.setVisibility(View.VISIBLE);
-            setPic();
-//            imageViewPhoto.setImageBitmap(decodeFile(mCurrentPhotoPath));//setImageBitmap(imageBitmap);//
-//            fieldAgentData.setPhotoPath(mCurrentPhotoPath);
+            photoBadge.setVisibility(View.VISIBLE);
+//            setPic();
         }
     }
 
