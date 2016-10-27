@@ -37,6 +37,7 @@ import io.webguru.ticketing.R;
 
 import static io.webguru.ticketing.Agent.AgentMainActivity.userInfo;
 
+
 /**
  * A simple {@link Fragment} subclass.
  */

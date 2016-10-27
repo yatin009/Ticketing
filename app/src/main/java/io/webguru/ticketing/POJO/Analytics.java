@@ -2,89 +2,127 @@ package io.webguru.ticketing.POJO;
 
 import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
+import io.webguru.ticketing.Global.GlobalFunctions;
 
 /**
  * Created by yatin on 22/10/16.
  */
 
-public class Analytics {
-    private String date;
-    private int total_count;
-    private int incoming_count;
-    private int dispatched_count;
-    private int approval_count;
-    private int approved_count;
-    private int high_count;
+public class Analytics implements Serializable{
+    private String analyticsDate;
+    private int totalCount;
+    private int incomingCount;
+    private int dispatchedCount;
+    private int approvalCount;
+    private int approvedCount;
+    private int highCount;
+    private int mediumCount;
+    private int lowCount;
+
+    public Analytics() {
+    }
+
+    public Analytics(boolean isDefault) {
+        this.analyticsDate = GlobalFunctions.getTodaysDateFormatted();
+        this.totalCount = 0;
+        this.incomingCount = 0;
+        this.dispatchedCount = 0;
+        this.approvalCount = 0;
+        this.approvedCount = 0;
+        this.highCount = 0;
+        this.mediumCount = 0;
+        this.lowCount = 0;
+    }
 
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("date", date);
-        result.put("total_count", total_count);
-        result.put("incoming_count", incoming_count);
-        result.put("dispatched_count", dispatched_count);
-        result.put("approval_count", approval_count);
-        result.put("approved_count", approved_count);
-        result.put("high_count", high_count);
+        result.put("analyticsDate", analyticsDate);
+        result.put("total_count", totalCount);
+        result.put("incoming_count", incomingCount);
+        result.put("dispatched_count", dispatchedCount);
+        result.put("approval_count", approvalCount);
+        result.put("approved_count", approvedCount);
+        result.put("high_count", highCount);
+        result.put("medium_count", mediumCount);
+        result.put("low_count", lowCount);
 
         return result;
     }
 
-    public String getDate() {
-        return date;
+    public String getAnalyticsDate() {
+        return analyticsDate;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setAnalyticsDate(String analyticsDate) {
+        this.analyticsDate = analyticsDate;
     }
 
-    public int getTotal_count() {
-        return total_count;
+    public int getTotalCount() {
+        return totalCount;
     }
 
-    public void setTotal_count(int total_count) {
-        this.total_count = total_count;
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
     }
 
-    public int getIncoming_count() {
-        return incoming_count;
+    public int getIncomingCount() {
+        return incomingCount;
     }
 
-    public void setIncoming_count(int incoming_count) {
-        this.incoming_count = incoming_count;
+    public void setIncomingCount(int incomingCount) {
+        this.incomingCount = incomingCount;
     }
 
-    public int getDispatched_count() {
-        return dispatched_count;
+    public int getDispatchedCount() {
+        return dispatchedCount;
     }
 
-    public void setDispatched_count(int dispatched_count) {
-        this.dispatched_count = dispatched_count;
+    public void setDispatchedCount(int dispatchedCount) {
+        this.dispatchedCount = dispatchedCount;
     }
 
-    public int getApproval_count() {
-        return approval_count;
+    public int getApprovalCount() {
+        return approvalCount;
     }
 
-    public void setApproval_count(int approval_count) {
-        this.approval_count = approval_count;
+    public void setApprovalCount(int approvalCount) {
+        this.approvalCount = approvalCount;
     }
 
-    public int getApproved_count() {
-        return approved_count;
+    public int getApprovedCount() {
+        return approvedCount;
     }
 
-    public void setApproved_count(int approved_count) {
-        this.approved_count = approved_count;
+    public void setApprovedCount(int approvedCount) {
+        this.approvedCount = approvedCount;
     }
 
-    public int getHigh_count() {
-        return high_count;
+    public int getHighCount() {
+        return highCount;
     }
 
-    public void setHigh_count(int high_count) {
-        this.high_count = high_count;
+    public void setHighCount(int highCount) {
+        this.highCount = highCount;
+    }
+
+    public int getMediumCount() {
+        return mediumCount;
+    }
+
+    public void setMediumCount(int mediumCount) {
+        this.mediumCount = mediumCount;
+    }
+
+    public int getLowCount() {
+        return lowCount;
+    }
+
+    public void setLowCount(int lowCount) {
+        this.lowCount = lowCount;
     }
 }

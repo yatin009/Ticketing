@@ -11,6 +11,10 @@
             android:icon="@drawable/ic_donut_large_black_24dp"
             android:title="Analytics" />
         <item
+            android:id="@+id/nav_contractors"
+            android:icon="@drawable/ic_view_list_black_24dp"
+            android:title="Manage Contractors" />
+        <item
             android:id="@+id/nav_signout"
             android:icon="@drawable/ic_exit_to_app_black_24dp"
             android:title="Signout" />

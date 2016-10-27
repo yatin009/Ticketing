@@ -5,15 +5,43 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/gradient_background">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/FormTitle"
+                android:layout_gravity="center"
+                android:text="Total Number of Tickets" />
+
+            <TextView
+                android:id="@+id/total_count_value"
+                style="@style/FormTitle"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:text="0" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:background="@color/white"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp">
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/FormTitle"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:text="Summary on Status basis" />
 
             <lecho.lib.hellocharts.view.PieChartView
                 android:id="@+id/chart"
@@ -36,23 +64,24 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/green_circle" />
+                        android:src="@drawable/red_circle" />
 
                     <TextView
                         style="@style/TitleBadgeText"
                         android:layout_marginStart="5dp"
-                        android:text="For Approval"
+                        android:text="Incoming"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/green_circle" />
+                        android:layout_marginStart="15dp"
+                        android:src="@drawable/orange_circle" />
 
                     <TextView
                         style="@style/TitleBadgeText"
                         android:layout_marginStart="5dp"
-                        android:text="For Approval"
+                        android:text="Dispatched"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
                 </LinearLayout>
 
@@ -65,23 +94,24 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/green_circle" />
+                        android:src="@drawable/violet_circle" />
 
                     <TextView
                         style="@style/TitleBadgeText"
                         android:layout_marginStart="5dp"
-                        android:text="For Approval"
+                        android:text="Pending Approval"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
                         android:src="@drawable/green_circle" />
 
                     <TextView
                         style="@style/TitleBadgeText"
                         android:layout_marginStart="5dp"
-                        android:text="For Approval"
+                        android:text="Approved"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
                 </LinearLayout>
             </LinearLayout>
@@ -91,9 +121,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:background="@color/white"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp">
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/FormTitle"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_marginBottom="10dp"
+                android:text="Summary on Priority basis" />
 
             <lecho.lib.hellocharts.view.PieChartView
                 android:id="@+id/chart2"
@@ -116,23 +153,24 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/green_circle" />
+                        android:src="@drawable/red_circle" />
 
                     <TextView
                         style="@style/TitleBadgeText"
                         android:layout_marginStart="5dp"
-                        android:text="For Approval"
+                        android:text="High"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/green_circle" />
+                        android:layout_marginStart="15dp"
+                        android:src="@drawable/orange_circle" />
 
                     <TextView
                         style="@style/TitleBadgeText"
                         android:layout_marginStart="5dp"
-                        android:text="For Approval"
+                        android:text="Medium"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
                 </LinearLayout>
 
@@ -145,24 +183,15 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/green_circle" />
+                        android:src="@drawable/blue_circle" />
 
                     <TextView
                         style="@style/TitleBadgeText"
                         android:layout_marginStart="5dp"
-                        android:text="For Approval"
+                        android:text="Low"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/green_circle" />
 
-                    <TextView
-                        style="@style/TitleBadgeText"
-                        android:layout_marginStart="5dp"
-                        android:text="For Approval"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

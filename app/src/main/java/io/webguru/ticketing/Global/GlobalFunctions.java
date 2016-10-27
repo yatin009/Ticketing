@@ -34,6 +34,11 @@ public class GlobalFunctions {
         return formattedDt.format(new Date());
     }
 
+    public static String getTodaysDateAsFireBaseKey() {
+        java.text.SimpleDateFormat formattedDt = new java.text.SimpleDateFormat("ddMMyyyy", Locale.US);
+        return formattedDt.format(new Date());
+    }
+
     public static String getTime(){
         return "Time Exception";//DateFormat.getTimeInstance(DateFormat.SHORT).format(new Date());
     }

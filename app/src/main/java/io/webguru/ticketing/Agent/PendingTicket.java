@@ -128,16 +128,6 @@ public class PendingTicket extends Fragment {
             //
             @Override
             public void onItemClick(View view, int position) {
-//                Ticket ticket = ticketsArray[position];
-//                if(ticket.isDetailsShown()){
-//                    LinearLayout detailsLayout = (LinearLayout) view.findViewById(R.id.detial_layout);
-//                    detailsLayout.setVisibility(View.GONE);
-//                    ticket.setDetailsShown(false);
-//                }else {
-//                    LinearLayout detailsLayout = (LinearLayout) view.findViewById(R.id.detial_layout);
-//                    detailsLayout.setVisibility(View.VISIBLE);
-//                    ticket.setDetailsShown(true);
-//                }
                 Intent intent = new Intent(getActivity(), AgentTicketView.class);
                 intent.putExtra("UserInfo", userInfo);
                 intent.putExtra("Ticket", ticketsArray[position]);

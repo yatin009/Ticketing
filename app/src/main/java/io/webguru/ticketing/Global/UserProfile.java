@@ -2,9 +2,7 @@ package io.webguru.ticketing.Global;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
 
-import io.webguru.ticketing.Agent.ContractorListFragment;
 import io.webguru.ticketing.POJO.UserInfo;
 import io.webguru.ticketing.R;
 
@@ -19,7 +17,7 @@ public class UserProfile extends AppCompatActivity {
 //        userInfo = (UserInfo) bundle.get("UserInfo");
 //        GlobalFunctions.showToast(this, "User - "+userInfo.getFirstname() +" "+ userInfo.getLastname(), Toast.LENGTH_LONG);
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().add(R.id.container, new Analytics()).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.container, new AnalyticFragment()).commit();
         }
     }
 }

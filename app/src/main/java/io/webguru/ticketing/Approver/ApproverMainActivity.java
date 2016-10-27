@@ -11,7 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import io.webguru.ticketing.Global.Analytics;
+import io.webguru.ticketing.Global.AnalyticFragment;
 import io.webguru.ticketing.Global.SignOut;
 import io.webguru.ticketing.R;
 
@@ -65,7 +65,7 @@ public class ApproverMainActivity extends AppCompatActivity
             fragmentTransaction.commit();
         } else if (id == R.id.nav_analytics) {
             Toast.makeText(getApplicationContext(),"StaffList Selected",Toast.LENGTH_SHORT).show();
-            Analytics fragment = new Analytics();
+            AnalyticFragment fragment = new AnalyticFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.content_main2,fragment);
             fragmentTransaction.commit();

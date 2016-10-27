@@ -13,18 +13,25 @@ public class UserContractor {
 
     private String companyName;
     private String name;
-    private String contactNumber;
+    private int contactNumber;
     private String email;
 
     public UserContractor(){
 
     }
 
+    public UserContractor(String companyName, String name, int contactNumber, String email){
+        this.companyName = companyName;
+        this.name = name;
+        this.contactNumber = contactNumber;
+        this.email =email;
+    }
+
     public UserContractor(boolean defaultUser){
         this.companyName = "XYZ";
         this.name = "asd";
         this.email = "qwe@gmail.com";
-        this.contactNumber = "123123";
+        this.contactNumber = 123123;
     }
 
     @Exclude
@@ -54,11 +61,11 @@ public class UserContractor {
         this.name = name;
     }
 
-    public String getContactNumber() {
+    public int getContactNumber() {
         return contactNumber;
     }
 
-    public void setContactNumber(String contactNumber) {
+    public void setContactNumber(int contactNumber) {
         this.contactNumber = contactNumber;
     }
 

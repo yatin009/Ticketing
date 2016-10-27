@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -15,9 +16,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -29,13 +28,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -55,8 +57,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.webguru.ticketing.Agent.AgentMainActivity;
 import io.webguru.ticketing.Global.GlobalFunctions;
+import io.webguru.ticketing.POJO.Analytics;
 import io.webguru.ticketing.POJO.FieldAgentData;
-import io.webguru.ticketing.POJO.ManagerData;
 import io.webguru.ticketing.POJO.RequesterData;
 import io.webguru.ticketing.POJO.Ticket;
 import io.webguru.ticketing.POJO.UserInfo;
@@ -68,6 +70,8 @@ import static io.webguru.ticketing.Global.GlobalConstant.FILE_STORAGE_PATH;
 
 public class AddTicketRequest extends AppCompatActivity {
 
+    static final int REQUEST_TAKE_PHOTO = 1991;
+    static final int MY_PERMISSIONS_REQUEST_CAMERA = 1992;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.text_site)
@@ -86,21 +90,19 @@ public class AddTicketRequest extends AppCompatActivity {
     ImageView photoBadge;
     @Bind(R.id.viewFlipper)
     ViewFlipper viewFlipper;
-
-    boolean isAgent=false;
-
+    boolean isAgent = false;
+    FirebaseStorage storage;
+    StorageReference storageRef, photoRef;
+    Analytics analytics;
+    ProgressDialog progressDialog;
     private String TAG = "ADDTICKETREQUEST";
-    static final int REQUEST_TAKE_PHOTO = 1991;
-    static final int MY_PERMISSIONS_REQUEST_CAMERA = 1992;
     private String mCurrentPhotoPath;
     private boolean isSignatureTaken = false;
-
     private FieldAgentData fieldAgentData;
     private RequesterData requesterData;
     private Ticket ticket;
     private UserInfo userInfo;
-    FirebaseStorage storage;
-    StorageReference storageRef, photoRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,10 +111,10 @@ public class AddTicketRequest extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //TODO Handle null case
         Bundle bundle = getIntent().getExtras();
-        if(bundle!=null){
+        if (bundle != null) {
             isAgent = bundle.getBoolean("isAgent");
         }
-        if(isAgent && getSupportActionBar()!=null){
+        if (isAgent && getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         //Receving UserInfo Object from Intent
@@ -125,15 +127,15 @@ public class AddTicketRequest extends AppCompatActivity {
         prioritySeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int value, boolean b) {
-                if(value>=0 && value<30){
+                if (value >= 0 && value < 30) {
                     textViewPriorityValue.setText("LOW");
                     textViewPriorityValue.setTextColor(Color.BLACK);
                 }
-                if(value>=30 && value<70){
+                if (value >= 30 && value < 70) {
                     textViewPriorityValue.setText("MEDIUM");
-                    textViewPriorityValue.setTextColor(Color.rgb(255,165,0)); // Orange
+                    textViewPriorityValue.setTextColor(Color.rgb(255, 165, 0)); // Orange
                 }
-                if(value>=70 && value<=100){
+                if (value >= 70 && value <= 100) {
                     textViewPriorityValue.setText("HIGH");
                     textViewPriorityValue.setTextColor(Color.RED);
                 }
@@ -152,46 +154,46 @@ public class AddTicketRequest extends AppCompatActivity {
     }
 
     @OnClick(R.id.location_previous)
-    public void locationPrevious(){
+    public void locationPrevious() {
         viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
         viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
         viewFlipper.showPrevious();
     }
 
     @OnClick(R.id.location_next)
-    public void locationNext(){
+    public void locationNext() {
         viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
         viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
         viewFlipper.showNext();
     }
 
     @OnClick(R.id.description_previous)
-    public void descriptionPrevious(){
+    public void descriptionPrevious() {
         viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
         viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
         viewFlipper.showPrevious();
     }
 
     @OnClick(R.id.request_ticket)
-    public void requestTicket(){
+    public void requestTicket() {
         String priority = textViewPriorityValue.getText().toString();
         String site = editSite.getText().toString();
-        if("".equals(site)){
+        if ("".equals(site)) {
             editSite.setError("Invalid Site");
             return;
         }
         String shop = editShop.getText().toString();
-        if("".equals(shop)){
+        if ("".equals(shop)) {
             editShop.setError("Invalid Shop");
             return;
         }
         String location = editLocation.getText().toString();
-        if("".equals(location)){
+        if ("".equals(location)) {
             editLocation.setError("Invalid Location");
             return;
         }
         String description = editDescription.getText().toString();
-        if("".equals(description)){
+        if ("".equals(description)) {
             editDescription.setError("Invalid Description");
             return;
         }
@@ -211,15 +213,15 @@ public class AddTicketRequest extends AppCompatActivity {
     }
 
     @OnClick(R.id.click_photo)
-    public void clickPhoto(){
-        Log.d(TAG,"Inside click_photo");
+    public void clickPhoto() {
+        Log.d(TAG, "Inside click_photo");
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     1999);
-        }else {
+        } else {
             takePhoto();
         }
     }
@@ -249,79 +251,61 @@ public class AddTicketRequest extends AppCompatActivity {
         }
     }
 
-    ProgressDialog progressDialog;
-
     @OnClick(R.id.request_ticket_1)
-    public void requestTicket1(){
-
-        String location = editLocation.getText().toString();
-        if("".equals(location)){
+    public void requestTicket1() {
+        final String location = editLocation.getText().toString();
+        if ("".equals(location)) {
             editLocation.setError("Invalid Location");
             return;
         }
-        String description = editDescription.getText().toString();
-        if("".equals(description)){
+        final String description = editDescription.getText().toString();
+        if ("".equals(description)) {
             editDescription.setError("Invalid Description");
             return;
         }
-        if(mCurrentPhotoPath==null || "".equals(mCurrentPhotoPath)){
+        if (mCurrentPhotoPath == null || "".equals(mCurrentPhotoPath)) {
             GlobalFunctions.showToast(this, "Please add a photo", Toast.LENGTH_LONG);
             return;
         }
-        String priority = textViewPriorityValue.getText().toString();
+        final String priority = textViewPriorityValue.getText().toString();
         progressDialog = new ProgressDialog(this);
         progressDialog.show(this, "Creating Ticket", "Uploading Image...Please wait", false, false);
-        String ticketNumber = GlobalFunctions.getCurrentDateInMilliseconds();
-        requesterData = new RequesterData(description, priority, location, "", "", userInfo);
-        //TODO HARDCODED AGENT ASSIGNED
-        ticket = new Ticket(ticketNumber, "Incoming", Integer.parseInt(userInfo.getUserid()),
-                1, 0, 0, GlobalFunctions.getCurrentDateTime(), requesterData, "1_Incoming");
-
-        InputStream stream = null;
-        try {
-            stream = new FileInputStream(new File(mCurrentPhotoPath));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        photoRef = storageRef.child("issue_image/"+ticketNumber+".jpg");
-        UploadTask uploadTask = photoRef.putStream(stream);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
+        DatabaseReference mDatabase1 = FirebaseDatabase.getInstance().getReference().child("analytics").child(GlobalFunctions.getTodaysDateAsFireBaseKey());
+        mDatabase1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onFailure(@NonNull Exception exception) {
-                progressDialog.dismiss();
-                Log.d(TAG,"FAIL TO UPLOAD IMAGE");
-                // Handle unsuccessful uploads
+            public void onDataChange(DataSnapshot snapshot) {
+                if(snapshot!=null && snapshot.getValue()!=null) {
+                    analytics = snapshot.getValue(Analytics.class);
+                }else{
+                    System.out.println("No data exists for analyitcs on " + GlobalFunctions.getTodaysDateFormatted());
+                    analytics = new Analytics(true);
+                }
+                analytics.setIncomingCount(analytics.getIncomingCount()+1);
+                if("HIGH".equals(priority)){
+                    analytics.setHighCount(analytics.getHighCount()+1);
+                }
+                if("MEDIUM".equals(priority)){
+                    analytics.setMediumCount(analytics.getMediumCount()+1);
+                }
+                if("LOW".equals(priority)){
+                    analytics.setLowCount(analytics.getLowCount()+1);
+                }
+                UploadTicekt(description, priority, location);
             }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.d(TAG,"Success TO UPLOAD IMAGE");
-                progressDialog.setMessage("Updating information of ticket..Please wait");
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                Map<String, Object> childUpdates = new HashMap<>();
-                childUpdates.put("/ticketing/" + ticket.getTicketNumber(), ticket.toMap());
-                mDatabase.updateChildren(childUpdates).addOnCompleteListener(AddTicketRequest.this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        progressDialog.dismiss();
-                        Intent intent;
-                        if(isAgent){
-                            intent = new Intent(AddTicketRequest.this, AgentMainActivity.class);
-                        }else{
-                            intent = new Intent(AddTicketRequest.this, SplashScreen.class);
-                        }
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                    }
-                });
+            public void onCancelled(DatabaseError databaseError) {
+                progressDialog.dismiss();
+                showFailureMessage();
             }
         });
+
     }
 
-    private void takePhoto(){
+    private void takePhoto() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
-        Log.d(TAG,"Inside takePictureIntent.resolveActivity(getPackageManager()) != null >> "+(takePictureIntent.resolveActivity(getPackageManager()) != null));
+        Log.d(TAG, "Inside takePictureIntent.resolveActivity(getPackageManager()) != null >> " + (takePictureIntent.resolveActivity(getPackageManager()) != null));
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             // Create the File where the photo should go
             File photoFile = null;
@@ -345,7 +329,7 @@ public class AddTicketRequest extends AppCompatActivity {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir =   getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File storageDir = getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
@@ -354,7 +338,7 @@ public class AddTicketRequest extends AppCompatActivity {
 
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
-        Log.d("IMAGEPATH","path of image mCurrentPhotoPath >>> "+mCurrentPhotoPath);
+        Log.d("IMAGEPATH", "path of image mCurrentPhotoPath >>> " + mCurrentPhotoPath);
         return image;
     }
 
@@ -379,7 +363,7 @@ public class AddTicketRequest extends AppCompatActivity {
         int photoH = bmOptions.outHeight;
 
         // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
@@ -399,6 +383,84 @@ public class AddTicketRequest extends AppCompatActivity {
 //        });
     }
 
+    private void UploadTicekt(String description, final String priority, String location) {
+        String ticketNumber = GlobalFunctions.getCurrentDateInMilliseconds();
+        requesterData = new RequesterData(description, priority, location, "", "", userInfo);
+        //TODO HARDCODED AGENT ASSIGNED
+        ticket = new Ticket(ticketNumber, "Incoming", Integer.parseInt(userInfo.getUserid()),
+                1, 0, 0, GlobalFunctions.getCurrentDateTime(), requesterData, "1_Incoming");
+
+        InputStream stream = null;
+        try {
+            stream = new FileInputStream(new File(mCurrentPhotoPath));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        photoRef = storageRef.child("issue_image/" + ticketNumber + ".jpg");
+        UploadTask uploadTask = photoRef.putStream(stream);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                progressDialog.dismiss();
+                Log.d(TAG, "FAIL TO UPLOAD IMAGE");
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.d(TAG, "Success TO UPLOAD IMAGE");
+                progressDialog.setMessage("Updating information of ticket..Please wait");
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                Map<String, Object> childUpdates = new HashMap<>();
+                childUpdates.put("/ticketing/" + ticket.getTicketNumber(), ticket.toMap());
+                mDatabase.updateChildren(childUpdates).addOnCompleteListener(AddTicketRequest.this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        DatabaseReference mDatabase1 = FirebaseDatabase.getInstance().getReference();
+                        Map<String, Object> childUpdates1 = new HashMap<>();
+                        childUpdates1.put("/analytics/" + GlobalFunctions.getTodaysDateAsFireBaseKey(), analytics);
+                        mDatabase1.updateChildren(childUpdates1).addOnCompleteListener(AddTicketRequest.this, new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                progressDialog.dismiss();
+                                Intent intent;
+                                if (isAgent) {
+                                    intent = new Intent(AddTicketRequest.this, AgentMainActivity.class);
+                                } else {
+                                    intent = new Intent(AddTicketRequest.this, SplashScreen.class);
+                                }
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            }
+                        }).addOnFailureListener(AddTicketRequest.this, new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressDialog.dismiss();
+                                showFailureMessage();
+                            }
+                        });
+                    }
+                }).addOnFailureListener(AddTicketRequest.this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        showFailureMessage();
+                    }
+                });
+            }
+        }).addOnFailureListener(AddTicketRequest.this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
+                showFailureMessage();
+            }
+        });
+    }
+
+    private void showFailureMessage(){
+        GlobalFunctions.showToast(AddTicketRequest.this, "Some problem occured while Creating Ticket. Please check Internet Connection and try again.", Toast.LENGTH_LONG);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -406,7 +468,7 @@ public class AddTicketRequest extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case android.R.id.home:
                 onBackPressed();
                 break;

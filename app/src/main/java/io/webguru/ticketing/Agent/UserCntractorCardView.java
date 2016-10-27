@@ -1,5 +1,8 @@
 package io.webguru.ticketing.Agent;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
@@ -15,6 +18,7 @@ import io.webguru.ticketing.R;
  */
 
 public class UserCntractorCardView extends RecyclerView.ViewHolder {
+
     @Bind(R.id.contractor_company)
     TextView contractorCompany;
     @Bind(R.id.contractor_name)
@@ -24,6 +28,8 @@ public class UserCntractorCardView extends RecyclerView.ViewHolder {
     @Bind(R.id.call_contractor_button)
     ImageButton callContractor;
 
+    Context context;
+
     private View mView;
 
     public UserCntractorCardView(View itemView) {
@@ -32,8 +38,12 @@ public class UserCntractorCardView extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, mView);
     }
 
-    public void setViewElements(UserContractor userContractor){
+    public void setViewElements(UserContractor userContractor, Context context){
+        this.context = context;
         setCompanyName(userContractor.getCompanyName());
+        setName(userContractor.getName());
+        setContactNumber(userContractor.getContactNumber()+"");
+        setEmail(userContractor.getEmail());
     }
 
     private void setCompanyName(String cmpnyName){
@@ -42,6 +52,17 @@ public class UserCntractorCardView extends RecyclerView.ViewHolder {
 
     private void setName(String name){
         contractorName.setText(name);
+    }
+
+    private void setContactNumber(final String contactNumber){
+        callContractor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + contactNumber));
+                context.startActivity(intent);
+            }
+        });
     }
 
     private void setEmail(String email){

@@ -1,7 +1,7 @@
 package io.webguru.ticketing.Agent;
 
 
-import android.content.Intent;
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -9,21 +9,24 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,13 +34,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.webguru.ticketing.Global.GlobalFunctions;
-import io.webguru.ticketing.Global.RecyclerItemClickListener;
-import io.webguru.ticketing.POJO.ManagerData;
-import io.webguru.ticketing.POJO.Ticket;
 import io.webguru.ticketing.POJO.UserContractor;
 import io.webguru.ticketing.R;
-
-import static io.webguru.ticketing.Agent.AgentMainActivity.userInfo;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -85,7 +83,7 @@ public class ContractorListFragment extends Fragment {
             @Override
             protected void populateViewHolder(UserCntractorCardView viewHolder, UserContractor userContractor, int position) {
                 mProgressBar.setVisibility(View.GONE);
-                viewHolder.setViewElements(userContractor);
+                viewHolder.setViewElements(userContractor, getActivity());
             }
         };
         mRecyclerView.setAdapter(mAdapter);
@@ -156,10 +154,70 @@ public class ContractorListFragment extends Fragment {
 
 
     @OnClick(R.id.fab)
-    public void addContractor(){
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/contractor_list/" + GlobalFunctions.getCurrentDateInMilliseconds(), new UserContractor(true).toMap());
-        mDatabase.updateChildren(childUpdates);
+    public void addContractor() {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        // Get the layout inflater
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        View view = inflater.inflate(R.layout.dialog_add_contractor, null);
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        builder.setView(view);
+        builder.setCancelable(true);
+        // set the custom dialog components - text, image and button
+        final TextInputEditText companyName = (TextInputEditText) view.findViewById(R.id.company_name);
+        final TextInputEditText name = (TextInputEditText) view.findViewById(R.id.name);
+        final TextInputEditText contactNumber = (TextInputEditText) view.findViewById(R.id.contact_number);
+        final TextInputEditText email = (TextInputEditText) view.findViewById(R.id.email);
+
+        AppCompatButton addContractor = (AppCompatButton) view.findViewById(R.id.add_contractor);
+        final Dialog dialog = builder.create();
+        // if button is clicked, close the custom dialog
+        addContractor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String companyNameValue = companyName.getText().toString();
+                if ("".equals(companyNameValue)) {
+                    companyName.setError("Invalid Company Name");
+                    return;
+                }
+                String nameValue = name.getText().toString();
+                if ("".equals(companyNameValue)) {
+                    name.setError("Invalid Company Name");
+                    return;
+                }
+                String contactNumberValue = contactNumber.getText().toString();
+                if ("".equals(companyNameValue)) {
+                    contactNumber.setError("Invalid Company Name");
+                    return;
+                }
+                String emailValue = email.getText().toString();
+                if ("".equals(companyNameValue)) {
+                    email.setError("Invalid Company Name");
+                    return;
+                }
+                UserContractor userContractor = new UserContractor(companyNameValue, nameValue, Integer.parseInt(contactNumberValue), emailValue);
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                Map<String, Object> childUpdates = new HashMap<>();
+                childUpdates.put("/contractor_list/" + GlobalFunctions.getCurrentDateInMilliseconds(), userContractor.toMap());
+                mDatabase.updateChildren(childUpdates);
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        strechDailog(dialog);
     }
+
+    public void strechDailog(Dialog dialog) {
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        Window window = dialog.getWindow();
+        lp.copyFrom(window.getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        window.setAttributes(lp);
+        lp = null;
+        window = null;
+    }
+
 }

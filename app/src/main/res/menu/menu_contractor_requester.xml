@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="io.webguru.ticketing.Requester.RequesterMainActivity">
 
-    <item android:id="@+id/action_ticket" android:icon="@drawable/ic_add_circle_outline_white_36dp"
-        android:title="Add Ticket"
-        android:orderInCategory="100" app:showAsAction="always" />
+
+    <item android:id="@+id/action_signout" android:title="@string/action_signout"
+        android:orderInCategory="100" app:showAsAction="never" />
 </menu>

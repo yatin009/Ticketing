@@ -102,7 +102,7 @@ public class ContractorMainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_field_main, menu);
+        getMenuInflater().inflate(R.menu.menu_contractor_requester, menu);
         return true;
     }
 
@@ -113,12 +113,6 @@ public class ContractorMainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_profile) {
-            Intent intent = new Intent(ContractorMainActivity.this, UserProfile.class);
-            intent.putExtra("UserInfo", userInfo);
-            startActivity(intent);
-            return true;
-        }
         if (id == R.id.action_signout) {
             Intent intent = new Intent(ContractorMainActivity.this, SignOut.class);
             intent.putExtra("UserInfo", userInfo);

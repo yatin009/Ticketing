@@ -68,7 +68,6 @@
         <activity
             android:name=".Agent.AgentTicketView"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".Agent.Contractor"></activity>
     </application>
 
 </manifest>
