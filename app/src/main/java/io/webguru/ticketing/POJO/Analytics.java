@@ -19,6 +19,7 @@ public class Analytics implements Serializable{
     private int dispatchedCount;
     private int approvalCount;
     private int approvedCount;
+    private int workCompletedCount;
     private int highCount;
     private int mediumCount;
     private int lowCount;
@@ -33,6 +34,7 @@ public class Analytics implements Serializable{
         this.dispatchedCount = 0;
         this.approvalCount = 0;
         this.approvedCount = 0;
+        this.workCompletedCount = 0;
         this.highCount = 0;
         this.mediumCount = 0;
         this.lowCount = 0;
@@ -42,14 +44,15 @@ public class Analytics implements Serializable{
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("analyticsDate", analyticsDate);
-        result.put("total_count", totalCount);
-        result.put("incoming_count", incomingCount);
-        result.put("dispatched_count", dispatchedCount);
-        result.put("approval_count", approvalCount);
-        result.put("approved_count", approvedCount);
-        result.put("high_count", highCount);
-        result.put("medium_count", mediumCount);
-        result.put("low_count", lowCount);
+        result.put("totalCount", totalCount);
+        result.put("incomingCount", incomingCount);
+        result.put("dispatchedCount", dispatchedCount);
+        result.put("approvalCount", approvalCount);
+        result.put("approvedCount", approvedCount);
+        result.put("workCompletedCount", approvedCount);
+        result.put("highCount", highCount);
+        result.put("mediumCount", mediumCount);
+        result.put("lowCount", lowCount);
 
         return result;
     }
@@ -100,6 +103,14 @@ public class Analytics implements Serializable{
 
     public void setApprovedCount(int approvedCount) {
         this.approvedCount = approvedCount;
+    }
+
+    public int getWorkCompletedCount() {
+        return workCompletedCount;
+    }
+
+    public void setWorkCompletedCount(int workCompletedCount) {
+        this.workCompletedCount = workCompletedCount;
     }
 
     public int getHighCount() {

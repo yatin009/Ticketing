@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -12,7 +13,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import io.webguru.ticketing.Global.GlobalFunctions;
-import io.webguru.ticketing.POJO.FieldAgentData;
 import io.webguru.ticketing.POJO.Ticket;
 import io.webguru.ticketing.R;
 
@@ -35,16 +35,16 @@ public class RequesterTicketHolder extends RecyclerView.ViewHolder {
             return;
         }
         setPriority(ticket.getPriority());
-        setTicketStatus(ticket.getStatus());
         setTicketNumber(ticket.getTicketNumber());
         setProblem(ticket.getRequester().getIssue());
         setLocation(ticket.getRequester().getLocation());
         setDateTime(ticket.getDateTime());
-
-        setSite(ticket.getRequester().getSite());
-        setShop(ticket.getRequester().getShop());
-
-        setDetailsView(ticket.getRequester().getShop(), ticket.getRequester().getIssue());
+//        if(ticket.getContractorData()!=null){
+//            setTicketFinalCost(ticket.getContractorData().getQuotePriceTotal());
+//        } else {
+//            LinearLayout linearLayout = (LinearLayout) mView.findViewById(R.id.quote_cost_layout);
+//            linearLayout.setVisibility(View.GONE);
+//        }
     }
 
     private void setPriority(String priority) {
@@ -63,17 +63,6 @@ public class RequesterTicketHolder extends RecyclerView.ViewHolder {
         txtPriority.setText(priority);
     }
 
-    private void setTicketStatus(String status) {
-        ImageView ticketStatus = (ImageView) mView.findViewById(R.id.ticket_status_image);
-        if( "pending".equals(status)){
-            ticketStatus.setImageResource(R.drawable.ticket_pending);
-        }else if ("approved".equals(status)){
-            ticketStatus.setImageResource(R.drawable.ticket_approved);
-        }else if("canceled".equals(status)){
-            ticketStatus.setImageResource(R.drawable.ticket_cancled);
-        }
-    }
-
     private void setTicketNumber(String ticketNumber) {
         TextView txtTicketNumber = (TextView) mView.findViewById(R.id.ticket_number);
         if(ticketNumber==null || "".equals(ticketNumber)){
@@ -84,13 +73,20 @@ public class RequesterTicketHolder extends RecyclerView.ViewHolder {
     }
 
     private void setProblem(String problem) {
-//        TextView txtProblem = (TextView) mView.findViewById(R.id.txtProblem);
-//        txtProblem.setText(problem);
+        TextView txtProblem = (TextView) mView.findViewById(R.id.ticket_description);
+        txtProblem.setText(problem);
     }
 
     private void setLocation(String problem) {
         TextView txtLocation = (TextView) mView.findViewById(R.id.ticket_location);
         txtLocation.setText(problem);
+    }
+
+    private void setTicketFinalCost(double finalPrice){
+        LinearLayout linearLayout = (LinearLayout) mView.findViewById(R.id.quote_cost_layout);
+        linearLayout.setVisibility(View.VISIBLE);
+        TextView costView = (TextView) mView.findViewById(R.id.final_cost);
+        costView.setText("$ "+finalPrice);
     }
 
     private void setDateTime(String dateTime) {
@@ -120,26 +116,5 @@ public class RequesterTicketHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    private void setSite(String site){
-//        TextView txtSite = (TextView) mView.findViewById(R.id.ticket_site);
-//        txtSite.setText(site);
-    }
-
-    private void setShop(String shop){
-//        TextView txtShop = (TextView) mView.findViewById(R.id.txtShop);
-//        txtShop.setText(shop);
-    }
-
-    private void setScope(String scope){
-//        TextView txtScope = (TextView) mView.findViewById(R.id.ticket_scope);
-//        txtScope.setText(scope);
-    }
-
-    private void setDetailsView(String shopText, String issueText){
-        TextView shop = (TextView) mView.findViewById(R.id.shop_value);
-        TextView issue = (TextView) mView.findViewById(R.id.issue_value);
-        shop.setText(shopText);
-        issue.setText(issueText);
-    }
 
 }

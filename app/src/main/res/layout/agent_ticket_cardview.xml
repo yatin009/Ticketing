@@ -27,16 +27,9 @@
                 android:background="@color/colorPrimaryLight"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:paddingBottom="20dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="20dp">
-
-                <!--<ImageView-->
-                    <!--android:id="@+id/ticket_status_image"-->
-                    <!--android:layout_width="40dp"-->
-                    <!--android:layout_height="40dp"-->
-                    <!--android:src="@drawable/ticket_pending" />-->
 
                 <TextView
                     android:id="@+id/ticket_date"
@@ -46,12 +39,44 @@
                     android:textSize="14sp" />
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="at"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp" />
+
+                <TextView
                     android:id="@+id/ticket_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:textColor="@android:color/white"
-                    android:layout_marginTop="20dp"
                     android:textSize="14sp" />
+
+                <LinearLayout
+                    android:id="@+id/quote_cost_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cost"
+                        android:textColor="@color/colorPrimaryDarker"
+                        android:textStyle="bold"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/final_cost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPrimaryDarker"
+                        android:textSize="16sp" />
+                </LinearLayout>
 
             </LinearLayout>
             <!-- RIGHT TITLE PART -->
@@ -90,7 +115,7 @@
                             android:layout_marginTop="-5dp"
                             android:ellipsize="marquee"
                             android:fadingEdge="horizontal"
-                            android:singleLine="true"
+                            android:maxLines="1"
                             android:textColor="@android:color/black"
                             android:textSize="16sp" />
 
@@ -108,7 +133,7 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="marquee"
                             android:fadingEdge="horizontal"
-                            android:singleLine="true"
+                            android:maxLines="1"
                             android:textColor="@android:color/black"
                             android:textSize="16sp" />
                     </LinearLayout>
@@ -140,38 +165,38 @@
                             android:text="test" />
                     </LinearLayout>
 
-
-                    <ImageView
-                        android:id="@+id/text_divider"
-                        android:layout_width="2dp"
-                        android:layout_height="25dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginStart="10dp"
-                        android:src="@color/contentDividerLine" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            style="@style/TitleBadgeTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Description" />
-
-                        <TextView
-                            android:id="@+id/ticket_site"
-                            style="@style/TitleBadgeText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="marquee"
-                            android:text="test" />
-
-                    </LinearLayout>
                 </LinearLayout>
 
+                <ImageView
+                    android:id="@+id/text_divider"
+                    android:layout_width="25dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="10dp"
+                    android:src="@color/contentDividerLine" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TitleBadgeTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Description" />
+
+                    <TextView
+                        android:id="@+id/ticket_site"
+                        style="@style/TitleBadgeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="marquee"
+                        android:maxLines="2"
+                        android:fadingEdge="horizontal"
+                        android:text="test" />
+
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -179,8 +204,8 @@
             android:id="@+id/detial_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_margin="5dp"
+            android:orientation="vertical"
             android:visibility="gone">
 
             <LinearLayout
@@ -294,24 +319,24 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginTop="10dp"
-                android:padding="5dp"
+                android:clickable="false"
                 android:gravity="center"
-                android:clickable="false">
+                android:orientation="horizontal"
+                android:padding="5dp">
 
                 <TextView
                     android:id="@+id/assign_contractor"
-                    android:clickable="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:padding="15dp"
-                    android:textSize="20sp"
-                    android:textAlignment="center"
                     android:background="@color/attentionColor"
-                    android:textStyle="bold"
-                    android:text="Assign Contractor"/>
+                    android:clickable="true"
+                    android:padding="15dp"
+                    android:text="Assign Contractor"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
             </FrameLayout>
 

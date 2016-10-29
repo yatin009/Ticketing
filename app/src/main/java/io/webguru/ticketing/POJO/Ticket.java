@@ -15,6 +15,7 @@ public class Ticket implements Serializable{
     private String ticketNumber;
     private String status;
     private String priority;
+    private String issueImageName;
     private int requesterId;
     private int agentId;
     private int approverId;
@@ -25,6 +26,8 @@ public class Ticket implements Serializable{
     private ContractorData contractorData;
     private String isVisibleContractor;
     private ApprovarData approvarData;
+    private WorkCompleted workCompleted;
+    private WorkRating workRating;
     private String agent_status;
 
     private boolean isDetailsShown;
@@ -33,10 +36,11 @@ public class Ticket implements Serializable{
 
     }
 
-    public Ticket(String ticketNumber, String status, int requesterId, int agentId, int approverId, int contractorId, String dateTime, RequesterData requesterData, String agent_status){
+    public Ticket(String ticketNumber, String status, String issueImageName, int requesterId, int agentId, int approverId, int contractorId, String dateTime, RequesterData requesterData, String agent_status){
         this.ticketNumber = ticketNumber;
         this.status = status;
         this.priority = requesterData.getPriority();
+        this.issueImageName = issueImageName;
         this.requesterId =requesterId;
         this.agentId = agentId;
         this.approverId = approverId;
@@ -52,6 +56,7 @@ public class Ticket implements Serializable{
         result.put("ticketNumber", ticketNumber);
         result.put("status", status);
         result.put("priority", priority);
+        result.put("issueImageName", issueImageName);
         result.put("requesterId", requesterId);
         result.put("agentId", agentId);
         result.put("approverId", approverId);
@@ -62,6 +67,8 @@ public class Ticket implements Serializable{
         result.put("contractorData", contractorData);
         result.put("isVisibleContractor", isVisibleContractor);
         result.put("approvarData", approvarData);
+        result.put("workCompleted", workCompleted);
+        result.put("workRating", workRating);
         result.put("agent_status", agent_status);
 
         return result;
@@ -89,6 +96,14 @@ public class Ticket implements Serializable{
 
     public void setPriority(String priority) {
         this.priority = priority;
+    }
+
+    public String getIssueImageName() {
+        return issueImageName;
+    }
+
+    public void setIssueImageName(String issueImageName) {
+        this.issueImageName = issueImageName;
     }
 
     public int getRequesterId() {
@@ -169,6 +184,22 @@ public class Ticket implements Serializable{
 
     public void setApprovarData(ApprovarData approvarData) {
         this.approvarData = approvarData;
+    }
+
+    public WorkCompleted getWorkCompleted() {
+        return workCompleted;
+    }
+
+    public void setWorkCompleted(WorkCompleted workCompleted) {
+        this.workCompleted = workCompleted;
+    }
+
+    public WorkRating getWorkRating() {
+        return workRating;
+    }
+
+    public void setWorkRating(WorkRating workRating) {
+        this.workRating = workRating;
     }
 
     public String getAgent_status() {

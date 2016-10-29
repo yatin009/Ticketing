@@ -24,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -64,7 +65,10 @@ import io.webguru.ticketing.POJO.ContractorData;
 import io.webguru.ticketing.POJO.RequesterData;
 import io.webguru.ticketing.POJO.Ticket;
 import io.webguru.ticketing.POJO.UserInfo;
+import io.webguru.ticketing.POJO.WorkCompleted;
+import io.webguru.ticketing.POJO.WorkRating;
 import io.webguru.ticketing.R;
+import io.webguru.ticketing.Requester.RequesterMainActivity;
 
 import static io.webguru.ticketing.Global.GlobalConstant.FILE_STORAGE_PATH;
 
@@ -75,6 +79,8 @@ public class AgentTicketView extends AppCompatActivity {
 
     @Bind(R.id.progress_dialog)
     ProgressBar progressBar;
+    @Bind(R.id.left_side_of_ticket)
+    LinearLayout leftSideofTicket;
     @Bind(R.id.ticket_priority)
     TextView priorityView;
     @Bind(R.id.date_value)
@@ -122,7 +128,7 @@ public class AgentTicketView extends AppCompatActivity {
     @Bind(R.id.text_quote_parts)
     TextInputEditText quotePartsEdit;
     @Bind(R.id.text_qoute_tax)
-    TextInputEditText quoteTaxEdit;
+    TextView quoteTaxEdit;
     @Bind(R.id.total_value)
     TextView totalTextValue;
 
@@ -168,6 +174,51 @@ public class AgentTicketView extends AppCompatActivity {
     TextView approverNoteValue;
     @Bind(R.id.approval_date)
     TextView approvalDate;
+
+    @Bind(R.id.contractor_work_layout)
+    LinearLayout contractorWorkLayout;
+    @Bind(R.id.text_final_quote_labour)
+    TextInputEditText textFinalQuoteLabour;
+    @Bind(R.id.text_final_quote_parts)
+    TextInputEditText textFinalQuoteParts;
+    @Bind(R.id.text_final_qoute_tax)
+    TextView textFinalQouteTax;
+    @Bind(R.id.final_total_value)
+    TextView finalTotalValue;
+    @Bind(R.id.final_contractor_note)
+    TextInputEditText finalContractorNote;
+
+    @Bind(R.id.contractor_work_view_layout)
+    LinearLayout contractorWorkViewLayout;
+    @Bind(R.id.sensitive_data_layout)
+    LinearLayout sensitiveDataLayout;
+    @Bind(R.id.work_completed_date)
+    TextView workCompletedDate;
+    @Bind(R.id.final_price_value)
+    TextView finalPriceValue;
+    @Bind(R.id.final_parts_value)
+    TextView finalPartsValue;
+    @Bind(R.id.final_others_value)
+    TextView finalOthersValue;
+    @Bind(R.id.final_contactor_comment)
+    TextView finalContactorComment;
+
+    @Bind(R.id.requester_rating_layout)
+    LinearLayout requesterRatingLayout;
+    @Bind(R.id.requester_work_rating)
+    RatingBar requesterWorkRating;
+    @Bind(R.id.requester_work_note)
+    TextInputEditText requesterWorkNote;
+
+    @Bind(R.id.requester_rating_view_layout)
+    LinearLayout requesterRatingViewLayout;
+    @Bind(R.id.work_rated_date)
+    TextView workRatedDate;
+    @Bind(R.id.requester_work_view_rating)
+    RatingBar requesterWorkViewRating;
+    @Bind(R.id.requester_work_comment)
+    TextView requesterWorkComment;
+
     ArrayAdapter<String> contractorAdapter, employeeAdapter;
     ProgressDialog progressDialog;
     Analytics analytics;
@@ -177,7 +228,10 @@ public class AgentTicketView extends AppCompatActivity {
     private AgentData agentData;
     private ContractorData contractorData;
     private ApprovarData approvarData;
+    private WorkCompleted workCompleted;
+    private WorkRating workRating;
     private String userRole;
+    private int rating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,24 +253,28 @@ public class AgentTicketView extends AppCompatActivity {
         requesterData = ticket.getRequester();
         setViews();
         spinnerValues();
-        StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(FILE_STORAGE_PATH).child("issue_image/" + ticket.getTicketNumber() + ".jpg");
-        storageRef.getDownloadUrl().addOnSuccessListener(this, new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(AgentTicketView.this).load(uri).listener(new RequestListener<Uri, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        return false;
-                    }
+        if (ticket.getIssueImageName() != null && !"".equals(ticket.getIssueImageName())) {
+            StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(FILE_STORAGE_PATH).child("issue_image/" + ticket.getIssueImageName());
+            storageRef.getDownloadUrl().addOnSuccessListener(this, new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(AgentTicketView.this).load(uri).listener(new RequestListener<Uri, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            return false;
+                        }
 
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        progressBar.setVisibility(View.GONE);
-                        return false;
-                    }
-                }).into(issueImage);
-            }
-        });
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+                    }).into(issueImage);
+                }
+            });
+        } else {
+            leftSideofTicket.setVisibility(View.GONE);
+        }
         scopeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
@@ -259,13 +317,54 @@ public class AgentTicketView extends AppCompatActivity {
                 }
                 double sum = Double.parseDouble(labourValue) + Double.parseDouble(partsValue);
                 String taxAmount = round(getTaxAmount(sum, Double.parseDouble("13"))) + "";
-                quoteTaxEdit.setText(taxAmount);
+                quoteTaxEdit.setText("$ " + taxAmount);
                 sum = round(sum + Double.parseDouble(taxAmount));
                 totalTextValue.setText("$ " + sum);
             }
         };
         quoteLabourEdit.addTextChangedListener(textWatcher);
         quotePartsEdit.addTextChangedListener(textWatcher);
+
+        TextWatcher textWatcher1 = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String labourValue = textFinalQuoteLabour.getText().toString();
+                if ("".equals(labourValue)) {
+                    textFinalQuoteLabour.setError("Please enter a value");
+                    return;
+                }
+                String partsValue = textFinalQuoteParts.getText().toString();
+                if ("".equals(partsValue)) {
+                    textFinalQuoteParts.setError("Please enter a value");
+                    return;
+                }
+                double sum = Double.parseDouble(labourValue) + Double.parseDouble(partsValue);
+                String taxAmount = round(getTaxAmount(sum, Double.parseDouble("13"))) + "";
+                textFinalQouteTax.setText("$ " + taxAmount);
+                sum = round(sum + Double.parseDouble(taxAmount));
+                finalTotalValue.setText("$ " + sum);
+            }
+        };
+        textFinalQuoteLabour.addTextChangedListener(textWatcher1);
+        textFinalQuoteParts.addTextChangedListener(textWatcher1);
+
+        requesterWorkRating.setRating(1);
+        requesterWorkRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                rating = (int) v;
+            }
+        });
     }
 
     public double getTaxAmount(double total, double tax) {
@@ -293,7 +392,26 @@ public class AgentTicketView extends AppCompatActivity {
         issueValue.setText(requesterData.getIssue());
         locationView.setText(requesterData.getLocation());
 
-        if ("manager".equals(userRole)) {
+        if("fieldagent".equals(userRole)){
+            if (ticket.getAgentData() != null) {
+                assignedContractorLayout.setVisibility(View.VISIBLE);
+                agentData = ticket.getAgentData();
+                setAssignedContractorInfo();
+            }
+            if (ticket.getWorkCompleted() != null) {
+                workCompleted = ticket.getWorkCompleted();
+                contractorWorkViewLayout.setVisibility(View.VISIBLE);
+                setWorkCompletedView(true);
+            }
+            if("Work Completed".equals(ticket.getStatus()) && ticket.getWorkRating()==null){
+                requesterRatingLayout.setVisibility(View.VISIBLE);
+            }
+            if(ticket.getWorkRating()!=null){
+                workRating = ticket.getWorkRating();
+                requesterRatingViewLayout.setVisibility(View.VISIBLE);
+                setWorkRatingView();
+            }
+        }else if ("manager".equals(userRole)) {
             if (ticket.getAgentData() != null) {
                 assignedContractorLayout.setVisibility(View.VISIBLE);
                 agentData = ticket.getAgentData();
@@ -318,6 +436,11 @@ public class AgentTicketView extends AppCompatActivity {
                     approvalViewLayout.setVisibility(View.VISIBLE);
                     setApproverViews();
                 }
+//                if (ticket.getWorkCompleted() != null) {
+//                    workCompleted = ticket.getWorkCompleted();
+//                    contractorWorkViewLayout.setVisibility(View.VISIBLE);
+//                    setWorkCompletedView();
+//                }
             }
         } else if ("contractor".equals(userRole)) {
             if (ticket.getContractorData() == null) {
@@ -327,6 +450,14 @@ public class AgentTicketView extends AppCompatActivity {
                 contractorQuoteViewLayout.setVisibility(View.VISIBLE);
                 callContractor.setVisibility(View.GONE);
                 setContractorQuoteInfo();
+            }
+            if ("Approved".equals(ticket.getStatus()) && ticket.getWorkCompleted() == null) {
+                contractorWorkLayout.setVisibility(View.VISIBLE);
+            }
+            if ("Work Completed".equals(ticket.getStatus()) && ticket.getWorkCompleted() != null) {
+                workCompleted = ticket.getWorkCompleted();
+                contractorWorkViewLayout.setVisibility(View.VISIBLE);
+                setWorkCompletedView(false);
             }
         } else if ("approver".equals(userRole)) {
             //Agent Created Data
@@ -393,6 +524,24 @@ public class AgentTicketView extends AppCompatActivity {
                 android.R.layout.simple_spinner_item, employeeSpinner);
     }
 
+    private void setWorkCompletedView(boolean isRequester) {
+        workCompletedDate.setText(workCompleted.getDateTime());
+        if(!isRequester) {
+            finalPriceValue.setText("$ " + workCompleted.getFinalTotalCost());
+            finalPartsValue.setText("$ " + workCompleted.getFinalPartsCost());
+            finalOthersValue.setText("$ " + workCompleted.getFinalLabourCost());
+        }else{
+            sensitiveDataLayout.setVisibility(View.GONE);
+        }
+        finalContactorComment.setText(workCompleted.getNote());
+    }
+
+    private void setWorkRatingView(){
+        workRatedDate.setText(workRating.getDateTime());
+        requesterWorkViewRating.setRating(workRating.getRating());
+        requesterWorkComment.setText(workRating.getNote());
+    }
+
     @OnClick(R.id.ticket_proof_image)
     public void onImageClick() {
         final Dialog dialog = new Dialog(this);
@@ -401,7 +550,7 @@ public class AgentTicketView extends AppCompatActivity {
         dialog.setContentView(view);
         final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progress_dialog);
         final ImageView imageView = (ImageView) view.findViewById(R.id.large_image);
-        StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(FILE_STORAGE_PATH).child("issue_image" + ticket.getTicketNumber() + ".jpg");
+        StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(FILE_STORAGE_PATH).child("issue_image/" + ticket.getIssueImageName());
         storageRef.getDownloadUrl().addOnSuccessListener(this, new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -509,8 +658,19 @@ public class AgentTicketView extends AppCompatActivity {
     @OnClick(R.id.quote_button)
     public void quoteByContractorAction() {
 
-        ContractorData contractorData = new ContractorData(GlobalFunctions.getCurrentDateTime(), Double.parseDouble(totalTextValue.getText().toString().split(" ")[1]), Double.parseDouble("0"),
-                Double.parseDouble("0"), Double.parseDouble(quotePartsEdit.getText().toString()), Double.parseDouble("0"), Double.parseDouble(quoteLabourEdit.getText().toString()), userInfo);
+        String labourValue = quoteLabourEdit.getText().toString();
+        if ("".equals(labourValue)) {
+            quoteLabourEdit.setError("Please enter a value");
+            return;
+        }
+        String partsValue = quotePartsEdit.getText().toString();
+        if ("".equals(partsValue)) {
+            quotePartsEdit.setError("Please enter a value");
+            return;
+        }
+        String totalValue = totalTextValue.getText().toString().split(" ")[1];
+        ContractorData contractorData = new ContractorData(GlobalFunctions.getCurrentDateTime(), Double.parseDouble(totalValue), Double.parseDouble("0"),
+                Double.parseDouble("0"), Double.parseDouble(partsValue), Double.parseDouble("0"), Double.parseDouble(labourValue), userInfo);
 
         ticket.setContractorData(contractorData);
         ticket.setStatus("Pending Approval");
@@ -600,6 +760,67 @@ public class AgentTicketView extends AppCompatActivity {
         });
     }
 
+    @OnClick(R.id.work_complete_button)
+    public void contractorWorkComplete() {
+        String labourValue = textFinalQuoteLabour.getText().toString();
+        if ("".equals(labourValue)) {
+            textFinalQuoteLabour.setError("Please enter a value");
+            return;
+        }
+        String partsValue = textFinalQuoteParts.getText().toString();
+        if ("".equals(partsValue)) {
+            textFinalQuoteParts.setError("Please enter a value");
+            return;
+        }
+        String noteValue = finalContractorNote.getText().toString();
+        if ("".equals(noteValue)) {
+            finalContractorNote.setError("Please enter a value");
+            return;
+        }
+        String totalValue = finalTotalValue.getText().toString().split(" ")[1];
+        WorkCompleted workCompleted = new WorkCompleted(GlobalFunctions.getCurrentDateTime(), noteValue, Double.parseDouble(labourValue),
+                Double.parseDouble(partsValue), Double.parseDouble("0"), Double.parseDouble(totalValue));
+
+        ticket.setWorkCompleted(workCompleted);
+        ticket.setStatus("Work Completed");
+        ticket.setAgent_status("1_WorkCompleted");
+
+        updateAnalytics(ticket.getStatus());
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/ticketing/" + ticket.getTicketNumber(), ticket.toMap());
+        mDatabase.updateChildren(childUpdates);
+
+        Intent intent = new Intent(this, ContractorMainActivity.class);
+        intent.putExtra("UserInfo", userInfo);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.requester_rate)
+    public void requesterRating(){
+        String note = requesterWorkNote.getText().toString();
+        if("".equals(note)){
+            requesterWorkNote.setError("Please enter a value");
+            return;
+        }
+        WorkRating workRating = new WorkRating(GlobalFunctions.getCurrentDateTime(), rating, note);
+
+        ticket.setWorkRating(workRating);
+        ticket.setStatus("Work Rated");
+        ticket.setAgent_status("1_WorkCompleted");
+
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/ticketing/" + ticket.getTicketNumber(), ticket.toMap());
+        mDatabase.updateChildren(childUpdates);
+
+        Intent intent = new Intent(this, RequesterMainActivity.class);
+        intent.putExtra("UserInfo", userInfo);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
     private void updateAnalytics(final String increaseStatus) {
         DatabaseReference mDatabase1 = FirebaseDatabase.getInstance().getReference().child("analytics").child(GlobalFunctions.getTodaysDateAsFireBaseKey());
         mDatabase1.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -608,6 +829,7 @@ public class AgentTicketView extends AppCompatActivity {
                 if (snapshot != null && snapshot.getValue() != null) {
                     analytics = snapshot.getValue(Analytics.class);
                 } else {
+                    analytics = new Analytics(true);
                     System.out.println("No data exists for analyitcs on " + GlobalFunctions.getTodaysDateFormatted());
                 }
                 if ("Contractor Assigned".equals(increaseStatus)) {
@@ -619,6 +841,9 @@ public class AgentTicketView extends AppCompatActivity {
                 } else if ("Approved".equals(increaseStatus)) {
                     analytics.setApprovedCount(analytics.getApprovedCount() + 1);
                     analytics.setApprovalCount(analytics.getApprovalCount() - 1);
+                } else if ("Work Completed".equals(increaseStatus)) {
+                    analytics.setWorkCompletedCount(analytics.getApprovalCount() + 1);
+                    analytics.setApprovedCount(analytics.getApprovedCount() - 1);
                 }
                 DatabaseReference mDatabase1 = FirebaseDatabase.getInstance().getReference();
                 Map<String, Object> childUpdates1 = new HashMap<>();

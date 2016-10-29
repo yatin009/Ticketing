@@ -23,6 +23,7 @@ import com.google.firebase.database.Query;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.webguru.ticketing.Agent.AgentTicketView;
 import io.webguru.ticketing.Global.RecyclerItemClickListener;
 import io.webguru.ticketing.Global.SignOut;
 import io.webguru.ticketing.Global.UserProfile;
@@ -108,10 +109,10 @@ public class RequesterMainActivity extends AppCompatActivity {
 //
 //                    ticket.setDetailsShown(true);
 //                }
-//                Intent intent = new Intent(RequesterMainActivity.this, ViewEditFieldTicket.class);
-//                intent.putExtra("UserInfo", userInfo);
-//                intent.putExtra("FieldAgentData", fieldAgentDatas1[position]);
-//                startActivity(intent);
+                Intent intent = new Intent(RequesterMainActivity.this, AgentTicketView.class);
+                intent.putExtra("UserInfo", userInfo);
+                intent.putExtra("Ticket", ticketsArray[position]);
+                startActivity(intent);
             }
 
             @Override

@@ -15,7 +15,5 @@
         android:id="@+id/manager_pending_list"
         app:layoutManager="LinearLayoutManager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp" />
+        android:layout_height="match_parent"/>
 </RelativeLayout>

@@ -20,6 +20,7 @@ import com.google.firebase.database.Query;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.webguru.ticketing.Agent.AgentTicketHolder;
 import io.webguru.ticketing.Agent.AgentTicketView;
 import io.webguru.ticketing.Global.RecyclerItemClickListener;
 import io.webguru.ticketing.Global.SignOut;
@@ -71,12 +72,12 @@ public class ContractorMainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mDatabase = FirebaseDatabase.getInstance().getReference().child("ticketing");
         Query query = mDatabase.orderByChild("isVisibleContractor").equalTo("Yes");
-        mAdapter = new FirebaseRecyclerAdapter<Ticket, RequesterTicketHolder>(Ticket.class, R.layout.requester_ticket_cardview, RequesterTicketHolder.class, query) {
+        mAdapter = new FirebaseRecyclerAdapter<Ticket, AgentTicketHolder>(Ticket.class, R.layout.agent_ticket_cardview, AgentTicketHolder.class, query) {
             @Override
-            protected void populateViewHolder(RequesterTicketHolder viewHolder, Ticket ticket, int position) {
+            protected void populateViewHolder(AgentTicketHolder viewHolder, Ticket ticket, int position) {
                 mProgressBar.setVisibility(View.GONE);
                     ticketsArray[position] = ticket;
-                    viewHolder.setViewElements(ticket, true);
+                    viewHolder.setViewElements(ticket, position, true);
             }
 
         };

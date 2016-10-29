@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -36,7 +37,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -78,8 +78,8 @@ public class AddTicketRequest extends AppCompatActivity {
     TextInputEditText editSite;
     @Bind(R.id.text_description)
     TextInputEditText editDescription;
-    @Bind(R.id.text_location)
-    TextInputEditText editLocation;
+    @Bind(R.id.spinner_location)
+    Spinner spinnerLocation;
     @Bind(R.id.priority_seekbar)
     SeekBar prioritySeekbar;
     @Bind(R.id.value_priority)
@@ -187,19 +187,14 @@ public class AddTicketRequest extends AppCompatActivity {
             editShop.setError("Invalid Shop");
             return;
         }
-        String location = editLocation.getText().toString();
-        if ("".equals(location)) {
-            editLocation.setError("Invalid Location");
-            return;
-        }
         String description = editDescription.getText().toString();
         if ("".equals(description)) {
             editDescription.setError("Invalid Description");
             return;
         }
-        requesterData = new RequesterData(description, priority, location, shop, site, userInfo);
+        requesterData = new RequesterData(description, priority, "", shop, site, userInfo);
         //TODO HARDCODED AGENT ASSIGNED
-        ticket = new Ticket(GlobalFunctions.getCurrentDateInMilliseconds(), "Incoming", Integer.parseInt(userInfo.getUserid()),
+        ticket = new Ticket(GlobalFunctions.getCurrentDateInMilliseconds(), "Incoming", mCurrentPhotoPath, Integer.parseInt(userInfo.getUserid()),
                 0, 0, 0, GlobalFunctions.getCurrentDateTime(), requesterData, "1_Incoming");
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -253,42 +248,40 @@ public class AddTicketRequest extends AppCompatActivity {
 
     @OnClick(R.id.request_ticket_1)
     public void requestTicket1() {
-        final String location = editLocation.getText().toString();
-        if ("".equals(location)) {
-            editLocation.setError("Invalid Location");
-            return;
-        }
         final String description = editDescription.getText().toString();
         if ("".equals(description)) {
             editDescription.setError("Invalid Description");
             return;
         }
+        final String location = spinnerLocation.getSelectedItem().toString();
+        String progressMessage = "";
         if (mCurrentPhotoPath == null || "".equals(mCurrentPhotoPath)) {
-            GlobalFunctions.showToast(this, "Please add a photo", Toast.LENGTH_LONG);
-            return;
+            progressMessage = "Updating information of ticket..Please wait";
+        } else {
+            progressMessage = "Uploading Image...Please wait";
         }
         final String priority = textViewPriorityValue.getText().toString();
         progressDialog = new ProgressDialog(this);
-        progressDialog.show(this, "Creating Ticket", "Uploading Image...Please wait", false, false);
+        progressDialog.show(this, "Creating Ticket", progressMessage, false, false);
         DatabaseReference mDatabase1 = FirebaseDatabase.getInstance().getReference().child("analytics").child(GlobalFunctions.getTodaysDateAsFireBaseKey());
         mDatabase1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                if(snapshot!=null && snapshot.getValue()!=null) {
+                if (snapshot != null && snapshot.getValue() != null) {
                     analytics = snapshot.getValue(Analytics.class);
-                }else{
+                } else {
                     System.out.println("No data exists for analyitcs on " + GlobalFunctions.getTodaysDateFormatted());
                     analytics = new Analytics(true);
                 }
-                analytics.setIncomingCount(analytics.getIncomingCount()+1);
-                if("HIGH".equals(priority)){
-                    analytics.setHighCount(analytics.getHighCount()+1);
+                analytics.setIncomingCount(analytics.getIncomingCount() + 1);
+                if ("HIGH".equals(priority)) {
+                    analytics.setHighCount(analytics.getHighCount() + 1);
                 }
-                if("MEDIUM".equals(priority)){
-                    analytics.setMediumCount(analytics.getMediumCount()+1);
+                if ("MEDIUM".equals(priority)) {
+                    analytics.setMediumCount(analytics.getMediumCount() + 1);
                 }
-                if("LOW".equals(priority)){
-                    analytics.setLowCount(analytics.getLowCount()+1);
+                if ("LOW".equals(priority)) {
+                    analytics.setLowCount(analytics.getLowCount() + 1);
                 }
                 UploadTicekt(description, priority, location);
             }
@@ -386,59 +379,73 @@ public class AddTicketRequest extends AppCompatActivity {
     private void UploadTicekt(String description, final String priority, String location) {
         String ticketNumber = GlobalFunctions.getCurrentDateInMilliseconds();
         requesterData = new RequesterData(description, priority, location, "", "", userInfo);
-        //TODO HARDCODED AGENT ASSIGNED
-        ticket = new Ticket(ticketNumber, "Incoming", Integer.parseInt(userInfo.getUserid()),
-                1, 0, 0, GlobalFunctions.getCurrentDateTime(), requesterData, "1_Incoming");
-
-        InputStream stream = null;
-        try {
-            stream = new FileInputStream(new File(mCurrentPhotoPath));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        photoRef = storageRef.child("issue_image/" + ticketNumber + ".jpg");
-        UploadTask uploadTask = photoRef.putStream(stream);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                progressDialog.dismiss();
-                Log.d(TAG, "FAIL TO UPLOAD IMAGE");
-                // Handle unsuccessful uploads
+        if (mCurrentPhotoPath == null || "".equals(mCurrentPhotoPath)) {
+            //TODO HARDCODED AGENT ASSIGNED
+            //Ticket Object without image
+            ticket = new Ticket(ticketNumber, "Incoming", null, Integer.parseInt(userInfo.getUserid()),
+                    1, 0, 0, GlobalFunctions.getCurrentDateTime(), requesterData, "1_Incoming");
+            updateTicketInfo();
+        } else {
+            //TODO HARDCODED AGENT ASSIGNED
+            //Ticket Object with image
+            ticket = new Ticket(ticketNumber, "Incoming", ticketNumber + ".jpg", Integer.parseInt(userInfo.getUserid()),
+                    1, 0, 0, GlobalFunctions.getCurrentDateTime(), requesterData, "1_Incoming");
+            InputStream stream = null;
+            try {
+                stream = new FileInputStream(new File(mCurrentPhotoPath));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            photoRef = storageRef.child("issue_image/" + ticketNumber + ".jpg");
+            UploadTask uploadTask = photoRef.putStream(stream);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    progressDialog.dismiss();
+                    Log.d(TAG, "FAIL TO UPLOAD IMAGE");
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Log.d(TAG, "Success TO UPLOAD IMAGE");
+                    progressDialog.setMessage("Updating information of ticket..Please wait");
+                    updateTicketInfo();
+
+                }
+            }).addOnFailureListener(AddTicketRequest.this, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressDialog.dismiss();
+                    showFailureMessage();
+                }
+            });
+        }
+
+    }
+
+    private void updateTicketInfo() {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/ticketing/" + ticket.getTicketNumber(), ticket.toMap());
+        mDatabase.updateChildren(childUpdates).addOnCompleteListener(AddTicketRequest.this, new OnCompleteListener<Void>() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.d(TAG, "Success TO UPLOAD IMAGE");
-                progressDialog.setMessage("Updating information of ticket..Please wait");
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                Map<String, Object> childUpdates = new HashMap<>();
-                childUpdates.put("/ticketing/" + ticket.getTicketNumber(), ticket.toMap());
-                mDatabase.updateChildren(childUpdates).addOnCompleteListener(AddTicketRequest.this, new OnCompleteListener<Void>() {
+            public void onComplete(@NonNull Task<Void> task) {
+                DatabaseReference mDatabase1 = FirebaseDatabase.getInstance().getReference();
+                Map<String, Object> childUpdates1 = new HashMap<>();
+                childUpdates1.put("/analytics/" + GlobalFunctions.getTodaysDateAsFireBaseKey(), analytics);
+                mDatabase1.updateChildren(childUpdates1).addOnCompleteListener(AddTicketRequest.this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        DatabaseReference mDatabase1 = FirebaseDatabase.getInstance().getReference();
-                        Map<String, Object> childUpdates1 = new HashMap<>();
-                        childUpdates1.put("/analytics/" + GlobalFunctions.getTodaysDateAsFireBaseKey(), analytics);
-                        mDatabase1.updateChildren(childUpdates1).addOnCompleteListener(AddTicketRequest.this, new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                progressDialog.dismiss();
-                                Intent intent;
-                                if (isAgent) {
-                                    intent = new Intent(AddTicketRequest.this, AgentMainActivity.class);
-                                } else {
-                                    intent = new Intent(AddTicketRequest.this, SplashScreen.class);
-                                }
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                            }
-                        }).addOnFailureListener(AddTicketRequest.this, new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                progressDialog.dismiss();
-                                showFailureMessage();
-                            }
-                        });
+                        progressDialog.dismiss();
+                        Intent intent;
+                        if (isAgent) {
+                            intent = new Intent(AddTicketRequest.this, AgentMainActivity.class);
+                        } else {
+                            intent = new Intent(AddTicketRequest.this, SplashScreen.class);
+                        }
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                     }
                 }).addOnFailureListener(AddTicketRequest.this, new OnFailureListener() {
                     @Override
@@ -457,7 +464,7 @@ public class AddTicketRequest extends AppCompatActivity {
         });
     }
 
-    private void showFailureMessage(){
+    private void showFailureMessage() {
         GlobalFunctions.showToast(AddTicketRequest.this, "Some problem occured while Creating Ticket. Please check Internet Connection and try again.", Toast.LENGTH_LONG);
     }
 

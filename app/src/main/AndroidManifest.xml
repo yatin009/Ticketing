@@ -23,27 +23,31 @@
         </activity>
         <activity
             android:name=".Welcome.IntroScreens"
-            android:label="@string/title_activity_manager_main_activity"
+            android:label="@string/main_title"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
             android:name=".Welcome.WelcomeSplash"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
 
-             <!--<intent-filter>-->
-             <!--<action android:name="android.intent.action.MAIN" />-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
 
-             <!--<category android:name="android.intent.category.LAUNCHER" />-->
-             <!--</intent-filter>-->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".Requester.RequesterMainActivity"
-            android:label="@string/title_activity_field_agent_main" />
+            android:label="@string/main_title" />
         <activity
             android:name=".Agent.AgentMainActivity"
-            android:label="@string/title_activity_manager_main_activity" />
-        <activity android:name=".Contractor.ContractorMainActivity" />
-        <activity android:name=".Approver.ApproverMainActivity" />
+            android:label="@string/main_title" />
+        <activity
+            android:name=".Contractor.ContractorMainActivity"
+            android:label="@string/main_title" />
+        <activity
+            android:name=".Approver.ApproverMainActivity"
+            android:label="@string/main_title" />
         <activity
             android:name=".Requester.AddTicketRequest"
             android:label="@string/title_activity_add_field_ticket"
@@ -68,6 +72,14 @@
         <activity
             android:name=".Agent.AgentTicketView"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Contractor.DemoTabActivity"
+            android:label="@string/title_activity_demo_tab"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".Contractor.DemoTab2"
+            android:label="@string/title_activity_demo_tab2"
+            android:theme="@style/AppTheme.Dark"></activity>
     </application>
 
 </manifest>

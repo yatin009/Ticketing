@@ -64,7 +64,7 @@ public class SignOut extends AppCompatActivity {
             String msg = "User - "+userInfo.getFirstname() +" "+ userInfo.getLastname() + " Logout successful.";
             if(result){
                 Intent intent = new Intent(SignOut.this, SplashScreen.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags((Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                 startActivity(intent);
             }else{
                 msg = "User - "+userInfo.getFirstname() +" "+ userInfo.getLastname() + " Logout un-successful.";

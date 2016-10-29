@@ -4,7 +4,7 @@
     <string name="title_activity_view_edit_field_ticket">Ticket Info</string>
     <string name="title_activity_add_field_ticket">Create Ticket</string>
 
-    <string name="title_activity_manager_main_activity">Ticket Dashboard</string>
+    <string name="main_title">RDC e-Ticketing</string>
 
     <string name="action_signout">Sign out</string>
     <string name="action_profile">Ticket Summary</string>
@@ -33,6 +33,14 @@
         <item>Luke</item>
     </string-array>
 
+    <string-array name="location_list">
+        <item>Location 1</item>
+        <item>Location 2</item>
+        <item>Location 3</item>
+        <item>Location 4</item>
+        <item>Location 5</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -42,4 +50,8 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_demo_tab">DemoTabActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_demo_tab2">DemoTab2</string>
 </resources>
