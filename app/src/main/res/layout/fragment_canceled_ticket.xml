@@ -9,7 +9,9 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
     style="?android:attr/progressBarStyleLarge"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_centerInParent="true"/>
+    android:layout_centerInParent="true"
+    android:indeterminate="true"
+    android:indeterminateTint="@color/colorPrimary"/>
 
 <android.support.v7.widget.RecyclerView
     android:id="@+id/manager_canceled_list"
