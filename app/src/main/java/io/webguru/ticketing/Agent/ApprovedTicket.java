@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.ChildEventListener;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.webguru.ticketing.Global.GlobalFunctions;
 import io.webguru.ticketing.Global.RecyclerItemClickListener;
 import io.webguru.ticketing.POJO.ManagerData;
 import io.webguru.ticketing.POJO.Ticket;
@@ -80,6 +82,21 @@ public class ApprovedTicket extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mDatabase = FirebaseDatabase.getInstance().getReference().child("ticketing");
         Query query = mDatabase.orderByChild("agent_status").equalTo("1_ContractorAssigned");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot == null || dataSnapshot.getValue() == null) {
+                    mProgressBar.setVisibility(View.GONE);
+                    GlobalFunctions.showToast(getActivity(), "No tickets available for this status", Toast.LENGTH_LONG);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 //        mDatabase.addChildEventListener(new ChildEventListener() {
 //            @Override
 //            public void onChildAdded(DataSnapshot dataSnapshot, String s) {

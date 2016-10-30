@@ -83,8 +83,9 @@ public class SearchActivity extends AppCompatActivity {
 
     private void setUpRecyclerView(String searchKeyword){
 
+        String lowercase = searchKeyword.toLowerCase();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("ticketing");
-        Query query = mDatabase.orderByChild("searchKeword").startAt(searchKeyword.toLowerCase()).limitToFirst(10);
+        Query query = mDatabase.orderByChild("searchKeword").equalTo(lowercase);//startAt(lowercase).limitToFirst(10);
         mAdapter = new FirebaseRecyclerAdapter<Ticket, AgentTicketHolder>(Ticket.class, R.layout.agent_ticket_cardview, AgentTicketHolder.class, query) {
             @Override
             protected void populateViewHolder(AgentTicketHolder viewHolder, Ticket ticket, int position) {

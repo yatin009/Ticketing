@@ -237,6 +237,11 @@ public class SplashScreen extends AppCompatActivity {
         });
     }
 
+    @OnClick(R.id.sign_up)
+    public void signUp(){
+        Toast.makeText(getApplicationContext(),"SignUp Feature selected",Toast.LENGTH_SHORT).show();
+    }
+
     private void updateUserLoginStatus(final UserInfo userInfo){
         DatabaseReference updateUserStatusDatabaseRef = FirebaseDatabase.getInstance().getReference();
         updateUserStatusDatabaseRef.child("users").orderByChild("userid").equalTo(userInfo.getUserid()).addListenerForSingleValueEvent(new ValueEventListener() {

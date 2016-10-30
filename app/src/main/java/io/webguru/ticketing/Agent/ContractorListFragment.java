@@ -22,10 +22,14 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -79,6 +83,20 @@ public class ContractorListFragment extends Fragment {
         mLayoutManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mDatabase = FirebaseDatabase.getInstance().getReference().child("contractor_list");
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot == null || dataSnapshot.getValue() == null) {
+                    mProgressBar.setVisibility(View.GONE);
+                    GlobalFunctions.showToast(getActivity(), "There are no contractors, Create one.", Toast.LENGTH_LONG);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         mAdapter = new FirebaseRecyclerAdapter<UserContractor, UserCntractorCardView>(UserContractor.class, R.layout.user_contractor_cardview, UserCntractorCardView.class, mDatabase) {
             @Override
             protected void populateViewHolder(UserCntractorCardView viewHolder, UserContractor userContractor, int position) {

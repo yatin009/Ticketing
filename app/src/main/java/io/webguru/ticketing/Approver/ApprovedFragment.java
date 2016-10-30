@@ -18,17 +18,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.webguru.ticketing.Agent.AgentMainActivity;
 import io.webguru.ticketing.Agent.AgentTicketHolder;
 import io.webguru.ticketing.Agent.AgentTicketView;
+import io.webguru.ticketing.Global.GlobalFunctions;
 import io.webguru.ticketing.Global.RecyclerItemClickListener;
 import io.webguru.ticketing.POJO.Ticket;
 import io.webguru.ticketing.R;
@@ -80,6 +85,21 @@ public class ApprovedFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mDatabase = FirebaseDatabase.getInstance().getReference().child("ticketing");
         Query query = mDatabase.orderByChild("status").equalTo("Approved");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot == null || dataSnapshot.getValue() == null) {
+                    mProgressBar.setVisibility(View.GONE);
+                    GlobalFunctions.showToast(getActivity(), "No tickets available for this status", Toast.LENGTH_LONG);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 //        mDatabase.addChildEventListener(new ChildEventListener() {
 //            @Override
 //            public void onChildAdded(DataSnapshot dataSnapshot, String s) {

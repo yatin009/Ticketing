@@ -12,16 +12,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.webguru.ticketing.Agent.AgentTicketHolder;
 import io.webguru.ticketing.Agent.AgentTicketView;
+import io.webguru.ticketing.Global.GlobalFunctions;
 import io.webguru.ticketing.Global.RecyclerItemClickListener;
 import io.webguru.ticketing.Global.SignOut;
 import io.webguru.ticketing.Global.UserProfile;
@@ -72,6 +77,20 @@ public class ContractorMainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mDatabase = FirebaseDatabase.getInstance().getReference().child("ticketing");
         Query query = mDatabase.orderByChild("isVisibleContractor").equalTo("Yes");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot == null || dataSnapshot.getValue() == null) {
+                    mProgressBar.setVisibility(View.GONE);
+                    GlobalFunctions.showToast(ContractorMainActivity.this, "No tickets available for this status", Toast.LENGTH_LONG);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         mAdapter = new FirebaseRecyclerAdapter<Ticket, AgentTicketHolder>(Ticket.class, R.layout.agent_ticket_cardview, AgentTicketHolder.class, query) {
             @Override
             protected void populateViewHolder(AgentTicketHolder viewHolder, Ticket ticket, int position) {

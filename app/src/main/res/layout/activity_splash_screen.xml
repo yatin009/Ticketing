@@ -44,11 +44,13 @@
                 android:layout_marginRight="20dp"
                 android:background="@color/white"
                 android:padding="5dp">
-                <EditText android:id="@+id/editTextemail"
+
+                <EditText
+                    android:id="@+id/editTextemail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    android:hint="Username" />
+                    android:hint="Username"
+                    android:inputType="textEmailAddress" />
             </android.support.design.widget.TextInputLayout>
 
             <!--  Password Label -->
@@ -60,34 +62,36 @@
                 android:layout_marginTop="2dp"
                 android:background="@color/white"
                 android:padding="5dp">
-                <EditText android:id="@+id/editTextpassword"
+
+                <EditText
+                    android:id="@+id/editTextpassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:hint="Password"/>
+                    android:hint="Password"
+                    android:inputType="textPassword" />
             </android.support.design.widget.TextInputLayout>
 
             <!--<EditText-->
-                <!--android:id="@+id/editText1"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginLeft="20dp"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:background="@color/white"-->
-                <!--android:hint="Email ID"-->
-                <!--android:padding="20dp" />-->
+            <!--android:id="@+id/editText1"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--android:background="@color/white"-->
+            <!--android:hint="Email ID"-->
+            <!--android:padding="20dp" />-->
 
             <!--<EditText-->
-                <!--android:id="@+id/editText2"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginLeft="20dp"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:layout_marginTop="2dp"-->
-                <!--android:background="@color/white"-->
-                <!--android:hint="Password"-->
-                <!--android:inputType="textPassword"-->
-                <!--android:padding="20dp" />-->
+            <!--android:id="@+id/editText2"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--android:layout_marginTop="2dp"-->
+            <!--android:background="@color/white"-->
+            <!--android:hint="Password"-->
+            <!--android:inputType="textPassword"-->
+            <!--android:padding="20dp" />-->
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/login_button"
@@ -106,7 +110,7 @@
         android:id="@+id/ticket_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1.5">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -115,26 +119,43 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/generate_ticket"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:padding="25dp"
-                android:text="Create Ticket"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp" />
+                android:orientation="horizontal">
 
-            <android.support.v7.widget.AppCompatImageButton
-                android:id="@+id/call_ticket"
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/generate_ticket"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:background="@color/white"
+                    android:padding="25dp"
+                    android:text="Create Ticket"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/call_ticket"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:padding="24dp"
+                    android:src="@drawable/ic_call_black_24dp"
+                    android:layout_marginLeft="4dp"
+                    android:textColor="@color/colorPrimaryDark" />
+            </LinearLayout>
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/sign_up"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:background="@color/white"
                 android:padding="20dp"
-                android:src="@drawable/ic_call_black_24dp"
+                android:text="Sign Up"
+                android:textSize="18sp"
                 android:textColor="@color/colorPrimaryDark" />
-
         </LinearLayout>
 
     </RelativeLayout>

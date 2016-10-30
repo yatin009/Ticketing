@@ -39,7 +39,13 @@ public class ApproverTicketInbox extends Fragment {
 
         slidingTabLayout = (SlidingTabLayout) rootView.findViewById(R.id.tabs);
         slidingTabLayout.setDistributeEvenly(true);
-        slidingTabLayout.setSelectedIndicatorColors(R.color.pink);
+        slidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+
+            @Override
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.pink);    //define any color in xml resources and set it here, I have used white
+            }
+        });
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) rootView.findViewById(R.id.viewpager_container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
