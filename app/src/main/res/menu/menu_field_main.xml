@@ -6,4 +6,10 @@
     <item android:id="@+id/action_ticket" android:icon="@drawable/ic_add_circle_outline_white_36dp"
         android:title="Add Ticket"
         android:orderInCategory="100" app:showAsAction="always" />
+    <item
+        android:id="@+id/search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        android:icon="@drawable/ic_search_white_24dp"
+        android:title="Search"
+        app:showAsAction="collapseActionView|ifRoom" />
 </menu>

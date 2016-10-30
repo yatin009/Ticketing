@@ -174,39 +174,6 @@ public class AddTicketRequest extends AppCompatActivity {
         viewFlipper.showPrevious();
     }
 
-    @OnClick(R.id.request_ticket)
-    public void requestTicket() {
-        String priority = textViewPriorityValue.getText().toString();
-        String site = editSite.getText().toString();
-        if ("".equals(site)) {
-            editSite.setError("Invalid Site");
-            return;
-        }
-        String shop = editShop.getText().toString();
-        if ("".equals(shop)) {
-            editShop.setError("Invalid Shop");
-            return;
-        }
-        String description = editDescription.getText().toString();
-        if ("".equals(description)) {
-            editDescription.setError("Invalid Description");
-            return;
-        }
-        requesterData = new RequesterData(description, priority, "", shop, site, userInfo);
-        //TODO HARDCODED AGENT ASSIGNED
-        ticket = new Ticket(GlobalFunctions.getCurrentDateInMilliseconds(), "Incoming", mCurrentPhotoPath, Integer.parseInt(userInfo.getUserid()),
-                0, 0, 0, GlobalFunctions.getCurrentDateTime(), requesterData, "1_Incoming");
-
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/ticketing/" + ticket.getTicketNumber(), ticket.toMap());
-        mDatabase.updateChildren(childUpdates);
-
-        Intent intent = new Intent(AddTicketRequest.this, SplashScreen.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-    }
-
     @OnClick(R.id.click_photo)
     public void clickPhoto() {
         Log.d(TAG, "Inside click_photo");
@@ -379,17 +346,18 @@ public class AddTicketRequest extends AppCompatActivity {
     private void UploadTicekt(String description, final String priority, String location) {
         String ticketNumber = GlobalFunctions.getCurrentDateInMilliseconds();
         requesterData = new RequesterData(description, priority, location, "", "", userInfo);
+        String searchKeyword = requesterData.getIssue().toLowerCase();
         if (mCurrentPhotoPath == null || "".equals(mCurrentPhotoPath)) {
             //TODO HARDCODED AGENT ASSIGNED
             //Ticket Object without image
             ticket = new Ticket(ticketNumber, "Incoming", null, Integer.parseInt(userInfo.getUserid()),
-                    1, 0, 0, GlobalFunctions.getCurrentDateTime(), requesterData, "1_Incoming");
+                    1, 0, 0, GlobalFunctions.getCurrentDateTime(), requesterData, "1_Incoming", searchKeyword);
             updateTicketInfo();
         } else {
             //TODO HARDCODED AGENT ASSIGNED
             //Ticket Object with image
             ticket = new Ticket(ticketNumber, "Incoming", ticketNumber + ".jpg", Integer.parseInt(userInfo.getUserid()),
-                    1, 0, 0, GlobalFunctions.getCurrentDateTime(), requesterData, "1_Incoming");
+                    1, 0, 0, GlobalFunctions.getCurrentDateTime(), requesterData, "1_Incoming", searchKeyword);
             InputStream stream = null;
             try {
                 stream = new FileInputStream(new File(mCurrentPhotoPath));

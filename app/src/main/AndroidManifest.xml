@@ -12,6 +12,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Dark">
+        <meta-data
+            android:name="android.app.default_searchable"
+            android:value=".Global.SearchActivity" />
+
         <activity
             android:name=".Welcome.SplashScreen"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
@@ -41,7 +45,15 @@
             android:label="@string/main_title" />
         <activity
             android:name=".Agent.AgentMainActivity"
-            android:label="@string/main_title" />
+            android:label="@string/main_title"
+            android:theme="@style/AppTheme.Dark2">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".Global.SearchActivity" />
+        </activity>
         <activity
             android:name=".Contractor.ContractorMainActivity"
             android:label="@string/main_title" />
@@ -76,10 +88,25 @@
             android:name=".Contractor.DemoTabActivity"
             android:label="@string/title_activity_demo_tab"
             android:theme="@style/AppTheme.Dark" />
+
         <activity
             android:name=".Contractor.DemoTab2"
             android:label="@string/title_activity_demo_tab2"
-            android:theme="@style/AppTheme.Dark"></activity>
+            android:theme="@style/AppTheme.Dark">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <activity android:name=".Global.SearchActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
     </application>
 
 </manifest>

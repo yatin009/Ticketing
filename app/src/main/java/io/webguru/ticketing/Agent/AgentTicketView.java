@@ -61,6 +61,8 @@ import io.webguru.ticketing.Global.GlobalFunctions;
 import io.webguru.ticketing.POJO.AgentData;
 import io.webguru.ticketing.POJO.Analytics;
 import io.webguru.ticketing.POJO.ApprovarData;
+import io.webguru.ticketing.POJO.AssignedApprover;
+import io.webguru.ticketing.POJO.AssignedContractor;
 import io.webguru.ticketing.POJO.ContractorData;
 import io.webguru.ticketing.POJO.RequesterData;
 import io.webguru.ticketing.POJO.Ticket;
@@ -226,6 +228,8 @@ public class AgentTicketView extends AppCompatActivity {
     private RequesterData requesterData;
     private UserInfo userInfo;
     private AgentData agentData;
+    private AssignedContractor assignedContractor;
+    private AssignedApprover assignedApprover;
     private ContractorData contractorData;
     private ApprovarData approvarData;
     private WorkCompleted workCompleted;
@@ -392,10 +396,11 @@ public class AgentTicketView extends AppCompatActivity {
         issueValue.setText(requesterData.getIssue());
         locationView.setText(requesterData.getLocation());
 
-        if("fieldagent".equals(userRole)){
-            if (ticket.getAgentData() != null) {
+        if ("fieldagent".equals(userRole)) {
+            if (ticket.getAssignedContractor() != null) {
                 assignedContractorLayout.setVisibility(View.VISIBLE);
                 agentData = ticket.getAgentData();
+                assignedContractor = ticket.getAssignedContractor();
                 setAssignedContractorInfo();
             }
             if (ticket.getWorkCompleted() != null) {
@@ -403,49 +408,57 @@ public class AgentTicketView extends AppCompatActivity {
                 contractorWorkViewLayout.setVisibility(View.VISIBLE);
                 setWorkCompletedView(true);
             }
-            if("Work Completed".equals(ticket.getStatus()) && ticket.getWorkRating()==null){
+            if ("Work Completed".equals(ticket.getStatus()) && ticket.getWorkRating() == null) {
                 requesterRatingLayout.setVisibility(View.VISIBLE);
             }
-            if(ticket.getWorkRating()!=null){
+            if (ticket.getWorkRating() != null) {
                 workRating = ticket.getWorkRating();
                 requesterRatingViewLayout.setVisibility(View.VISIBLE);
                 setWorkRatingView();
             }
-        }else if ("manager".equals(userRole)) {
-            if (ticket.getAgentData() != null) {
+        } else if ("manager".equals(userRole)) {
+            if ("Incoming".equals(ticket.getStatus()) && ticket.getAssignedContractor() == null) {
+                assignContractorLayout.setVisibility(View.VISIBLE);
+            }
+            if (ticket.getAssignedContractor() != null) {
                 assignedContractorLayout.setVisibility(View.VISIBLE);
                 agentData = ticket.getAgentData();
+                assignedContractor = ticket.getAssignedContractor();
                 setAssignedContractorInfo();
-            } else {
-                assignContractorLayout.setVisibility(View.VISIBLE);
             }
             if (ticket.getContractorData() != null) {
                 contractorData = ticket.getContractorData();
                 contractorQuoteViewLayout.setVisibility(View.VISIBLE);
                 setContractorQuoteInfo();
-                if ("Pending Approval".equals(ticket.getStatus())) {
-                    internalQuoteLayout.setVisibility(View.VISIBLE);
-                } else if ("Approver Assigned".equals(ticket.getStatus())) {
-                    requestApprovalViewLayout.setVisibility(View.VISIBLE);
-                    setRequestApproverView();
-                }
-                if ("Approved".equals(ticket.getStatus())) {
-                    requestApprovalViewLayout.setVisibility(View.VISIBLE);
-                    setRequestApproverView();
-                    approvarData = ticket.getApprovarData();
-                    approvalViewLayout.setVisibility(View.VISIBLE);
-                    setApproverViews();
-                }
-//                if (ticket.getWorkCompleted() != null) {
-//                    workCompleted = ticket.getWorkCompleted();
-//                    contractorWorkViewLayout.setVisibility(View.VISIBLE);
-//                    setWorkCompletedView();
-//                }
+            }
+            if ("Pending Approval".equals(ticket.getStatus()) && ticket.getAssignedApprover() == null) {
+                internalQuoteLayout.setVisibility(View.VISIBLE);
+            }
+            if(ticket.getAssignedApprover()!=null){
+                assignedApprover = ticket.getAssignedApprover();
+                requestApprovalViewLayout.setVisibility(View.VISIBLE);
+                setRequestApproverView();
+            }
+            if (ticket.getApprovarData() != null) {
+                approvarData = ticket.getApprovarData();
+                approvalViewLayout.setVisibility(View.VISIBLE);
+                setApproverViews();
+            }
+            if (ticket.getWorkCompleted() != null) {
+                workCompleted = ticket.getWorkCompleted();
+                contractorWorkViewLayout.setVisibility(View.VISIBLE);
+                setWorkCompletedView(false);
+            }
+            if (ticket.getWorkRating() != null) {
+                workRating = ticket.getWorkRating();
+                requesterRatingViewLayout.setVisibility(View.VISIBLE);
+                setWorkRatingView();
             }
         } else if ("contractor".equals(userRole)) {
             if (ticket.getContractorData() == null) {
                 contractorQuoteLayout.setVisibility(View.VISIBLE);
-            } else if (ticket.getContractorData() != null) {
+            }
+            if (ticket.getContractorData() != null) {
                 contractorData = ticket.getContractorData();
                 contractorQuoteViewLayout.setVisibility(View.VISIBLE);
                 callContractor.setVisibility(View.GONE);
@@ -454,7 +467,7 @@ public class AgentTicketView extends AppCompatActivity {
             if ("Approved".equals(ticket.getStatus()) && ticket.getWorkCompleted() == null) {
                 contractorWorkLayout.setVisibility(View.VISIBLE);
             }
-            if ("Work Completed".equals(ticket.getStatus()) && ticket.getWorkCompleted() != null) {
+            if (ticket.getWorkCompleted() != null) {
                 workCompleted = ticket.getWorkCompleted();
                 contractorWorkViewLayout.setVisibility(View.VISIBLE);
                 setWorkCompletedView(false);
@@ -463,27 +476,39 @@ public class AgentTicketView extends AppCompatActivity {
             //Agent Created Data
             assignedContractorLayout.setVisibility(View.VISIBLE);
             agentData = ticket.getAgentData();
+            assignedContractor = ticket.getAssignedContractor();
             setAssignedContractorInfo();
             //Contractor Created Data
             contractorData = ticket.getContractorData();
             contractorQuoteViewLayout.setVisibility(View.VISIBLE);
             setContractorQuoteInfo();
 
-            if ("Approver Assigned".equals(ticket.getStatus())) {
+            if ("Approver Assigned".equals(ticket.getStatus()) && ticket.getApprovarData()==null) {
                 approvarLayout.setVisibility(View.VISIBLE);
-            } else {
+            }
+            if (ticket.getApprovarData()!=null){
                 approvarData = ticket.getApprovarData();
                 approvalViewLayout.setVisibility(View.VISIBLE);
                 setApproverViews();
+            }
+            if (ticket.getWorkCompleted() != null) {
+                workCompleted = ticket.getWorkCompleted();
+                contractorWorkViewLayout.setVisibility(View.VISIBLE);
+                setWorkCompletedView(false);
+            }
+            if (ticket.getWorkRating() != null) {
+                workRating = ticket.getWorkRating();
+                requesterRatingViewLayout.setVisibility(View.VISIBLE);
+                setWorkRatingView();
             }
         }
     }
 
     private void setAssignedContractorInfo() {
-        assignedDateView.setText(agentData.getContractorAssignedDate());
+        assignedDateView.setText(assignedContractor.getContractorAssignedDate());
         scopeView.setText(agentData.getScope());
-        contractorView.setText(agentData.getContractor());
-        contractorNoteView.setText(agentData.getContractorNote());
+        contractorView.setText(assignedContractor.getContractor());
+        contractorNoteView.setText(assignedContractor.getContractorNote());
     }
 
     private void setContractorQuoteInfo() {
@@ -494,8 +519,8 @@ public class AgentTicketView extends AppCompatActivity {
     }
 
     private void setRequestApproverView() {
-        requestApprovalDate.setText(agentData.getRequestApprovalDate());
-        approverNameValue.setText(agentData.getApproverName());
+        requestApprovalDate.setText(assignedApprover.getRequestApprovalDate());
+        approverNameValue.setText(assignedApprover.getApproverName());
     }
 
     private void setApproverViews() {
@@ -526,17 +551,17 @@ public class AgentTicketView extends AppCompatActivity {
 
     private void setWorkCompletedView(boolean isRequester) {
         workCompletedDate.setText(workCompleted.getDateTime());
-        if(!isRequester) {
+        if (!isRequester) {
             finalPriceValue.setText("$ " + workCompleted.getFinalTotalCost());
             finalPartsValue.setText("$ " + workCompleted.getFinalPartsCost());
             finalOthersValue.setText("$ " + workCompleted.getFinalLabourCost());
-        }else{
+        } else {
             sensitiveDataLayout.setVisibility(View.GONE);
         }
         finalContactorComment.setText(workCompleted.getNote());
     }
 
-    private void setWorkRatingView(){
+    private void setWorkRatingView() {
         workRatedDate.setText(workRating.getDateTime());
         requesterWorkViewRating.setRating(workRating.getRating());
         requesterWorkComment.setText(workRating.getNote());
@@ -635,9 +660,11 @@ public class AgentTicketView extends AppCompatActivity {
             return;
         }
         String scopeValue = scopeEditValue.getText().toString();
-        AgentData agentData = new AgentData(scopeValue, contractorName, 3, contractorNote,
-                GlobalFunctions.getCurrentDateTime(), userInfo);
+        AgentData agentData = new AgentData(scopeValue, userInfo);
+        AssignedContractor assignedContractor = new AssignedContractor(contractorName, 3, contractorNote,
+                GlobalFunctions.getCurrentDateTime());
         ticket.setAgentData(agentData);
+        ticket.setAssignedContractor(assignedContractor);
         ticket.setContractorId(3);
         ticket.setStatus("Contractor Assigned");
         ticket.setAgent_status("1_ContractorAssigned");
@@ -690,16 +717,11 @@ public class AgentTicketView extends AppCompatActivity {
 
     @OnClick(R.id.request_approval)
     public void requestApproval() {
-        agentData.setApproverId(4);
-        agentData.setApproverName(approverSpinner.getSelectedItem().toString());
-        agentData.setRequestApprovalDate(GlobalFunctions.getCurrentDateTime());
+        AssignedApprover assignedApprover = new AssignedApprover(approverSpinner.getSelectedItem().toString(), 4, GlobalFunctions.getCurrentDateTime());
 
-        ticket.setAgentData(agentData);
+        ticket.setAssignedApprover(assignedApprover);
         ticket.setStatus("Approver Assigned");
         ticket.setAgent_status("1_PendingApproval");
-
-//        ApprovarData approvarData = new ApprovarData(userInfo, GlobalFunctions.getCurrentDateTime(), null, null);
-//        ticket.setApprovarData(approvarData);
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         Map<String, Object> childUpdates = new HashMap<>();
@@ -798,9 +820,9 @@ public class AgentTicketView extends AppCompatActivity {
     }
 
     @OnClick(R.id.requester_rate)
-    public void requesterRating(){
+    public void requesterRating() {
         String note = requesterWorkNote.getText().toString();
-        if("".equals(note)){
+        if ("".equals(note)) {
             requesterWorkNote.setError("Please enter a value");
             return;
         }
@@ -808,7 +830,7 @@ public class AgentTicketView extends AppCompatActivity {
 
         ticket.setWorkRating(workRating);
         ticket.setStatus("Work Rated");
-        ticket.setAgent_status("1_WorkCompleted");
+//        ticket.setAgent_status("1_WorkCompleted");
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         Map<String, Object> childUpdates = new HashMap<>();
@@ -842,7 +864,7 @@ public class AgentTicketView extends AppCompatActivity {
                     analytics.setApprovedCount(analytics.getApprovedCount() + 1);
                     analytics.setApprovalCount(analytics.getApprovalCount() - 1);
                 } else if ("Work Completed".equals(increaseStatus)) {
-                    analytics.setWorkCompletedCount(analytics.getApprovalCount() + 1);
+                    analytics.setWorkCompletedCount(analytics.getWorkCompletedCount() + 1);
                     analytics.setApprovedCount(analytics.getApprovedCount() - 1);
                 }
                 DatabaseReference mDatabase1 = FirebaseDatabase.getInstance().getReference();

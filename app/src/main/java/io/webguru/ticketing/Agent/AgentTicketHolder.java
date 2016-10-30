@@ -33,11 +33,6 @@ public class AgentTicketHolder extends RecyclerView.ViewHolder {
 
     public void setViewElements(Ticket ticket, int position, boolean isShow) {
         setPriority(ticket.getPriority());
-        String contName = "";
-        if (ticket.getAgentData() != null && ticket.getAgentData().getContractor() != null) {
-            contName = ticket.getAgentData().getContractor();
-        }
-        setTicketStatus(ticket.getStatus(), contName);
         setTicketNumber(ticket.getTicketNumber());
         setProblem(ticket.getRequester().getIssue());
         setLocation(ticket.getRequester().getLocation());
@@ -65,21 +60,6 @@ public class AgentTicketHolder extends RecyclerView.ViewHolder {
             priorityIndicator.setImageResource(R.color.cpb_grey);
         }
         txtPriority.setText(priority);
-    }
-
-    private void setTicketStatus(String status, String contractName) {
-//        ImageView ticketStatus = (ImageView) mView.findViewById(R.id.ticket_status_image);
-//        if ("pending".equals(status)) {
-//            ticketStatus.setImageResource(R.drawable.ticket_pending);
-//        } else if ("approved".equals(status)) {
-//            if(contractName!=null && !"".equals(contractName.trim())) {
-//                ticketStatus.setImageResource(R.drawable.ticket_assigned);
-//            } else {
-//                ticketStatus.setImageResource(R.drawable.ticket_approved);
-//            }
-//        } else if ("cancel".equals(status)) {
-//            ticketStatus.setImageResource(R.drawable.ticket_cancled);
-//        }
     }
 
     private void setTicketNumber(String ticketNumber) {

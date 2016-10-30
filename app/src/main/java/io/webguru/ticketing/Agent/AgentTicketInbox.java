@@ -67,8 +67,10 @@ public class AgentTicketInbox extends Fragment {
                 case 2:
                     return new CanceledTicket();
                 case 3:
-                    default:
                     return new AgentApprovedFragment();
+                case 4:
+                    default:
+                    return new AgentCompletedFragment();
 
             }
 //            return PlaceholderFragment.newInstance(position + 1);
@@ -77,7 +79,7 @@ public class AgentTicketInbox extends Fragment {
         @Override
         public int getCount() {
             // Show 4 total pages.
-            return 4;
+            return 5;
         }
 
         @Override
@@ -92,6 +94,8 @@ public class AgentTicketInbox extends Fragment {
                     return "Pending Approval".toUpperCase(l);
                 case 3:
                     return "Approved".toUpperCase(l);
+                case 4:
+                    return "Work Completed".toUpperCase(l);
             }
             return null;
         }

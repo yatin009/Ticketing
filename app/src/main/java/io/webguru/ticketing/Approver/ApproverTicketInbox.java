@@ -60,8 +60,10 @@ public class ApproverTicketInbox extends Fragment {
                 case 0:
                     return new PendingApprovalFragment();
                 case 1:
-                default:
                     return new ApprovedFragment();
+                case 2:
+                default:
+                    return new ApproverCompletedFragment();
 
             }
 //            return PlaceholderFragment.newInstance(position + 1);
@@ -70,7 +72,7 @@ public class ApproverTicketInbox extends Fragment {
         @Override
         public int getCount() {
             // Show 2 total pages.
-            return 2;
+            return 3;
         }
 
         @Override
@@ -81,6 +83,8 @@ public class ApproverTicketInbox extends Fragment {
                     return "Pending Approval".toUpperCase(l);
                 case 1:
                     return "Approved".toUpperCase(l);
+                case 2:
+                    return "Work Completed".toUpperCase(l);
             }
             return null;
         }

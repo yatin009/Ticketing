@@ -1,5 +1,7 @@
 package io.webguru.ticketing.POJO;
 
+import android.renderscript.ScriptIntrinsicYuvToRGB;
+
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
@@ -21,8 +23,11 @@ public class Ticket implements Serializable{
     private int approverId;
     private int contractorId;
     private String dateTime;
+    private String searchKeword;
     private RequesterData requester;
     private AgentData agentData;
+    private AssignedContractor assignedContractor;
+    private AssignedApprover assignedApprover;
     private ContractorData contractorData;
     private String isVisibleContractor;
     private ApprovarData approvarData;
@@ -36,7 +41,9 @@ public class Ticket implements Serializable{
 
     }
 
-    public Ticket(String ticketNumber, String status, String issueImageName, int requesterId, int agentId, int approverId, int contractorId, String dateTime, RequesterData requesterData, String agent_status){
+    public Ticket(String ticketNumber, String status, String issueImageName, int requesterId, int agentId,
+                  int approverId, int contractorId, String dateTime, RequesterData requesterData,
+                  String agent_status, String searchKeword){
         this.ticketNumber = ticketNumber;
         this.status = status;
         this.priority = requesterData.getPriority();
@@ -48,6 +55,7 @@ public class Ticket implements Serializable{
         this.dateTime = dateTime;
         this.requester = requesterData;
         this.agent_status = agent_status;
+        this.searchKeword = searchKeword;
     }
 
     @Exclude
@@ -62,8 +70,11 @@ public class Ticket implements Serializable{
         result.put("approverId", approverId);
         result.put("contractorId", contractorId);
         result.put("dateTime", dateTime);
+        result.put("searchKeword", searchKeword);
         result.put("requester", requester);
         result.put("agentData", agentData);
+        result.put("assignedContractor", assignedContractor);
+        result.put("assignedApprover", assignedApprover);
         result.put("contractorData", contractorData);
         result.put("isVisibleContractor", isVisibleContractor);
         result.put("approvarData", approvarData);
@@ -122,6 +133,22 @@ public class Ticket implements Serializable{
         this.agentId = agentId;
     }
 
+    public AssignedContractor getAssignedContractor() {
+        return assignedContractor;
+    }
+
+    public void setAssignedContractor(AssignedContractor assignedContractor) {
+        this.assignedContractor = assignedContractor;
+    }
+
+    public AssignedApprover getAssignedApprover() {
+        return assignedApprover;
+    }
+
+    public void setAssignedApprover(AssignedApprover assignedApprover) {
+        this.assignedApprover = assignedApprover;
+    }
+
     public int getApproverId() {
         return approverId;
     }
@@ -144,6 +171,14 @@ public class Ticket implements Serializable{
 
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public String getSearchKeword() {
+        return searchKeword;
+    }
+
+    public void setSearchKeword(String searchKeword) {
+        this.searchKeword = searchKeword;
     }
 
     public RequesterData getRequester() {

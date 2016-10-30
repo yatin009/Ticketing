@@ -8,26 +8,16 @@ import java.io.Serializable;
 
 public class AgentData implements Serializable{
     private String scope;
-    private String contractor;
-    private int contractorId;
-    private String contractorNote;
-    private String contractorAssignedDate;
-    private String approverName;
-    private int approverId;
-    private String requestApprovalDate;
+
+
     private UserInfo userInfo;
 
     public AgentData(){
 
     }
 
-    public AgentData(String scope, String contractor, int contractorId, String contractorNote,
-                     String contractorAssignedDate, UserInfo userInfo){
+    public AgentData(String scope, UserInfo userInfo){
         this.scope = scope;
-        this.contractor = contractor;
-        this.contractorId = contractorId;
-        this.contractorNote = contractorNote;
-        this.contractorAssignedDate = contractorAssignedDate;
         this.userInfo = userInfo;
     }
 
@@ -39,38 +29,6 @@ public class AgentData implements Serializable{
         this.scope = scope;
     }
 
-    public String getContractor() {
-        return contractor;
-    }
-
-    public void setContractor(String contractor) {
-        this.contractor = contractor;
-    }
-
-    public int getContractorId() {
-        return contractorId;
-    }
-
-    public void setContractorId(int contractorId) {
-        this.contractorId = contractorId;
-    }
-
-    public String getContractorNote() {
-        return contractorNote;
-    }
-
-    public void setContractorNote(String contractorNote) {
-        this.contractorNote = contractorNote;
-    }
-
-    public String getContractorAssignedDate() {
-        return contractorAssignedDate;
-    }
-
-    public void setContractorAssignedDate(String contractorAssignedDate) {
-        this.contractorAssignedDate = contractorAssignedDate;
-    }
-
     public UserInfo getUserInfo() {
         return userInfo;
     }
@@ -79,27 +37,4 @@ public class AgentData implements Serializable{
         this.userInfo = userInfo;
     }
 
-    public String getApproverName() {
-        return approverName;
-    }
-
-    public void setApproverName(String approverName) {
-        this.approverName = approverName;
-    }
-
-    public int getApproverId() {
-        return approverId;
-    }
-
-    public void setApproverId(int approverId) {
-        this.approverId = approverId;
-    }
-
-    public String getRequestApprovalDate() {
-        return requestApprovalDate;
-    }
-
-    public void setRequestApprovalDate(String requestApprovalDate) {
-        this.requestApprovalDate = requestApprovalDate;
-    }
 }
